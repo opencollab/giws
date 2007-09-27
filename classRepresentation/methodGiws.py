@@ -50,10 +50,6 @@ class methodGiws:
 			if paramType.specificPreProcessing(parameter)!=None:
 				str+=paramType.specificPreProcessing(parameter)
 		
-#		if hasattr(self.getReturn(), "specificPreProcessing") and type(self.getReturn().specificPreProcessing) is MethodType:
-			# For this datatype, there is some stuff to do BEFORE the method call
-#			str+=self.getReturn().specificPreProcessing()
-			
 		str+=JNIFrameWork().getCallObjectMethodProfile(self)
 		
 		if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
