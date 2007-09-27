@@ -5,6 +5,8 @@ from dataGiws import dataGiws
 class floatDataGiws(dataGiws):
 
 	type="jfloat"
+	nativeType="float"
+	
 	def getTypeSignature(self):
 		return "F"
 
@@ -13,9 +15,6 @@ class floatDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "unsigned 8 bits"
-
-	def getNativeType(self):
-		return super(floatDataGiws, self).getNativeType("float")
 	
 	def CallMethod(self):
 		return "CallFloatMethod"

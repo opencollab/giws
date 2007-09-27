@@ -1,4 +1,12 @@
 
+giws (0.7)
+	* Factorisation of some code in getNativeType
+	* Better return of an array of primitive type (one more time, thanks Jean-Baptiste Silvy)
+	* Comestic in example1
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 24 Sep 2007 17:50:51 +0200
+
+
 giws (0.6)
 	* Manages array of primitive type in return of a method (ex : int[] giveMeMyInts())
 	* factorisation of some code in getJavaTypeSyntax and getJavaShortType
@@ -6,12 +14,12 @@ giws (0.6)
 	* TODO and README-DEV updated
 	* example2 updated with a return of primitive type
 
- -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Fri, 20 Aug 2007 13:21:55 +0200
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Fri, 20 Sep 2007 13:21:55 +0200
 
 giws (0.5)
   * New constructor from an existing jobject
 
- -- Vincent Couvert <vincent.couvert@inria.fr>  Tue, 18 sep 2007 09:40:50 +0200
+ -- Vincent Couvert <vincent.couvert@inria.fr>  Tue, 18 Sep 2007 09:40:50 +0200
 
 giws (0.4)
   * check if exceptions after calling a method

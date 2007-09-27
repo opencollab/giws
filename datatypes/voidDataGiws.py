@@ -3,7 +3,9 @@
 from dataGiws import dataGiws
 
 class voidDataGiws(dataGiws):
-	
+
+	nativeType="void"	
+
 	def getTypeSignature(self):
 		return "V"
 
@@ -15,9 +17,6 @@ class voidDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "void type"
-
-	def getNativeType(self):
-		return "void"
 
  	def getReturnSyntax(self):
 		return ""

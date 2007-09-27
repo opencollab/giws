@@ -4,7 +4,9 @@ from dataGiws import dataGiws
 from JNIFrameWork import JNIFrameWork
 
 class stringDataGiws(dataGiws):
-	
+
+	nativeType="char *"
+
 	def getTypeSignature(self):
 		return "Ljava/lang/String;"
 

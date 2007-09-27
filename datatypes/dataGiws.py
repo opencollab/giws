@@ -38,6 +38,19 @@ class dataGiws(object):
 
 	def getJavaShortTypeForceNotArray(self):
 		return self.getJavaShortType(forceNotArray=True)
+
+
+	def getNativeType(self, ForceNotArray=False):
+		""" Returns the native type (C/C++)
+		"""
+		if self.isArray() and not ForceNotArray:
+			return self.nativeType+" *"
+		else:
+			return self.nativeType
+
+	def getNativeTypeForceNotArray(self):
+		return self.getNativeType(ForceNotArray=True)
+
 	
 	def getTypeSignature(self):
 		""" Returns the java type signature
@@ -56,13 +69,6 @@ class dataGiws(object):
 		"""
 		abstractMethod(self)
 
-	def getNativeType(self, nativeType):
-		""" Returns the native type (C/C++)
-		"""
-		if self.isArray():
-			return nativeType+" *"
-		else:
-			return nativeType
 		
 		
 	def setIsArray(self, isItAnArray):
@@ -106,17 +112,22 @@ class dataGiws(object):
 		javaType=self.getJavaTypeSyntax()
 		javaTypeNotArray=self.getJavaTypeSyntaxForceNotArray()
 		shortType=self.getJavaShortType(forceNotArray=True)
-
+		nativeTypeForceNotArray=self.getNativeTypeForceNotArray()
+		
 		if self.isArray():
 			return """
 			jsize len = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
-			%s *resultsArray = curEnv->Get%sArrayElements(res, &isCopy);
-			%s myArray=(%s)malloc(sizeof(%s)*len);
+
+			/* faster than getXXXArrayElements */
+			%s *resultsArray = (%s *) curEnv->GetPrimitiveArrayCritical(res, &isCopy);
+			%s myArray= new %s[len];
+
 			for (jsize i = 0; i < len; i++){
 			myArray[i]=resultsArray[i];
 			}
-			"""%(javaTypeNotArray, shortType, self.getNativeType(),self.getNativeType(), self.getNativeType())
+			curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+			"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
 		else:
 			# Not post processing when dealing with primitive types
 			return ""

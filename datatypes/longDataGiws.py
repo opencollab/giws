@@ -5,7 +5,10 @@ class longDataGiws(dataGiws):
 	"""
 	Manages Java datatype long
 	"""
+	
 	type="jlong"
+	nativeType="long long"
+	
 	def getTypeSignature(self):
 		return "J"
 
@@ -14,9 +17,6 @@ class longDataGiws(dataGiws):
 
 	def getDescription(self):
 		return "signed 64 bits"
-
-	def getNativeType(self):
-		return super(longDataGiws, self).getNativeType("long long")
 	
 	def CallMethod(self):
 		return "CallLongMethod"

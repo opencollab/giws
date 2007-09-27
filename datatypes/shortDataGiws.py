@@ -5,7 +5,8 @@ from dataGiws import dataGiws
 class shortDataGiws(dataGiws):
 
 	type="jshort"
-
+	nativeType="short"
+	
 	def getTypeSignature(self):
 		return "S"
 
@@ -15,9 +16,6 @@ class shortDataGiws(dataGiws):
 	def getDescription(self):
 		return "signed 16 bits"
 
-	def getNativeType(self):
-		return super(shortDataGiws, self).getNativeType("short")
-	
 	def CallMethod(self):
 		return "CallShortMethod"
 

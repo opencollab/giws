@@ -5,6 +5,8 @@ from dataGiws import dataGiws
 class byteDataGiws(dataGiws):
 
 	type="jbyte"
+	nativeType="byte"
+	
 	def getTypeSignature(self):
 		return "B"
 
@@ -13,9 +15,6 @@ class byteDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "signed 8 bits"
-
-	def getNativeType(self):
-		return super(byteDataGiws, self).getNativeType("byte")
 	
 	def CallMethod(self):
 		return "CallByteMethod"

@@ -3,6 +3,8 @@
 from dataGiws import dataGiws
 
 class charDataGiws(dataGiws):
+
+	nativeType="char"
 	
 	def getTypeSignature(self):
 		return "C"
@@ -15,10 +17,6 @@ class charDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "unsigned 16 bits"
-
-	def getNativeType(self):
-		return super(intDataGiws, self).getNativeType("char")
-
 	
 	def CallMethod(self):
 		return "CallCharMethod"

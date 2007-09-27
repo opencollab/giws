@@ -6,7 +6,10 @@ class doubleDataGiws(dataGiws):
 	"""
 	Manages Java datatype double
 	"""
-	type="jdouble"			
+
+	type="jdouble"
+	nativeType="double"
+	
 	def getTypeSignature(self):
 		return "D"
 
@@ -15,9 +18,6 @@ class doubleDataGiws(dataGiws):
 
 	def getDescription(self):
 		return "64 bits"
-
-	def getNativeType(self):
-		return super(doubleDataGiws, self).getNativeType("double")
 
 	def CallMethod(self):
 		return "CallDoubleMethod"

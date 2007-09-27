@@ -27,7 +27,7 @@ using namespace std;
 int main(){
   	JavaVM* jvm = create_vm();
 	MyObject *plop = new MyObject(jvm);
-	cout << "A string from Java :" << plop->getMyString() <<endl;
+	cout << "A string from Java : " << plop->getMyString() <<endl;
 	plop->doNothingPleaseButDisplay(23);
 	cout << "Hashcode of my two strings " << plop->giveMeTheHashCodePlease("plop", "plop2") << endl;
 	return 0;	

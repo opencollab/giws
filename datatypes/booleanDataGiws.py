@@ -5,7 +5,8 @@ from dataGiws import dataGiws
 class booleanDataGiws(dataGiws):
 
 	type="jboolean"
-
+	nativeType="bool"
+	
 	def getTypeSignature(self):
 		return "Z"
 
@@ -15,9 +16,6 @@ class booleanDataGiws(dataGiws):
 	def getDescription(self):
 		return "unsigned 8 bits"
 
-	def getNativeType(self):
-		return super(booleanDataGiws, self).getNativeType("bool")
-	
 	def CallMethod(self):
 		return "CallBooleanMethod"
 
