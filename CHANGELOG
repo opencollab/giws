@@ -1,4 +1,9 @@
 
+giws (0.5)
+  * New constructor from an existing jobject
+
+ -- Vincent Couvert <vincent.couvert@inria.fr>
+
 giws (0.4)
   * check if exceptions after calling a method
   * Bug when the input parameter was a String (thanks Jean-Baptiste Silvy)

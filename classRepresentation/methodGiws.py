@@ -53,7 +53,7 @@ class methodGiws:
 		str+=JNIFrameWork().getCallObjectMethodProfile(self)
 		
 		if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
-			# For this datatype, there is some stuff to do AFTER the method call
+	                # For this datatype, there is some stuff to do AFTER the method call		
 			str+=self.getReturn().specificPostProcessing()
 
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())

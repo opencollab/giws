@@ -81,20 +81,32 @@ class objectGiws:
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
 		return """
 		%s::%s {
+        jvm=jvm_;
 
-	this->instance = JEnv_->NewGlobalRef(JObj) ;
-		this->instanceClass = (jclass) JEnv_->NewGlobalRef(JEnv_->GetObjectClass(JObj)) ;
-if(this->instance == NULL){
-std::cerr << "Could not create a new global ref " << std::endl;
-exit(EXIT_FAILURE);
-}
+        JNIEnv * curEnv = getCurrentEnv();
+
+        this->instanceClass = (jclass) curEnv->NewGlobalRef(curEnv->GetObjectClass(JObj));
+        if (this->instanceClass == NULL) {
+               std::cerr << "Could not create a Global Ref of " << this->instanceClass <<  std::endl;
+               exit(EXIT_FAILURE);
+        }
+
+        this->instance = curEnv->NewGlobalRef(JObj) ;
+        if(this->instance == NULL){
+               std::cerr << "Could not create a new global ref of " << this->instanceClass << std::endl;
+               exit(EXIT_FAILURE);
+        }
+
+        voiddisplayjstringID=NULL; 
+        jstringreadLineID=NULL; 
+        voidclearID=NULL; 
 }
 		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
 
 		
 	def getConstructorBodyCXX(self, JNIObjectName):
 		str=self.__getConstructorWhichInstanciateTheNewObject(JNIObjectName)
-#		str+=self.__getConstructorWhichUsesAnAlreadyExistingJObject()
+		str+=self.__getConstructorWhichUsesAnAlreadyExistingJObject()
 		return str
 
 	def __getConstructorProfileWhichInstanciateTheNewObject(self):
@@ -141,7 +153,7 @@ exit(EXIT_FAILURE);
 			%s
 			
 			/**
-			* Get the environmebnt matching to the current thread.
+			* Get the environment matching to the current thread.
 			*/
 			JNIEnv * getCurrentEnv();
 			
@@ -158,9 +170,9 @@ exit(EXIT_FAILURE);
 			* The object must have already been instantiated
 			* @param JEnv_ the Java Env
 			* @param JObj the object
-			* @TODO removed because don't remember with we did it :$
 			*/
-			
+			%s
+
 			// Destructor
 			~%s();
 
@@ -183,8 +195,7 @@ exit(EXIT_FAILURE);
 			
 			};
 
-			""" % (self.getName(),  JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getName(), self.getMethodsCXX())
-			#self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(), 
+			""" % (self.getName(),  JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.getName(), self.getMethodsCXX()) 
 
 	def generateCXXBody(self, packageName):
 		JNIObjectName=packageName+"/"+self.getName()
