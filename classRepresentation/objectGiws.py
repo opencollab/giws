@@ -34,17 +34,36 @@ class objectGiws:
 		string construct="<init>";
 		string param="()V";
 		JEnv=JEnv_;
+		
 		localClass = %sFindClass( className.c_str() ) ;
-
-		instanceClass = (jclass)  %sNewGlobalRef(localClass) ;
-
-		/* "()V" for no parameters and return void */
-		/* "<init>" for constructor */
+		if (localClass == NULL) {
+		cerr << "Could not get the Class " << className <<  endl;
+		exit(EXIT_FAILURE);
+		}
+		
+		instanceClass = (jclass) %sNewGlobalRef(localClass) ;
+		if (instanceClass == NULL) {
+		cerr << "Could not create a Global Ref of " << className <<  endl;
+		exit(EXIT_FAILURE);
+		}
+		
 		constructObject = %sGetMethodID( instanceClass, construct.c_str() , param.c_str() ) ;
-
+		if(constructObject == NULL){
+		cerr << "Could not retrieve the constructor of the class " << className << " with the profile : " << construct << param << endl;
+		exit(EXIT_FAILURE);
+		}
+		
 		localInstance = %sNewObject( instanceClass, constructObject ) ;
- 
+		if(localInstance == NULL){
+		cerr << "Could not instance the object " << className << " with the constructor : " << construct << param << endl;
+		exit(EXIT_FAILURE);
+		}
+		 
 		*this->instance = %sNewGlobalRef(localInstance) ;
+		if(this->instance == NULL){
+		cerr << "Could not create a new global ref of " << className << endl;
+		exit(EXIT_FAILURE);
+		}
 		}
 		"""%(self.getName(), self.__getConstructorProfile(), JNIObjectName, envAccess, envAccess, envAccess, envAccess, envAccess)
 

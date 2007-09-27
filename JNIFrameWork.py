@@ -26,7 +26,11 @@ class JNIFrameWork:
 	
 	def getObjectInstanceProfile(self):		
 		return """
-		jclass instanceClass = this->%sGetObjectClass(*instance) ;
+		jclass instanceClass = this->%sGetObjectClass(*instance);
+		if (instanceClass == NULL) {
+		cerr << "Could not get the Object Class " <<  endl;
+		exit(EXIT_FAILURE);
+		} 
 		""" % self.JNIEnvAccess()
 
 	def getMethodIdProfile(self, methodName, parametersTypes, returnType):
@@ -35,7 +39,7 @@ class JNIFrameWork:
 			params+=parameter.getType().getTypeSignature()
 		return ("""
 		jmethodID methodId = this->%sGetMethodID(instanceClass, "%s", "(%s)%s" ) ;
-		    if (methodId == 0) {
+		    if (methodId == NULL) {
 			cerr << "Could not access to the method %s" << endl;
 			exit(EXIT_FAILURE);
 			}
@@ -63,7 +67,7 @@ class JNIFrameWork:
 
 	def getReturnProfile(self, returnType):
 		
-		if hasattr(returnType, "specificReturn") and type(returnType.specificReturn) is MethodType:
+		if hasattr(returnType, "specificReturn") and type(returnType.specificReturn) is MethodType: # When a specific kind of return is necessary (string for example)
 			return returnType.specificReturn()
 		else:
 			return """

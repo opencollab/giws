@@ -1,6 +1,8 @@
 
 giws (0.2) 
-  * Manages the case where there is no paramater
+  * Add much more tests/feedback when we are loading the object
+  * Exit with an error message when a call of method fails
+  * Manages the case where there is no parameter
   * Check added when calling the method
   * Licence file added (CECILL)
   * Removes french comment in the generated code
