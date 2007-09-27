@@ -34,21 +34,16 @@ class objectGiws:
 		string construct="<init>";
 		string param="()V";
 		JEnv=JEnv_;
-		// récupère la classe de l'objet qu'on veut creer
-		// className: org/scilab/.../maSuperClasse
 		localClass = %sFindClass( className.c_str() ) ;
 
-		// sauvegarde dans une référence global pour pouvoir l'utiliser ultérieurement.
 		instanceClass = (jclass)  %sNewGlobalRef(localClass) ;
 
 		/* "()V" for no parameters and return void */
 		/* "<init>" for constructor */
 		constructObject = %sGetMethodID( instanceClass, construct.c_str() , param.c_str() ) ;
 
-		// crée une instance local à la fonction de la classe
 		localInstance = %sNewObject( instanceClass, constructObject ) ;
  
-		// crée une instance global
 		*this->instance = %sNewGlobalRef(localInstance) ;
 		}
 		"""%(self.getName(), self.__getConstructorProfile(), JNIObjectName, envAccess, envAccess, envAccess, envAccess, envAccess)
