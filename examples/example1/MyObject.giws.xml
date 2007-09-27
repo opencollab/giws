@@ -1,9 +1,13 @@
 <package name="example">
   <object name="MyObject">
-	<method name="GetMyString" returnType="String">
+	<method name="getMyString" returnType="String">
 	</method>
-	<method name="DoNothingPleaseButDisplay" returnType="void">
+	<method name="doNothingPleaseButDisplay" returnType="void">
 	  <param type="int" name="plop" />
+	</method>
+	<method name="giveMeTheHashCodePlease" returnType="int">
+	  <param type="String" name="plop" />
+	  <param type="String" name="myString" />
 	</method>
 
   </object>

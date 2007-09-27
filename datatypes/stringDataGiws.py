@@ -28,8 +28,15 @@ class stringDataGiws(dataGiws):
 	
 	def CallMethod(self):
 		return "CallObjectMethod"
+
+	def specificPreProcessing(self, parameter):
+		return """
+		jstring %s = curEnv->NewStringUTF( %s );
+		"""%(parameter.getName()+"_", parameter.getName())
+	
 	
 	def specificPostProcessing(self):
+		""" Called when we are returning a string"""
 		if self.getIsArray():
 			return """
 			jsize len = curEnv->GetArrayLength(res);

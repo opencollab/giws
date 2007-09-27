@@ -16,7 +16,7 @@ JavaVM* create_vm() {
 	options[1].optionString = "-Xcheck:jni";
 	args.options = options;
 	args.ignoreUnrecognized = JNI_FALSE;
-
+	
 	JNI_CreateJavaVM(&jvm, (void **)&env, &args);
 	return jvm;
 }
@@ -27,8 +27,8 @@ using namespace std;
 int main(){
   	JavaVM* jvm = create_vm();
 	MyObject *plop = new MyObject(jvm);
-	cout << "A string from Java :" << plop->GetMyString() <<endl;
-	plop->DoNothingPleaseButDisplay(23);
-
+	cout << "A string from Java :" << plop->getMyString() <<endl;
+	plop->doNothingPleaseButDisplay(23);
+	cout << "Hashcode of my two strings " << plop->giveMeTheHashCodePlease("plop", "plop2") << endl;
 	return 0;	
 }

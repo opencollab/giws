@@ -1,8 +1,11 @@
 
 giws (0.4)
   * check if exceptions after calling a method
+  * Bug when the input parameter was a String (thanks Jean-Baptiste Silvy)
+  * Update of the example1
+  * Better management of the Preprocessing
 
- -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Fri, 3 aout 2007 11:45:45 +0200
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr> UPDATE
 
 giws (0.3)
   * works on a JavaVM type instead of a JNIEnv

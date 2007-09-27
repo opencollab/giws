@@ -99,27 +99,31 @@ class JNIFrameWork:
 		}
 		}""")%(methodIdName, methodIdName, method.getName(), params,signatureReturn ,methodIdName, method.getName())
 
-	def getCallObjectMethodProfile(self,method):
+	def getCallObjectMethodProfile(self, method):
 		parametersTypes=method.getParameters()
 		returnType=method.getReturn()
 		i=1
 		params=""
+		
 		for parameter in parametersTypes:
 			if i==1:
 				params+="," # in order to manage call without param
 			params+=parameter.getName()
+			if hasattr(parameter.getType(), "specificPreProcessing") and type(parameter.getType().specificPreProcessing) is MethodType: 
+				params+="_" # There is a pre-processing, then, we add the _ 
 			if len(parametersTypes)!=i: 
 				params+=", "
 			i=i+1
+			
 		if returnType.getNativeType()=="void": # Dealing with a void ... 
 			returns=""
 		else:
 			if returnType.getIsArray():
-				type=returnType.getJavaTypeArraySyntax()
+				typeOfReturn=returnType.getJavaTypeArraySyntax()
 			else:
-				type=returnType.getJavaTypeSyntax()
+				typeOfReturn=returnType.getJavaTypeSyntax()
 				
-			returns="""%s res =  (%s)"""%(type, type)
+			returns="""%s res =  (%s)"""%(typeOfReturn, typeOfReturn)
 
 		return """
 	 	%s curEnv->%s( this->instance, %s %s);

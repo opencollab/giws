@@ -41,23 +41,23 @@ class methodGiws:
 			i=i+1
 		return str
 	
-	def __str__(self):
-		parametersStr=""
-		for parameter in self.getParameters():
-			parametersStr=parametersStr+parameter.__str__()
-		return """%s %s ( %s )
-		""" % (self.getReturn(), self.getName(), parametersStr)
-
 	def __createMethodBody(self):
 		str=JNIFrameWork().getObjectInstanceProfile()
 		str+=JNIFrameWork().getMethodIdProfile(self)
+
+		for parameter in self.__parameters:
+			paramType=parameter.getType()
+			if hasattr(paramType, "specificPreProcessing") and type(paramType.specificPreProcessing) is MethodType:
+				str+=paramType.specificPreProcessing(parameter)
 		
-		if hasattr(self.getReturn(), "specificPreProcessing") and type(self.getReturn().specificPreProcessing) is MethodType:
-			str+=self.getReturn().specificPreProcessing()
+#		if hasattr(self.getReturn(), "specificPreProcessing") and type(self.getReturn().specificPreProcessing) is MethodType:
+			# For this datatype, there is some stuff to do BEFORE the method call
+#			str+=self.getReturn().specificPreProcessing()
 			
 		str+=JNIFrameWork().getCallObjectMethodProfile(self)
 		
 		if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
+			# For this datatype, there is some stuff to do AFTER the method call
 			str+=self.getReturn().specificPostProcessing()
 
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())

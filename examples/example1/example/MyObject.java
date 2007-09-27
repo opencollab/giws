@@ -6,11 +6,15 @@ public class MyObject{
 		System.out.println("Constructor");
 	}
 
-	public String GetMyString(){
+	public String getMyString(){
 		return "I do love Scilab";
 	}
 	
-	public void DoNothingPleaseButDisplay(int a){
+	public void doNothingPleaseButDisplay(int a){
 		System.out.println("I did display some very interesting things like the int : "+a);
+	}
+
+	public int giveMeTheHashCodePlease(String a, String b){
+		return a.hashCode()+b.hashCode();
 	}
 }
