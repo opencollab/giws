@@ -9,9 +9,10 @@ class JNIFrameWork:
 	JNIEnvVariable="JEnv"
 	JNIEnvVariableType="JNIEnv"
 	def getHeader(self):
-		return """#include <jni.h>
-		#include <string>
+		return """#include <string>
 		#include <iostream>
+		#include <stdlib.h>
+		#include <jni.h>
 		"""
 
 	def JNIEnvAccess(self):
@@ -36,7 +37,7 @@ class JNIFrameWork:
 		jmethodID methodId = this->%sGetMethodID(instanceClass, "%s", "(%s)%s" ) ;
 		    if (methodId == 0) {
 			cerr << "Could not access to the method %s" << endl;
-			return;
+			exit(EXIT_FAILURE);
 			}
 		
 		"""%(self.JNIEnvAccess(), methodName, params, returnType.getTypeSignature(),methodName))
