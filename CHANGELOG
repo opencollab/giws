@@ -2,7 +2,7 @@
 giws (0.5)
   * New constructor from an existing jobject
 
- -- Vincent Couvert <vincent.couvert@inria.fr>
+ -- Vincent Couvert <vincent.couvert@inria.fr>  Tue, 18 sep 2007 09:40:50 +0200
 
 giws (0.4)
   * check if exceptions after calling a method
@@ -12,7 +12,7 @@ giws (0.4)
   * Manages array of string (as parameter and return type) and all other 
 	datatypes as parameter (and soon return)
 
- -- Sylvestre Ledru <sylvestre.ledru@inria.fr> UPDATE
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 19 Aug 2007 10:20:15 +0200
 
 giws (0.3)
   * works on a JavaVM type instead of a JNIEnv
@@ -25,7 +25,7 @@ giws (0.3)
 	* synchronize() Enter monitor associated with the object.
 	* endSynchronize() Exit monitor associated with the object.
 
- -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 1 aout 2007 11:45:45 +0200
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 1 Aug 2007 11:45:45 +0200
 
 giws (0.2)
   * Example added (see examples/example1/)
