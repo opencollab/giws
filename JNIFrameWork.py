@@ -11,6 +11,7 @@ class JNIFrameWork:
 	def getHeader(self):
 		return """#include <jni.h>
 		#include <string>
+		#include <iostream>
 		"""
 
 	def JNIEnvAccess(self):
