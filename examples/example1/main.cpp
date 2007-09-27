@@ -27,8 +27,8 @@ using namespace std;
 int main(){
   	JNIEnv* env = create_vm();
 	MyObject *plop = new MyObject(env);
+	cout << "A string from Java :" << plop->GetMyString() <<endl;
 	plop->DoNothingPleaseButDisplay(23);
-	char * p = plop->GetMyString();
-	cout << "crash :" << plop->GetMyString() <<endl;
+
 	return 0;	
 }
