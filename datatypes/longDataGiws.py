@@ -5,11 +5,9 @@ class longDataGiws(dataGiws):
 	"""
 	Manages Java datatype long
 	"""
+	type="jlong"
 	def getTypeSignature(self):
 		return "J"
-
-	def getJavaTypeSyntax(self):
-		return "jlong"
 
 	def getRealJavaType(self):
 		return "long"

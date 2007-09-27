@@ -1,4 +1,13 @@
 
+giws (0.6)
+	* Manages array of primitive type in return of a method (ex : int[] giveMeMyInts())
+	* factorisation of some code in getJavaTypeSyntax and getJavaShortType
+	* Use JNI_VERSION_1_4 instead of JNI_VERSION_1_6 in the examples 
+	* TODO and README-DEV updated
+	* example2 updated with a return of primitive type
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Fri, 20 Aug 2007 13:21:55 +0200
+
 giws (0.5)
   * New constructor from an existing jobject
 

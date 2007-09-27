@@ -2,6 +2,8 @@
   <object name="MyObjectWithArray">
 	<method name="getMyString" returnType="String[]">
 	</method>
+	<method name="getMyInts" returnType="int[]">
+	</method>
 	<method name="doNothingPleaseButDisplay" returnType="void">
 	  <param type="int[]" name="plop" />
 	  <param type="short[]" name="plop2" />

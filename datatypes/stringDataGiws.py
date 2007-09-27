@@ -36,7 +36,7 @@ class stringDataGiws(dataGiws):
 		"""%(parameter.getName()+"_", parameter.getName())
 	
 	def specificPostProcessing(self):
-		""" Called when we are returning a string"""
+		""" Called when we are returning a string or an array of string """
 		if self.isArray():
 			return """
 			jsize len = curEnv->GetArrayLength(res);
@@ -57,7 +57,7 @@ class stringDataGiws(dataGiws):
 			curEnv->ReleaseStringUTFChars(res, tempString);
 			"""			
 
-	def specificReturn(self):
+	def getReturnSyntax(self):
 		if self.isArray():
 			return """
 			return arrayOfString;

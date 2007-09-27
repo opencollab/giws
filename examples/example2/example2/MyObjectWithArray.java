@@ -11,6 +11,12 @@ public class MyObjectWithArray{
 		return arrayOfString;
 	}
 	
+
+	public int[] getMyInts(){
+		int[] arrayOfInt={1,42,2};
+		return arrayOfInt;
+	}
+
 	public void doNothingPleaseButDisplay(int[] a, short[] b){
 		System.out.println("Your first array has a size of "+a.length+" elements and the second " +b.length);
         for( int i=0; i<a.length; i++)

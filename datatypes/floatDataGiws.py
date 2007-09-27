@@ -3,12 +3,10 @@
 from dataGiws import dataGiws
 
 class floatDataGiws(dataGiws):
-	
+
+	type="jfloat"
 	def getTypeSignature(self):
 		return "F"
-
-	def getJavaTypeSyntax(self):
-		return "jfloat"
 
 	def getRealJavaType(self):
 		return "float"

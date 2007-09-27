@@ -6,13 +6,11 @@ class intDataGiws(dataGiws):
 	"""
 	Manages Java datatype int
 	"""
+	type="jint"
 	
 	def getTypeSignature(self):
 		return "I"
 
-	def getJavaTypeSyntax(self):
-		return "jint"
-	
 	def getRealJavaType(self):
 		return "int"
 		

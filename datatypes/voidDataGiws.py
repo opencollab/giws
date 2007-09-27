@@ -10,13 +10,16 @@ class voidDataGiws(dataGiws):
 	def getJavaTypeSyntax(self):
 		return "void"
 
+	def getJavaTypeSyntaxForceNotArray(self):
+		return self.getJavaTypeSyntax()
+	
 	def getDescription(self):
 		return "void type"
 
 	def getNativeType(self):
 		return "void"
 
- 	def specificReturn(self):
+ 	def getReturnSyntax(self):
 		return ""
 	
 	def CallMethod(self):

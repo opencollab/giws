@@ -1,2 +1,12 @@
 * manages not empty constructors
-* manages arrays
+* When returning an array of primitive types, we do :
+
+jsize len = curEnv->GetArrayLength(res);
+jboolean isCopy = JNI_TRUE;
+jint *resultsArray = curEnv->GetIntArrayElements(res, &isCopy);
+long * myArray=(long *)malloc(sizeof(long *)*len);
+for (jsize i = 0; i < len; i++){
+	myArray[i]=resultsArray[i];
+}
+return myArray;
+There is probably a much better way to do it

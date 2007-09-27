@@ -3,12 +3,11 @@
 from dataGiws import dataGiws
 
 class booleanDataGiws(dataGiws):
-	
+
+	type="jboolean"
+
 	def getTypeSignature(self):
 		return "Z"
-
-	def getJavaTypeSyntax(self):
-		return "jboolean"
 
 	def getRealJavaType(self):
 		return "boolean"

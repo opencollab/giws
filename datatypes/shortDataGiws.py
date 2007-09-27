@@ -3,12 +3,11 @@
 from dataGiws import dataGiws
 
 class shortDataGiws(dataGiws):
-	
+
+	type="jshort"
+
 	def getTypeSignature(self):
 		return "S"
-
-	def getJavaTypeSyntax(self):
-		return "jshort"
 
 	def getRealJavaType(self):
 		return "short"

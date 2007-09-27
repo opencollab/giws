@@ -3,12 +3,10 @@
 from dataGiws import dataGiws
 
 class byteDataGiws(dataGiws):
-	
+
+	type="jbyte"
 	def getTypeSignature(self):
 		return "B"
-
-	def getJavaTypeSyntax(self):
-		return super(byteDataGiws, self).getJavaTypeSyntax("jbyte")
 
 	def getRealJavaType(self):
 		return "byte"

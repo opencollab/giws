@@ -1,5 +1,15 @@
 
-giws is working in a few step.
+= Objects =
+
+
+* classRepresentation/	
+	Python objects matching the Java declarations are stored.
+* datatypes/
+	Python objects matching the datatype (provides the different method, type declaration ...)
+
+= Steps =
+
+GIWS is working in a few step.
 
 1. Load/Parse the XML file
 2. Build in the memory the "tree" of
@@ -14,7 +24,7 @@ giws is working in a few step.
 
 
 
-Design patterns :
+= Design patterns =
 The design pattern Factory is used to instanciate the different kind of data
 that we are managing.
 This object is called : dataFactoryGiws and can be called as :

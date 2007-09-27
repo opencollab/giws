@@ -9,7 +9,7 @@ JavaVM* create_vm() {
 	JavaVMOption options[2];
 	
 	/* There is a new JNI_VERSION_1_4, but it doesn't add anything for the purposes of our example. */
-	args.version = JNI_VERSION_1_6;
+	args.version = JNI_VERSION_1_4;
 
 	args.nOptions = 2;
 	options[0].optionString = "-Djava.class.path=.";
@@ -42,5 +42,11 @@ int main(){
 	char ** myString=plop->getMyString();
 	cout << "The first string from Java : " << myString[0]  <<endl;
 	cout << "The second string from Java : " << myString[1]  <<endl;
+
+	long *myInts=plop->getMyInts();
+	cout << "The first int from Java : " << myInts[0]  <<endl;
+	cout << "The second int from Java : " << myInts[1]  <<endl;
+	cout << "The third int from Java : " << myInts[2]  <<endl;
+
 	return 0;	
 }

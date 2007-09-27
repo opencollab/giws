@@ -127,11 +127,5 @@ class JNIFrameWork:
 """ % (returns, returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
 
 	def getReturnProfile(self, returnType):
-		
-		if hasattr(returnType, "specificReturn") and type(returnType.specificReturn) is MethodType: # When a specific kind of return is necessary (string for example)
-			return returnType.specificReturn()
-		else:
-			return """
-			return res;
-			"""
+		return returnType.getReturnSyntax()
 		

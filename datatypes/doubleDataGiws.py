@@ -6,12 +6,9 @@ class doubleDataGiws(dataGiws):
 	"""
 	Manages Java datatype double
 	"""
-			
+	type="jdouble"			
 	def getTypeSignature(self):
 		return "D"
-
-	def getJavaTypeSyntax(self):
-		return "jdouble"
 
 	def getRealJavaType(self):
 		return "double"
