@@ -79,7 +79,6 @@ class CXXFile:
 		strCommon="""
 		%s
 		namespace %s {
-		using namespace std;
 		"""%(JNIFrameWork().getHeader(), self.package.getNameForCXX())
 		
 		strCommonEnd="""

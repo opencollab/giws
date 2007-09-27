@@ -28,7 +28,7 @@ class JNIFrameWork:
 		return """
 		jclass instanceClass = this->%sGetObjectClass(*instance);
 		if (instanceClass == NULL) {
-		cerr << "Could not get the Object Class " <<  endl;
+		std::cerr << "Could not get the Object Class " <<  std::endl;
 		exit(EXIT_FAILURE);
 		} 
 		""" % self.JNIEnvAccess()
@@ -40,7 +40,7 @@ class JNIFrameWork:
 		return ("""
 		jmethodID methodId = this->%sGetMethodID(instanceClass, "%s", "(%s)%s" ) ;
 		    if (methodId == NULL) {
-			cerr << "Could not access to the method %s" << endl;
+			std::cerr << "Could not access to the method %s" << std::endl;
 			exit(EXIT_FAILURE);
 			}
 		

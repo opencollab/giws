@@ -30,38 +30,38 @@ class objectGiws:
 		jobject localInstance ;
 		jclass localClass ;
 		jclass instanceClass;
-		const string className="%s";
-		const string construct="<init>";
-		const string param="()V";
+		const std::string className="%s";
+		const std::string construct="<init>";
+		const std::string param="()V";
 		JEnv=JEnv_;
 		
 		localClass = %sFindClass( className.c_str() ) ;
 		if (localClass == NULL) {
-		cerr << "Could not get the Class " << className <<  endl;
+		std::cerr << "Could not get the Class " << className <<  std::endl;
 		exit(EXIT_FAILURE);
 		}
 		
 		instanceClass = (jclass) %sNewGlobalRef(localClass) ;
 		if (instanceClass == NULL) {
-		cerr << "Could not create a Global Ref of " << className <<  endl;
+		std::cerr << "Could not create a Global Ref of " << className <<  std::endl;
 		exit(EXIT_FAILURE);
 		}
 		
 		constructObject = %sGetMethodID( instanceClass, construct.c_str() , param.c_str() ) ;
 		if(constructObject == NULL){
-		cerr << "Could not retrieve the constructor of the class " << className << " with the profile : " << construct << param << endl;
+		std::cerr << "Could not retrieve the constructor of the class " << className << " with the profile : " << construct << param << std::endl;
 		exit(EXIT_FAILURE);
 		}
 		
 		localInstance = %sNewObject( instanceClass, constructObject ) ;
 		if(localInstance == NULL){
-		cerr << "Could not instance the object " << className << " with the constructor : " << construct << param << endl;
+		std::cerr << "Could not instance the object " << className << " with the constructor : " << construct << param << std::endl;
 		exit(EXIT_FAILURE);
 		}
 		 
 		*this->instance = %sNewGlobalRef(localInstance) ;
 		if(this->instance == NULL){
-		cerr << "Could not create a new global ref of " << className << endl;
+		std::cerr << "Could not create a new global ref of " << className << std::endl;
 		exit(EXIT_FAILURE);
 		}
 		}
@@ -75,7 +75,7 @@ JEnv=JEnv_;
 
 *this->instance = JEnv->NewGlobalRef(JObj) ;
 if(this->instance == NULL){
-cerr << "Could not create a new global ref " << endl;
+std::cerr << "Could not create a new global ref " << std::endl;
 exit(EXIT_FAILURE);
 }
 }
