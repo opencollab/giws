@@ -1,4 +1,14 @@
 
+giws (0.3)
+  * works on a JavaVM type instead of a JNIEnv
+  * creator with jobject commented (why did I do that ?)
+  * methods with JNIEnv in the profile removed
+  * Caching system for the methodID(s) and the instance
+  * Thread tolerant
+  * Destructor of the object added
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 1 aout 2007 11:45:45 +0200
+
 giws (0.2)
   * Example added (see examples/example1/)
   * Code rewrote when the method returns a String object
