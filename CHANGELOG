@@ -6,6 +6,9 @@ giws (0.3)
   * Caching system for the methodID(s) and the instance
   * Thread tolerant
   * Destructor of the object added
+  * Two methods added to synchronize :
+	* synchronize() Enter monitor associated with the object.
+	* endSynchronize() Exit monitor associated with the object.
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 1 aout 2007 11:45:45 +0200
 

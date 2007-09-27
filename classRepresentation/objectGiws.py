@@ -164,7 +164,21 @@ exit(EXIT_FAILURE);
 			
 			// Destructor
 			~%s();
+
+			// Generic method
+			// Synchronization methods
+			/**
+			* Enter monitor associated with the object.
+			* Equivalent of creating a "synchronized(obj)" scope in Java.
+			*/
+			void synchronize();
 			
+			/**
+			* Exit monitor associated with the object.
+			* Equivalent of ending a "synchronized(obj)" scope.
+			*/
+			void endSynchronize();
+					
 			// Methods
 			%s
 			
@@ -175,8 +189,16 @@ exit(EXIT_FAILURE);
 
 	def generateCXXBody(self, packageName):
 		JNIObjectName=packageName+"/"+self.getName()
-		return """%s
+		return """
+		// Returns the current env
+		%s
+		// Destructor
+		%s
+		// Constructors
+		%s
+		// Generic methods
 		%s
 		%s
+		// Method(s)
 		%s
-			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName()), self.getConstructorBodyCXX(JNIObjectName), self.getMethodsCXX("body"))
+			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName()), self.getConstructorBodyCXX(JNIObjectName), JNIFrameWork().getSynchronizeMethod(self.getName()) , JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))

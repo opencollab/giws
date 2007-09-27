@@ -42,6 +42,28 @@ class JNIFrameWork:
 		}
 		""")%(objectName, objectName)
 	
+
+	def getSynchronizeMethod(self,objectName):
+		return ("""
+		
+		void %s::synchronize() {
+		if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
+		std::cerr << "Fail to enter monitor." << std::endl;
+		exit(EXIT_FAILURE);
+		}
+		}
+		""")%(objectName)
+	
+	def getEndSynchronizeMethod(self,objectName):
+		return ("""
+		void %s::endSynchronize() {
+		if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
+		std::cerr << "Fail to exit monitor." << std::endl;
+		exit(EXIT_FAILURE);
+		}
+		}
+		""")%(objectName)
+	
 	def getObjectInstanceProfile(self):		
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
