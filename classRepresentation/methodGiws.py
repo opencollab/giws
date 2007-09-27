@@ -30,11 +30,15 @@ class methodGiws:
 	def getParameters(self):
 		return self.__parameters
 
-	def getParametersCXX(self):
+	def getParametersCXX(self,withoutDataTypeDeclaration=0):
+		""" Returns the parameters with or without their types """
 		i=1
 		str=""
 		for parameter in self.__parameters:
-			str=str+parameter.generateCXXHeader()
+			if withoutDataTypeDeclaration==0:
+				str=str+parameter.generateCXXHeader()
+			else:
+				str=str+parameter.getName()
 			if len(self.__parameters)!=i: 
 				str+=", "
 			i=i+1
@@ -65,10 +69,36 @@ class methodGiws:
 		return str
 
 	def generateCXXHeader(self):
-		return """%s %s(%s);"""%(self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
-
+		 str="""%s %s(%s);
+		 """%(self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
+		 if len(self.getParametersCXX())>0: # More than one param, then we need the ,
+				str+="""%s %s(JNIEnv * JEnv_ ,%s );"""%(self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
+		 else: # Only one param
+			str+="""%s %s(JNIEnv * JEnv_);"""%(self.getReturn().getNativeType(), self.getName())
+		 
+		 return str
+	 
 	def generateCXXBody(self, className):
-		return """
-		%s %s::%s (%s) {
+		baseProfile="""%s %s::%s"""%(self.getReturn().getNativeType(),className, self.getName())
+		str=""
+		
+		if len(self.getParametersCXX())>0:
+			str="""%s (%s) {
+			%s(this->JEnv, %s);
+			}"""%(baseProfile,self.getParametersCXX(),  self.getName(),self.getParametersCXX(withoutDataTypeDeclaration=1))
+			str+="""
+			%s (JNIEnv * JEnv_, %s)"""%(baseProfile,self.getParametersCXX())
+		else:
+			str="""%s () {
+			%s(this->JEnv);
+			}"""%(baseProfile, self.getName())
+
+			str+="""
+			%s (JNIEnv * JEnv_)"""%(baseProfile)
+			
+		str+="""{
 		%s
-		}"""%(self.getReturn().getNativeType(),className, self.getName(),self.getParametersCXX(), self.__createMethodBody())
+		}"""%(self.__createMethodBody())
+		
+		return str
+	
