@@ -1,4 +1,12 @@
 
+giws (0.9)
+	* License CECILL (GPL compatible) added (thanks to Oliver Mehani for the few advices)
+	* License information added in all files 	
+	* All the previous versions of GIWS are under the same license (CECILL)
+	* Readme files for the examples
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Wed, 26 Sep 2007 11:53:22 +0200
+
 giws (0.8)
 	* Factorisation of some code in getCallMethod
 	* Use CallObjectMethod instead of Call(type)Method when dealing with an array of primitive types (J-B Silvy idea)
