@@ -35,7 +35,6 @@ class objectGiws:
 		jmethodID constructObject = NULL ;
 		jobject localInstance ;
 		jclass localClass ;
-		jclass instanceClass;
 		const std::string className="%s";
 		const std::string construct="<init>";
 		const std::string param="()V";
