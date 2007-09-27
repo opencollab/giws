@@ -8,6 +8,9 @@ class JNIFrameWork:
 	
 	JNIEnvVariable="JEnv"
 	JNIEnvVariableType="JNIEnv"
+	JavaVMVariable="jvm"
+	JavaVMVariableType="JavaVM"
+	
 	def getHeader(self):
 		return """#include <string>
 		#include <iostream>
@@ -24,29 +27,47 @@ class JNIFrameWork:
 	def getJNIEnvVariableType(self):
 		return self.JNIEnvVariableType
 	
+	def getJavaVMVariable(self):
+		return self.JavaVMVariable
+	
+	def getJavaVMVariableType(self):
+		return self.JavaVMVariableType
+
+	def getMethodGetCurrentEnv(self):
+		return """
+		JNIEnv * MyObject::getCurrentEnv() {
+		JNIEnv * curEnv = NULL;
+		this->jvm->AttachCurrentThread((void **) &curEnv, NULL);
+		return curEnv;
+		}"""
+
+	
 	def getObjectInstanceProfile(self):		
 		return """
-		jclass instanceClass = this->%sGetObjectClass(*instance);
-		if (instanceClass == NULL) {
-		std::cerr << "Could not get the Object Class " <<  std::endl;
-		exit(EXIT_FAILURE);
-		} 
-		""" % self.JNIEnvAccess()
+		JNIEnv * curEnv = getCurrentEnv();
 
-	def getMethodIdProfile(self, methodName, parametersTypes, returnType):
+
+		""" 
+
+	def getMethodIdProfile(self,method):
 		params=""
-		for parameter in parametersTypes:
+		for parameter in method.getParameters():
 			params+=parameter.getType().getTypeSignature()
-		return ("""
-		jmethodID methodId = this->%sGetMethodID(instanceClass, "%s", "(%s)%s" ) ;
-		    if (methodId == NULL) {
-			std::cerr << "Could not access to the method %s" << std::endl;
-			exit(EXIT_FAILURE);
-			}
-		
-		"""%(self.JNIEnvAccess(), methodName, params, returnType.getTypeSignature(),methodName))
 
-	def getCallObjectMethodProfile(self,parametersTypes,returnType):
+		methodIdName=method.getUniqueNameOfTheMethod()
+		return ("""
+		if (this->%s == NULL)
+		{
+		this->%s = curEnv->GetMethodID(this->instanceClass, "%s", "(%s)%s" ) ;
+		if (this->%s == NULL) {
+		std::cerr << "Could not access to the method %s" << std::endl;
+		exit(EXIT_FAILURE);
+		}
+		}""")%(methodIdName, methodIdName, method.getName(), params, method.getReturn().getTypeSignature() ,methodIdName, method.getName())
+
+	def getCallObjectMethodProfile(self,method):
+		parametersTypes=method.getParameters()
+		returnType=method.getReturn()
 		i=1
 		params=""
 		for parameter in parametersTypes:
@@ -62,8 +83,8 @@ class JNIFrameWork:
 			returns="""%s res ="""%returnType.getJavaTypeSyntax()
 
 		return ("""
-	 	%s (%s) this->%s%s( *this->instance, methodId %s);
-""" % (returns, returnType.getJavaTypeSyntax(),  self.JNIEnvAccess(), returnType.CallMethod(), params ))
+	 	%s (%s) curEnv->%s( this->instance, %s %s);
+""" % (returns, returnType.getJavaTypeSyntax(),   returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params ))
 
 	def getReturnProfile(self, returnType):
 		

@@ -2,7 +2,7 @@
 #include "example.hxx"
 #include <jni.h>
 
-JNIEnv* create_vm() {
+JavaVM* create_vm() {
 	JavaVM* jvm;
 	JNIEnv* env;
 	JavaVMInitArgs args;
@@ -18,15 +18,15 @@ JNIEnv* create_vm() {
 	args.ignoreUnrecognized = JNI_FALSE;
 
 	JNI_CreateJavaVM(&jvm, (void **)&env, &args);
-	return env;
+	return jvm;
 }
 
 using namespace example;
 using namespace std;
 
 int main(){
-  	JNIEnv* env = create_vm();
-	MyObject *plop = new MyObject(env);
+  	JavaVM* jvm = create_vm();
+	MyObject *plop = new MyObject(jvm);
 	cout << "A string from Java :" << plop->GetMyString() <<endl;
 	plop->DoNothingPleaseButDisplay(23);
 

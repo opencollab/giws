@@ -24,12 +24,12 @@ class stringDataGiws(dataGiws):
 		return "CallObjectMethod"
 	
 	def specificPostProcessing(self):
-		return ("""
-		const char *tempString = this->%sGetStringUTFChars(res, 0);
+		return """
+		const char *tempString = curEnv->GetStringUTFChars(res, 0);
 		char * myStringBuffer= (char*)malloc (strlen(tempString)*sizeof(char)+1);
 		strcpy(myStringBuffer, tempString);
-		this->%sReleaseStringUTFChars(res, tempString);
-""" % (JNIFrameWork().JNIEnvAccess(),JNIFrameWork().JNIEnvAccess()))
+		curEnv->ReleaseStringUTFChars(res, tempString);
+"""
 
 	def specificReturn(self):
 		return """

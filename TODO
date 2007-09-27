@@ -1,2 +1,11 @@
-
+* manages not empty constructors
 * check if we need a destructor (or not)
+* store jclass and jmethodid in order to avoid multiple call
+* jnienv devrait pouvoir etre passé en premiere flag
+* rajouter les consts
+* 
+JavaVM * sciJVM;
+JNIEnv * sciJEnv;
+....
+(*sciJVM)->AttachCurrentThread( sciJVM, (void **) &sciJEnv, NULL ) ; // 
+te donne l'environement correspondant au thread courant.
