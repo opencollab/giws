@@ -33,13 +33,13 @@ class JNIFrameWork:
 	def getJavaVMVariableType(self):
 		return self.JavaVMVariableType
 
-	def getMethodGetCurrentEnv(self):
+	def getMethodGetCurrentEnv(self,objectName):
 		return """
-		JNIEnv * MyObject::getCurrentEnv() {
+		JNIEnv * %s::getCurrentEnv() {
 		JNIEnv * curEnv = NULL;
 		this->jvm->AttachCurrentThread((void **) &curEnv, NULL);
 		return curEnv;
-		}"""
+		}"""%(objectName)
 
 	
 	def getObjectInstanceProfile(self):		

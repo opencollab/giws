@@ -176,4 +176,4 @@ exit(EXIT_FAILURE);
 		return """%s
 		%s
 		%s
-			""" % (JNIFrameWork().getMethodGetCurrentEnv(), self.getConstructorBodyCXX(JNIObjectName), self.getMethodsCXX("body"))
+			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), self.getConstructorBodyCXX(JNIObjectName), self.getMethodsCXX("body"))
