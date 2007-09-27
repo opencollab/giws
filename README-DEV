@@ -1,0 +1,23 @@
+
+giws is working in a few step.
+
+1. Load/Parse the XML file
+2. Build in the memory the "tree" of
+	* Package
+	* Objects
+	* Methods
+	* Parameters
+	* Return types
+	* Datatypes
+3. Generate the C++ header file
+4. Generate the call of Java methods from C++ using JNI
+
+
+
+Design patterns :
+The design pattern Factory is used to instanciate the different kind of data
+that we are managing.
+This object is called : dataFactoryGiws and can be called as :
+
+myFactory=dataFactoryGiws()
+myData=myFactory.create("int")

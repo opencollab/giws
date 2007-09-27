@@ -1,0 +1,34 @@
+GIWS is basically the opposite of SWIG.
+
+When SWIG generates wrappers to call C/C++ functions/methods from other languages, GIWS creates wrapper for those who wants to call Java methods from C/C++.
+
+Usage :
+./giws -h to see the help
+
+Options :
+
+-o / --output-dir= <dir> :
+Where files should be generated
+
+-f / --description-file= <file> :
+Specify the declaration file to use
+
+-s / --split-per-object :
+Creates a file per object instead of a file per package
+
+-v / --version :
+Displays the version and other informations
+
+-h / --help :
+Displays the help
+
+
+	
+
+Dependencies :
+
+Obviously, as GIWS has been written in Python, it needs the Python interpretor to work.
+
+For the XML parsing :
+python-libxml2
+
