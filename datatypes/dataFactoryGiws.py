@@ -27,10 +27,27 @@ class dataFactoryGiws:
 			  "void": voidDataGiws
 			  }
 
-	  def create(self, site):
-            if site not in self.dict:
-                  raise Exception("Don't know how to manage the data type %s"%site)
-            return self.dict[site]()
+	  def create(self, dataTypeToCreate):
+            """ Create an GIWS datatype
+            it can be int, long, double, boolean, byte, float, short,
+            String and void
+            if there is a trailing [], this object will consider it as an
+            array of this data
+
+            """
+            isArray=False
+            if dataTypeToCreate.endswith("[]"): # It is an array
+                  isArray=True
+                  # Trim to load the right object
+                  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-2]
+
+                  
+            if dataTypeToCreate not in self.dict:
+                  raise Exception("Don't know how to manage the data type %s"%dataTypeToCreate)
+            
+            myType=self.dict[dataTypeToCreate]()
+            myType.setIsArray(isArray)
+            return myType
 
 if __name__ == '__main__':
 	myFactory=dataFactoryGiws()

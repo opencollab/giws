@@ -20,7 +20,10 @@ class intDataGiws(dataGiws):
 		return "signed 32 bits"
 
 	def getNativeType(self):
-		return "long"
+		if self.getIsArray():
+			return "long *"
+		else:
+			return "long"
 	
 	def CallMethod(self):
 		return "CallIntMethod"

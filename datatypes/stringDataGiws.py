@@ -11,6 +11,9 @@ class stringDataGiws(dataGiws):
 	def getJavaTypeSyntax(self):
 		return "jstring"
 
+	def getJavaTypeArraySyntax(self):
+		return "jobjectArray"
+
 	def getRealJavaType(self):
 		return "java.lang.String"
 
@@ -18,21 +21,42 @@ class stringDataGiws(dataGiws):
 		return "Java String"
 
 	def getNativeType(self):
-		return "char *"
+		if self.getIsArray():
+			return "char **"
+		else:
+			return "char *"
 	
 	def CallMethod(self):
 		return "CallObjectMethod"
 	
 	def specificPostProcessing(self):
-		return """
-		const char *tempString = curEnv->GetStringUTFChars(res, 0);
-		char * myStringBuffer= (char*)malloc (strlen(tempString)*sizeof(char)+1);
-		strcpy(myStringBuffer, tempString);
-		curEnv->ReleaseStringUTFChars(res, tempString);
-"""
+		if self.getIsArray():
+			return """
+			jsize len = curEnv->GetArrayLength(res);
+			char **arrayOfString;
+			for (jsize i = 0; i < len; i++){
+			jstring resString = (jstring)curEnv->GetObjectArrayElement(res, i);
+			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
+			arrayOfString[i]= (char*)malloc (strlen(tempString)*sizeof(char)+1);
+			strcpy(arrayOfString[i], tempString);
+			curEnv->ReleaseStringUTFChars(resString, tempString);
+			}
+			"""
+		else:
+			return """
+			const char *tempString = curEnv->GetStringUTFChars(res, 0);
+			char * myStringBuffer= (char*)malloc (strlen(tempString)*sizeof(char)+1);
+			strcpy(myStringBuffer, tempString);
+			curEnv->ReleaseStringUTFChars(res, tempString);
+			"""			
 
 	def specificReturn(self):
-		return """
-		return myStringBuffer;
-		"""
+		if self.getIsArray():
+			return """
+			return arrayOfString;
+			"""
+		else:
+			return """
+			return myStringBuffer;
+			"""
 	

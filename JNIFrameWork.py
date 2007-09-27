@@ -79,9 +79,16 @@ class JNIFrameWork:
 	def getMethodIdProfile(self,method):
 		params=""
 		for parameter in method.getParameters():
+			if parameter.getType().getIsArray(): # It is an array
+				params+="["
 			params+=parameter.getType().getTypeSignature()
 
 		methodIdName=method.getUniqueNameOfTheMethod()
+		
+		signatureReturn=method.getReturn().getTypeSignature()
+		if method.getReturn().getIsArray(): # Returns an array ... 
+			signatureReturn="["+signatureReturn
+		
 		return ("""
 		if (this->%s == NULL)
 		{
@@ -90,7 +97,7 @@ class JNIFrameWork:
 		std::cerr << "Could not access to the method %s" << std::endl;
 		exit(EXIT_FAILURE);
 		}
-		}""")%(methodIdName, methodIdName, method.getName(), params, method.getReturn().getTypeSignature() ,methodIdName, method.getName())
+		}""")%(methodIdName, methodIdName, method.getName(), params,signatureReturn ,methodIdName, method.getName())
 
 	def getCallObjectMethodProfile(self,method):
 		parametersTypes=method.getParameters()
@@ -107,12 +114,17 @@ class JNIFrameWork:
 		if returnType.getNativeType()=="void": # Dealing with a void ... 
 			returns=""
 		else:
-			returns="""%s res ="""%returnType.getJavaTypeSyntax()
+			if returnType.getIsArray():
+				type=returnType.getJavaTypeArraySyntax()
+			else:
+				type=returnType.getJavaTypeSyntax()
+				
+			returns="""%s res =  (%s)"""%(type, type)
 
 		return """
-	 	%s (%s) curEnv->%s( this->instance, %s %s);
+	 	%s curEnv->%s( this->instance, %s %s);
 		%s
-""" % (returns, returnType.getJavaTypeSyntax(),   returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
+""" % (returns, returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
 
 	def getReturnProfile(self, returnType):
 		

@@ -1,4 +1,9 @@
 
+giws (0.4)
+  * check if exceptions after calling a method
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Fri, 3 aout 2007 11:45:45 +0200
+
 giws (0.3)
   * works on a JavaVM type instead of a JNIEnv
   * creator with jobject commented (why did I do that ?)

@@ -9,6 +9,7 @@ def abstractMethod(obj=None):
 # This class intend to create a generic object for datatype
 # see http://en.wikipedia.org/wiki/Java_Native_Interface#Mapping_types
 class dataGiws:
+	__isArray=False
 	"""
 	Interface for the datatype mapping
 	"""
@@ -20,7 +21,9 @@ class dataGiws:
 	def getTypeSignature(self):
 		""" Returns the java type signature
 		"""
-		abstractMethod(self)
+		if self.getIsArray():
+			return "["+self.__signature
+		return self.__signature
 		
 	def getRealJavaType(self):
 		""" Returns the real datatype 
@@ -36,4 +39,14 @@ class dataGiws:
 		""" Returns the native type (C/C++)
 		"""
 		abstractMethod(self)
+
+	def setIsArray(self, isItAnArray):
+		""" Defines if we have to deal with an array or not
+		"""
+		self.__isArray=isItAnArray
+
+	def getIsArray(self):
+		""" return if we have to deal with an array or not
+		"""
+		return self.__isArray
 
