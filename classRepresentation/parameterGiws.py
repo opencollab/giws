@@ -27,4 +27,8 @@ class parameterGiws(dataGiws):
 		return """%s %s, """ % (self.getType().getNativeType(), self.getName())
 	
 	def generateCXXHeader(self):
-		return """%s %s""" % (self.getType().getNativeType(), self.getName())
+		""" Generate the profil of the parameter """
+		str="""%s %s""" % (self.getType().getNativeType(), self.getName())
+		if self.getType().isArray():
+			str+=", int %sSize"%self.getName()
+		return str

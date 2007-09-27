@@ -8,7 +8,7 @@ class byteDataGiws(dataGiws):
 		return "B"
 
 	def getJavaTypeSyntax(self):
-		return "jbyte"
+		return super(byteDataGiws, self).getJavaTypeSyntax("jbyte")
 
 	def getRealJavaType(self):
 		return "byte"
@@ -17,7 +17,7 @@ class byteDataGiws(dataGiws):
 		return "signed 8 bits"
 
 	def getNativeType(self):
-		return "byte"
+		return super(byteDataGiws, self).getNativeType("byte")
 	
 	def CallMethod(self):
 		return "CallByteMethod"

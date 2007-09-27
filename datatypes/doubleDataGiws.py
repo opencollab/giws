@@ -20,7 +20,7 @@ class doubleDataGiws(dataGiws):
 		return "64 bits"
 
 	def getNativeType(self):
-		return "double"
+		return super(doubleDataGiws, self).getNativeType("double")
 
 	def CallMethod(self):
 		return "CallDoubleMethod"

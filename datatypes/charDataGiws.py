@@ -17,7 +17,8 @@ class charDataGiws(dataGiws):
 		return "unsigned 16 bits"
 
 	def getNativeType(self):
-		return "char"
+		return super(intDataGiws, self).getNativeType("char")
+
 	
 	def CallMethod(self):
 		return "CallCharMethod"

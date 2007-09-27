@@ -47,7 +47,7 @@ class methodGiws:
 
 		for parameter in self.__parameters:
 			paramType=parameter.getType()
-			if hasattr(paramType, "specificPreProcessing") and type(paramType.specificPreProcessing) is MethodType:
+			if paramType.specificPreProcessing(parameter)!=None:
 				str+=paramType.specificPreProcessing(parameter)
 		
 #		if hasattr(self.getReturn(), "specificPreProcessing") and type(self.getReturn().specificPreProcessing) is MethodType:
@@ -74,11 +74,13 @@ class methodGiws:
 		return str
 	
 	def generateCXXHeader(self):
-		 str="""%s %s(%s);
-		 """%(self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
-		 return str
+		""" Generates the profile of the method ... for the header """
+		str="""%s %s(%s);
+		"""%(self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
+		return str
 	 
 	def generateCXXBody(self, className):
+		""" Generates the content of the method ... for the body """
 		baseProfile="""%s %s::%s"""%(self.getReturn().getNativeType(),className, self.getName())
 		
 		str="""

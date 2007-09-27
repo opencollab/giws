@@ -79,14 +79,14 @@ class JNIFrameWork:
 	def getMethodIdProfile(self,method):
 		params=""
 		for parameter in method.getParameters():
-			if parameter.getType().getIsArray(): # It is an array
+			if parameter.getType().isArray(): # It is an array
 				params+="["
 			params+=parameter.getType().getTypeSignature()
 
 		methodIdName=method.getUniqueNameOfTheMethod()
 		
 		signatureReturn=method.getReturn().getTypeSignature()
-		if method.getReturn().getIsArray(): # Returns an array ... 
+		if method.getReturn().isArray(): # Returns an array ... 
 			signatureReturn="["+signatureReturn
 		
 		return ("""
@@ -109,7 +109,7 @@ class JNIFrameWork:
 			if i==1:
 				params+="," # in order to manage call without param
 			params+=parameter.getName()
-			if hasattr(parameter.getType(), "specificPreProcessing") and type(parameter.getType().specificPreProcessing) is MethodType: 
+			if parameter.getType().specificPreProcessing(parameter)!=None:
 				params+="_" # There is a pre-processing, then, we add the _ 
 			if len(parametersTypes)!=i: 
 				params+=", "
@@ -118,11 +118,7 @@ class JNIFrameWork:
 		if returnType.getNativeType()=="void": # Dealing with a void ... 
 			returns=""
 		else:
-			if returnType.getIsArray():
-				typeOfReturn=returnType.getJavaTypeArraySyntax()
-			else:
-				typeOfReturn=returnType.getJavaTypeSyntax()
-				
+			typeOfReturn=returnType.getJavaTypeSyntax()
 			returns="""%s res =  (%s)"""%(typeOfReturn, typeOfReturn)
 
 		return """

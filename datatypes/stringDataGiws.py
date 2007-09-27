@@ -9,10 +9,10 @@ class stringDataGiws(dataGiws):
 		return "Ljava/lang/String;"
 
 	def getJavaTypeSyntax(self):
-		return "jstring"
-
-	def getJavaTypeArraySyntax(self):
-		return "jobjectArray"
+		if self.isArray():
+			return "jobjectArray"
+		else:			
+			return "jstring"
 
 	def getRealJavaType(self):
 		return "java.lang.String"
@@ -21,7 +21,7 @@ class stringDataGiws(dataGiws):
 		return "Java String"
 
 	def getNativeType(self):
-		if self.getIsArray():
+		if self.isArray():
 			return "char **"
 		else:
 			return "char *"
@@ -30,14 +30,14 @@ class stringDataGiws(dataGiws):
 		return "CallObjectMethod"
 
 	def specificPreProcessing(self, parameter):
+		""" Overrides the preprocessing of the array """
 		return """
 		jstring %s = curEnv->NewStringUTF( %s );
 		"""%(parameter.getName()+"_", parameter.getName())
 	
-	
 	def specificPostProcessing(self):
 		""" Called when we are returning a string"""
-		if self.getIsArray():
+		if self.isArray():
 			return """
 			jsize len = curEnv->GetArrayLength(res);
 			char **arrayOfString;
@@ -58,7 +58,7 @@ class stringDataGiws(dataGiws):
 			"""			
 
 	def specificReturn(self):
-		if self.getIsArray():
+		if self.isArray():
 			return """
 			return arrayOfString;
 			"""

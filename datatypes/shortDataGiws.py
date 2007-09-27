@@ -17,7 +17,7 @@ class shortDataGiws(dataGiws):
 		return "signed 16 bits"
 
 	def getNativeType(self):
-		return "short"
+		return super(shortDataGiws, self).getNativeType("short")
 	
 	def CallMethod(self):
 		return "CallShortMethod"

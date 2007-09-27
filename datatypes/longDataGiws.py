@@ -18,7 +18,7 @@ class longDataGiws(dataGiws):
 		return "signed 64 bits"
 
 	def getNativeType(self):
-		return "long long"
+		return super(longDataGiws, self).getNativeType("long long")
 	
 	def CallMethod(self):
 		return "CallLongMethod"

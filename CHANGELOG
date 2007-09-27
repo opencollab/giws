@@ -4,6 +4,8 @@ giws (0.4)
   * Bug when the input parameter was a String (thanks Jean-Baptiste Silvy)
   * Update of the example1
   * Better management of the Preprocessing
+  * Manages array of string (as parameter and return type) and all other 
+	datatypes as parameter (and soon return)
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr> UPDATE
 

@@ -17,7 +17,7 @@ class booleanDataGiws(dataGiws):
 		return "unsigned 8 bits"
 
 	def getNativeType(self):
-		return "bool"
+		return super(booleanDataGiws, self).getNativeType("bool")
 	
 	def CallMethod(self):
 		return "CallBooleanMethod"

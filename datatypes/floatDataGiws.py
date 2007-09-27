@@ -17,7 +17,7 @@ class floatDataGiws(dataGiws):
 		return "unsigned 8 bits"
 
 	def getNativeType(self):
-		return "float"
+		return super(floatDataGiws, self).getNativeType("float")
 	
 	def CallMethod(self):
 		return "CallFloatMethod"
