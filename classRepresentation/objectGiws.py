@@ -30,9 +30,9 @@ class objectGiws:
 		jobject localInstance ;
 		jclass localClass ;
 		jclass instanceClass;
-		string className="%s";
-		string construct="<init>";
-		string param="()V";
+		const string className="%s";
+		const string construct="<init>";
+		const string param="()V";
 		JEnv=JEnv_;
 		
 		localClass = %sFindClass( className.c_str() ) ;
@@ -134,6 +134,7 @@ exit(EXIT_FAILURE);
 			* @param JObj the object
 			*/
 			%s
+			
 			// Methods
 			%s
 			
