@@ -2,6 +2,7 @@
 from classRepresentation.packageGiws import packageGiws
 from outputWriter import outputWriter
 from JNIFrameWork import JNIFrameWork
+from licenseWrapper import licenseWrapper
 
 """ Engine to create the C++ files """
 
@@ -49,7 +50,8 @@ class CXXFile:
 
 
 	def generateCXXHeader(self,config):
-		strCommon="""%s
+		strCommon="""
+		%s
 		namespace %s {
 		""" % (JNIFrameWork().getHeader(),self.package.getNameForCXX())
 
@@ -60,7 +62,7 @@ class CXXFile:
 		if config.getSplitPerObject()==True:
 			for object in self.package.getObjects():
 				fileName=self.getFileNameForObjectDeclaration(config, "header",object)
-				str=strCommon+object.generateCXXHeader()+strCommonEnd
+				str=licenseWrapper().getLicense()+strCommon+object.generateCXXHeader()+strCommonEnd
 				outputWriter().writeIntoFile(config.getOutput(), fileName, str)
 				print "%s generated ..."%fileName
 		else:
@@ -74,7 +76,8 @@ class CXXFile:
 			print "%s generated ..."%fileName
 
 	def generateCXXBody(self,config):
-		strCommon="""%s
+		strCommon="""
+		%s
 		namespace %s {
 		using namespace std;
 		"""%(JNIFrameWork().getHeader(), self.package.getNameForCXX())
@@ -91,7 +94,7 @@ class CXXFile:
 				"""%(self.getFileNameForObjectDeclaration(config, "header",object))
 				
 				fileName=self.getFileNameForObjectDeclaration(config, "body",object)
-				str=strInclude+strCommon+object.generateCXXBody(self.package.getNameForJNI())+strCommonEnd
+				str=licenseWrapper().getLicense()+strInclude+strCommon+object.generateCXXBody(self.package.getNameForJNI())+strCommonEnd
 				outputWriter().writeIntoFile(config.getOutput(),fileName, str)
 				print "%s generated ..."%fileName
 		else:

@@ -1,5 +1,6 @@
 
-giws (0.2) 
+giws (0.2)
+  * Add the licence into the generated code
   * Check of files and directories
   * Change of the default extension (.cxx => .cpp)
   * New constructor added when we want to load an already existing jobject
