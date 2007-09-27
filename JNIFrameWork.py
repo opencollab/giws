@@ -69,6 +69,13 @@ class JNIFrameWork:
 		JNIEnv * curEnv = getCurrentEnv();
 		""" 
 
+	def getExceptionCheckProfile(self):
+		return """
+		if (curEnv->ExceptionOccurred()) {
+		curEnv->ExceptionDescribe() ;
+		}
+		"""
+
 	def getMethodIdProfile(self,method):
 		params=""
 		for parameter in method.getParameters():
@@ -102,9 +109,10 @@ class JNIFrameWork:
 		else:
 			returns="""%s res ="""%returnType.getJavaTypeSyntax()
 
-		return ("""
+		return """
 	 	%s (%s) curEnv->%s( this->instance, %s %s);
-""" % (returns, returnType.getJavaTypeSyntax(),   returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params ))
+		%s
+""" % (returns, returnType.getJavaTypeSyntax(),   returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
 
 	def getReturnProfile(self, returnType):
 		
