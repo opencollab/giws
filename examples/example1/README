@@ -1,0 +1,19 @@
+Here is a basic example of the use of giws.
+
+Defines where is the JDK
+# export JAVA_HOME=/path/to/java/
+
+Compile the java file
+# $JAVA_HOME/bin/javac example/MyObject.java
+
+Generate the wrapper
+# ../../giws.py -f MyObject.giws.xml 
+
+Where are the JVM native libraries ? (if not using another arch, please update the path)
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JAVA_HOME/jre/lib/i386:$JAVA_HOME/jre/lib/i386/client/
+
+Compile the wrapper and the sample program using it
+# g++ main.cpp example.cpp -g -o myExample  -ljvm -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -L$JAVA_HOME/jre/lib/i386 -L$JAVA_HOME/jre/lib/i386/client/
+
+Try it !
+# ./myExample

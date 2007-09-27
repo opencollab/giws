@@ -1,0 +1,10 @@
+<package name="example">
+  <object name="MyObject">
+	<method name="GetMyString" returnType="String">
+	</method>
+	<method name="DoNothingPleaseButDisplay" returnType="void">
+	  <param type="int" name="plop" />
+	</method>
+
+  </object>
+</package>
