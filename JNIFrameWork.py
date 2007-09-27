@@ -38,7 +38,7 @@ class JNIFrameWork:
 			return;
 			}
 		
-		"""%(self.JNIEnvAccess(), methodName, params, returnType.getTypeSignature()))
+		"""%(self.JNIEnvAccess(), methodName, params, returnType.getTypeSignature(),methodName))
 
 	def getCallObjectMethodProfile(self,parametersTypes,returnType):
 		i=1
