@@ -6,8 +6,6 @@ class JNIFrameWork:
 	This class provides the JNI code
 	"""
 	
-	JNIEnvVariable="JEnv"
-	JNIEnvVariableType="JNIEnv"
 	JavaVMVariable="jvm"
 	JavaVMVariableType="JavaVM"
 	
@@ -18,15 +16,6 @@ class JNIFrameWork:
 		#include <jni.h>
 		"""
 
-	def JNIEnvAccess(self):
-		return ("""%s->""" % self.JNIEnvVariable)
-
-	def getJNIEnvVariable(self):
-		return self.JNIEnvVariable
-	
-	def getJNIEnvVariableType(self):
-		return self.JNIEnvVariableType
-	
 	def getJavaVMVariable(self):
 		return self.JavaVMVariable
 	
@@ -42,11 +31,20 @@ class JNIFrameWork:
 		}"""%(objectName)
 
 	
+	def getObjectDestuctor(self,objectName):
+		return ("""
+		%s::~%s() {
+		JNIEnv * curEnv = NULL;
+		this->jvm->AttachCurrentThread((void **) &curEnv, NULL);
+		
+		curEnv->DeleteGlobalRef(this->instance);
+		curEnv->DeleteGlobalRef(this->instanceClass);
+		}
+		""")%(objectName, objectName)
+	
 	def getObjectInstanceProfile(self):		
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
-
-
 		""" 
 
 	def getMethodIdProfile(self,method):

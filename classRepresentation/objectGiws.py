@@ -162,13 +162,15 @@ exit(EXIT_FAILURE);
 			* @TODO removed because don't remember with we did it :$
 			*/
 			
+			// Destructor
+			~%s();
 			
 			// Methods
 			%s
 			
 			};
 
-			""" % (self.getName(),  JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(), self.getMethodsCXX())
+			""" % (self.getName(),  JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getName(), self.getMethodsCXX())
 			#self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(), 
 
 	def generateCXXBody(self, packageName):
@@ -176,4 +178,5 @@ exit(EXIT_FAILURE);
 		return """%s
 		%s
 		%s
-			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), self.getConstructorBodyCXX(JNIObjectName), self.getMethodsCXX("body"))
+		%s
+			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName()), self.getConstructorBodyCXX(JNIObjectName), self.getMethodsCXX("body"))
