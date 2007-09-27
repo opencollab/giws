@@ -9,6 +9,7 @@ class doubleDataGiws(dataGiws):
 
 	type="jdouble"
 	nativeType="double"
+	callMethod="CallDoubleMethod"
 	
 	def getTypeSignature(self):
 		return "D"
@@ -18,7 +19,4 @@ class doubleDataGiws(dataGiws):
 
 	def getDescription(self):
 		return "64 bits"
-
-	def CallMethod(self):
-		return "CallDoubleMethod"
 	

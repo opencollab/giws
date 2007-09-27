@@ -124,7 +124,7 @@ class JNIFrameWork:
 		return """
 	 	%s curEnv->%s( this->instance, %s %s);
 		%s
-""" % (returns, returnType.CallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
+""" % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
 
 	def getReturnProfile(self, returnType):
 		return returnType.getReturnSyntax()

@@ -57,7 +57,16 @@ class dataGiws(object):
 		"""
 		if self.isArray():
 			return "["+self.__signature
-		return self.__signature
+		else:
+			return self.__signature
+
+	def getCallMethod(self):
+		""" Returns the JNI method call
+		"""
+		if self.isArray():
+			return "CallObjectMethod"
+		else:
+			return self.callMethod
 		
 	def getRealJavaType(self):
 		""" Returns the real datatype 

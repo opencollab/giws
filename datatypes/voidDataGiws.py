@@ -5,7 +5,7 @@ from dataGiws import dataGiws
 class voidDataGiws(dataGiws):
 
 	nativeType="void"	
-
+	callMethod="CallVoidMethod"
 	def getTypeSignature(self):
 		return "V"
 
@@ -20,9 +20,6 @@ class voidDataGiws(dataGiws):
 
  	def getReturnSyntax(self):
 		return ""
-	
-	def CallMethod(self):
-		return "CallVoidMethod"
 
 if __name__ == '__main__':
 	print voidDataGiws().getReturnTypeSyntax()

@@ -6,6 +6,7 @@ class shortDataGiws(dataGiws):
 
 	type="jshort"
 	nativeType="short"
+	callMethod="CallShortMethod"
 	
 	def getTypeSignature(self):
 		return "S"
@@ -15,9 +16,6 @@ class shortDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "signed 16 bits"
-
-	def CallMethod(self):
-		return "CallShortMethod"
 
 if __name__ == '__main__':
 	print shortDataGiws().getReturnTypeSyntax()

@@ -6,7 +6,8 @@ from JNIFrameWork import JNIFrameWork
 class stringDataGiws(dataGiws):
 
 	nativeType="char *"
-
+	callMethod="CallObjectMethod"
+	
 	def getTypeSignature(self):
 		return "Ljava/lang/String;"
 
@@ -27,9 +28,6 @@ class stringDataGiws(dataGiws):
 			return "char **"
 		else:
 			return "char *"
-	
-	def CallMethod(self):
-		return "CallObjectMethod"
 
 	def specificPreProcessing(self, parameter):
 		""" Overrides the preprocessing of the array """

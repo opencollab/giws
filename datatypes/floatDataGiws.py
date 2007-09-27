@@ -6,6 +6,7 @@ class floatDataGiws(dataGiws):
 
 	type="jfloat"
 	nativeType="float"
+	callMethod="CallFloatMethod"
 	
 	def getTypeSignature(self):
 		return "F"
@@ -15,9 +16,6 @@ class floatDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "unsigned 8 bits"
-	
-	def CallMethod(self):
-		return "CallFloatMethod"
 
 if __name__ == '__main__':
 	print floatDataGiws().getReturnTypeSyntax()

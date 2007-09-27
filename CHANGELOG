@@ -1,4 +1,10 @@
 
+giws (0.8)
+	* Factorisation of some code in getCallMethod
+	* Use CallObjectMethod instead of Call(type)Method when dealing with an array of primitive types (J-B Silvy idea)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 25 Sep 2007 10:23:51 +0200
+
 giws (0.7)
 	* Factorisation of some code in getNativeType
 	* Better return of an array of primitive type (one more time, thanks Jean-Baptiste Silvy)
