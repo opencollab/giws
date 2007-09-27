@@ -1,0 +1,10 @@
+<package name="example2">
+  <object name="MyObjectWithArray">
+	<method name="getMyString" returnType="String[]">
+	</method>
+	<method name="doNothingPleaseButDisplay" returnType="void">
+	  <param type="int[]" name="plop" />
+	  <param type="short[]" name="plop2" />
+	</method>
+  </object>
+</package>
