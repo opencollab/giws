@@ -62,7 +62,7 @@ class JNIFrameWork:
 			returns="""%s res ="""%returnType.getJavaTypeSyntax()
 
 		return ("""
-	 	%s (%s) this->%s%s( instanceClass, methodId %s);
+	 	%s (%s) this->%s%s( *this->instance, methodId %s);
 """ % (returns, returnType.getJavaTypeSyntax(),  self.JNIEnvAccess(), returnType.CallMethod(), params ))
 
 	def getReturnProfile(self, returnType):
