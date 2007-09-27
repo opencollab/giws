@@ -23,18 +23,16 @@ class stringDataGiws(dataGiws):
 	def CallMethod(self):
 		return "CallObjectMethod"
 	
-	def specificPreProcessing(self):
-		return """
-		char myStringBuffer[1000];
-		"""
 	def specificPostProcessing(self):
 		return ("""
-		char * tempJavaPointer = (char *)this->%sGetStringUTFChars(res, 0);
-		strcpy(myStringBuffer, tempJavaPointer);
-		this->%sReleaseStringUTFChars(res, tempJavaPointer);""" % (JNIFrameWork().JNIEnvAccess(),JNIFrameWork().JNIEnvAccess()))
+		const char *tempString = this->%sGetStringUTFChars(res, 0);
+		char * myStringBuffer= (char*)malloc (strlen(tempString)*sizeof(char)+1);
+		strcpy(myStringBuffer, tempString);
+		this->%sReleaseStringUTFChars(res, tempString);
+""" % (JNIFrameWork().JNIEnvAccess(),JNIFrameWork().JNIEnvAccess()))
 
 	def specificReturn(self):
 		return """
-		return (char*)*myStringBuffer;
+		return myStringBuffer;
 		"""
 	
