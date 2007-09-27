@@ -71,7 +71,7 @@ class objectGiws:
 		std::cerr << "Could not create a new global ref of " << className << std::endl;
 		exit(EXIT_FAILURE);
 		}
-
+                /* Methods ID set to NULL */
 		%s
 		
 		}
@@ -79,6 +79,12 @@ class objectGiws:
 
 		
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
+		### Init the list of the cache of methodID
+		str=""
+		for method in self.__methods:
+			str+="""%s=NULL; 
+			"""%method.getUniqueNameOfTheMethod()
+			
 		return """
 		%s::%s {
         jvm=jvm_;
@@ -96,12 +102,11 @@ class objectGiws:
                std::cerr << "Could not create a new global ref of " << this->instanceClass << std::endl;
                exit(EXIT_FAILURE);
         }
+        /* Methods ID set to NULL */
+        %s
 
-        voiddisplayjstringID=NULL; 
-        jstringreadLineID=NULL; 
-        voidclearID=NULL; 
 }
-		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
+		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject(), str)
 
 		
 	def getConstructorBodyCXX(self, JNIObjectName):
