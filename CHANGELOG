@@ -1,0 +1,16 @@
+
+giws (0.2) 
+  * Manages the case where there is no paramater
+  * Check added when calling the method
+  * Licence file added (CECILL)
+  * Removes french comment in the generated code
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 19 Jul 2007 15:45:45 +0200
+
+	
+giws (0.1) 
+
+  * Initial release
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Wed, 18 Jul 2007 15:45:45 +0200
+
