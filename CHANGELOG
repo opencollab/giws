@@ -1,5 +1,7 @@
 
 giws (0.2)
+  * Example added (see examples/example1/)
+  * Code rewrote when the method returns a String object
   * Add the licence into the generated code
   * Check of files and directories
   * Change of the default extension (.cxx => .cpp)
