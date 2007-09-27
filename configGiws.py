@@ -8,7 +8,7 @@ class configGiws:
 	__splitPerObject=False
 	__output="." # Should be changed elsewhere
 	__headerCPPExtension=".hxx"
-	__bodyCPPExtension=".cxx"
+	__bodyCPPExtension=".cpp"
 
 	def setDescriptionFile(self, desc):
 		self.__descriptionFile=desc

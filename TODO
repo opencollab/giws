@@ -1,5 +1,2 @@
 
-
-* It may be interesting in the future to create a bodyCXX /headerCXX class  in order to manage the output
-
 * check if we need a destructor (or not)

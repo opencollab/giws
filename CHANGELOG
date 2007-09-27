@@ -1,5 +1,9 @@
 
 giws (0.2) 
+  * Check of files and directories
+  * Change of the default extension (.cxx => .cpp)
+  * New constructor added when we want to load an already existing jobject
+  * Two options added --header-extension-file and --body-extension-file to specify extensions
   * Add much more tests/feedback when we are loading the object
   * Exit with an error message when a call of method fails
   * Manages the case where there is no parameter

@@ -14,11 +14,11 @@ class parseXMLEngine:
 	__ctxt=None
 	Jpackage=None
 	
-	def __init__(self, file):
+	def __init__(self, descFile):
 		try: 
-			doc = libxml2.parseFile(file)
+			doc = libxml2.parseFile(descFile)
 		except libxml2.parserError:
-			print ('Error while parsing XML file "%s"'%file)
+			print ('Error while parsing XML file "%s"'%descFile)
 			sys.exit
 		self.__ctxt = doc.xpathNewContext()
 		self.__loadPackage()

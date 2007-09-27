@@ -21,7 +21,7 @@ class objectGiws:
 	def getMethods(self):
 		return self.__methods
 
-	def getConstructorBodyCXX(self, JNIObjectName):
+	def __getConstructorWhichInstanciateTheNewObject(self, JNIObjectName):
 		envAccess=JNIFrameWork().JNIEnvAccess()
 
 		return """
@@ -65,13 +65,39 @@ class objectGiws:
 		exit(EXIT_FAILURE);
 		}
 		}
-		"""%(self.getName(), self.__getConstructorProfile(), JNIObjectName, envAccess, envAccess, envAccess, envAccess, envAccess)
+		"""%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject(), JNIObjectName, envAccess, envAccess, envAccess, envAccess, envAccess)
 
-	def __getConstructorProfile(self):
+		
+	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
+		return """
+		%s::%s {
+JEnv=JEnv_;
+
+*this->instance = JEnv->NewGlobalRef(*JObj) ;
+if(this->instance == NULL){
+cerr << "Could not create a new global ref " << endl;
+exit(EXIT_FAILURE);
+}
+}
+		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
+
+		
+	def getConstructorBodyCXX(self, JNIObjectName):
+		str=self.__getConstructorWhichInstanciateTheNewObject(JNIObjectName)
+		str+=self.__getConstructorWhichUsesAnAlreadyExistingJObject()
+		return str
+
+	def __getConstructorProfileWhichInstanciateTheNewObject(self):
 	  return """%s(%s * %s_)"""% (self.getName(), JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable())
+
+  	def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
+	  return """%s(%s * %s_, jobject *JObj)"""% (self.getName(), JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable())
   
-	def getConstructorHeaderCXX(self):
-		return """%s;"""%self.__getConstructorProfile()
+	def getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(self):
+		return """%s;"""%self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject()
+  
+	def getConstructorWhichInstanciateTheNewObjectHeaderCXX(self):
+		return """%s;"""%self.__getConstructorProfileWhichInstanciateTheNewObject()
 
 	def getMethodsCXX(self, type="header"):
 		i=1
@@ -95,12 +121,25 @@ class objectGiws:
 			jobject * instance;
 			public:
 			// Constructor
+			/**
+			* Create a wrapping of the object from a JNIEnv.
+			* It will call the default constructor
+			* @param JEnv_ the Java Env
+			*/
 			%s
+			/**
+			* Create a wrapping of an already existing object from a JNIEnv.
+			* The object must have already been instantiated
+			* @param JEnv_ the Java Env
+			* @param JObj the object
+			*/
+			%s
+			// Methods
 			%s
 			
 			};
 
-			""" % (self.getName(),  JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable(), self.getConstructorHeaderCXX(), self.getMethodsCXX())
+			""" % (self.getName(),  JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(), self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(), self.getMethodsCXX())
 
 	def generateCXXBody(self, packageName):
 		JNIObjectName=packageName+"/"+self.getName()

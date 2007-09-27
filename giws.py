@@ -2,6 +2,7 @@
 
 import sys
 import getopt
+import os.path
 
 from parseXMLEngine import parseXMLEngine
 from configGiws import configGiws
@@ -12,7 +13,7 @@ class giws:
 	config=configGiws()
 	def __init__(self, argv=sys.argv):
 		try:
-			opts, args = getopt.getopt(sys.argv[1:], "f:o:shv", ["description-file=","output-dir=","split-per-object","help","version"])
+			opts, args = getopt.getopt(sys.argv[1:], "f:o:e:b:shv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","split-per-object","help","version"])
 			# if more than one "standalone" argument (more than conf file)
 			# show help and exit...
 			if len(args) > 1:
@@ -29,13 +30,29 @@ class giws:
 
 		for option, value in opts:
 			if option in ("-f", "--description-file"):
-				self.config.setDescriptionFile(value)
-				
+				if os.path.isfile(value):
+					self.config.setDescriptionFile(value)
+				else:
+					print "Deadly error : Cannot find file %s"%value
+					print ""
+					self.show_help(argv,0)
+					
 			if option in ("-o", "--output-dir"):
-				self.config.setOutput(value)
-				
+				if os.path.isdir(value):
+					self.config.setOutput(value)
+				else:
+					print "Deadly error : Cannot find output dir %s"%value
+					print ""
+					self.show_help(argv,0)
+					
 			if option in ("-s", "--split-per-object"):
 				self.config.setSplitPerObject(True)
+
+			if option in ('e','--header-extension-file'):
+				self.config.setCPPHeaderExtension(value)
+
+			if option in ('b','--body-extension-file'):
+				self.config.setCPPBodyExtension(value)
 
 			if option in ("-v", "--version"):
 				self.show_version(0)
@@ -63,6 +80,8 @@ class giws:
 		print "-f     --description-file=file    Description of the method of the Java Object"
 		print "-o     --output-dir=dir           The directory where to export files"
 		print "-s     --split-per-object         Each wrapper classe will stored in one file"
+		print "--header-extension-file           Specify the extension of the header file generated [Default : .hxx]"
+		print "--body-extension-file             Specify the extension of the body file generated [Default : .cpp]"
 		print "-v     --version                  Display the version informations"
 		print "-h     --help                     Display the help"
 		

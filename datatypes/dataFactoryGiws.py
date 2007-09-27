@@ -1,6 +1,4 @@
 #!/usr/bin/python -u
-
-
 from datatypes.intDataGiws import intDataGiws
 from datatypes.longDataGiws import longDataGiws
 from datatypes.doubleDataGiws import doubleDataGiws
