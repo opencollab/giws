@@ -73,7 +73,7 @@ class objectGiws:
 		%s::%s {
 JEnv=JEnv_;
 
-*this->instance = JEnv->NewGlobalRef(*JObj) ;
+*this->instance = JEnv->NewGlobalRef(JObj) ;
 if(this->instance == NULL){
 cerr << "Could not create a new global ref " << endl;
 exit(EXIT_FAILURE);
@@ -91,7 +91,7 @@ exit(EXIT_FAILURE);
 	  return """%s(%s * %s_)"""% (self.getName(), JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable())
 
   	def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
-	  return """%s(%s * %s_, jobject *JObj)"""% (self.getName(), JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable())
+	  return """%s(%s * %s_, jobject JObj)"""% (self.getName(), JNIFrameWork().getJNIEnvVariableType(), JNIFrameWork().getJNIEnvVariable())
   
 	def getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(self):
 		return """%s;"""%self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject()
