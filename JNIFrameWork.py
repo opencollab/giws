@@ -129,7 +129,7 @@ class JNIFrameWork:
 		{
 		this->%s = curEnv->GetMethodID(this->instanceClass, "%s", "(%s)%s" ) ;
 		if (this->%s == NULL) {
-		std::cerr << "Could not access to the method %s" << std::endl;
+		std::cerr << "Could not access to the method " << "%s" << std::endl;
 		exit(EXIT_FAILURE);
 		}
 		}""")%(methodIdName, methodIdName, method.getName(), params,signatureReturn ,methodIdName, method.getName())
