@@ -37,8 +37,7 @@
 class licenseWrapper:
 
 	def getLicense(self):
-		return """
-/*
+		return """/*
 
 Copyright 2007 INRIA
 
