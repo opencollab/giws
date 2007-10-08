@@ -96,7 +96,7 @@ class objectGiws:
 		
 		localInstance = curEnv->NewObject( this->instanceClass, constructObject ) ;
 		if(localInstance == NULL){
-		std::cerr << "Could not instance the object " << className << " with the constructor : " << construct << param << std::endl;
+		std::cerr << "Could not instantiate the object " << className << " with the constructor : " << construct << param << std::endl;
 		exit(EXIT_FAILURE);
 		}
 		 

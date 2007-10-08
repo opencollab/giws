@@ -1,4 +1,9 @@
 
+giws (0.9.3)
+	* Spelling mistake in an error message
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 8 Oct 2007 11:35:17 +0200
+
 giws (0.9.2)
 	* License is also added in the header file
 	* In the generated files, informations are provided about the generator (version of GIWS and current date/time)
