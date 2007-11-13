@@ -44,12 +44,15 @@ class JNIFrameWork:
 	JavaVMVariable="jvm"
 	JavaVMVariableType="JavaVM"
 	
-	def getHeader(self):
-		return """#include <string>
+	def getHeader(self,namespaceName):
+		return """
+		#ifndef __%s__
+		#define __%s__
+		#include <string>
 		#include <iostream>
 		#include <stdlib.h>
 		#include <jni.h>
-		"""
+		"""%(namespaceName.upper(), namespaceName.upper())
 
 	def getJavaVMVariable(self):
 		return self.JavaVMVariable

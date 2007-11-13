@@ -2,6 +2,7 @@
 giws (0.9.4)
 	* Manages array of String when it is used in input 
 	* Example 2 updated to show this change
+	* On Vincent Couvert request, #define added around the namespace/class declaration in order to avoid multiple declarations
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 13 Nov 2007 11:22:45 +0100
 
