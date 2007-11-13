@@ -65,9 +65,39 @@ class stringDataGiws(dataGiws):
 
 	def specificPreProcessing(self, parameter):
 		""" Overrides the preprocessing of the array """
-		return """
-		jstring %s = curEnv->NewStringUTF( %s );
-		"""%(parameter.getName()+"_", parameter.getName())
+		name=parameter.getName()
+		if self.isArray():
+			return """			
+			// Might be saved. No need to find it each time.
+			jclass stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
+			
+			// create java array of strings.
+			jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
+			if (%s_ == NULL)
+			{
+			std::cerr << "Could not allocate Java string array, memory full." << std::endl;
+			exit(EXIT_FAILURE);
+			}
+
+			// convert each char * to java strings and fill the java array.
+			for ( int i = 0; i < %sSize; i++)
+			{
+			jstring TempString = curEnv->NewStringUTF( %s[i] );
+			if (TempString == NULL)
+			{
+			std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;
+			exit(EXIT_FAILURE);
+			}
+			
+			curEnv->SetObjectArrayElement( %s_, i, TempString);
+			
+			// avoid keeping reference on to many strings
+			curEnv->DeleteLocalRef(TempString);
+			}"""%(name,name,name,name,name,name)
+		else:
+			return """
+			jstring %s = curEnv->NewStringUTF( %s );
+			"""%(name+"_",name)
 	
 	def specificPostProcessing(self):
 		""" Called when we are returning a string or an array of string """

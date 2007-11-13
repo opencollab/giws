@@ -84,5 +84,7 @@ int main(){
 	cout << "The second int from Java : " << myInts[1]  <<endl;
 	cout << "The third int from Java : " << myInts[2]  <<endl;
 
+	char *myStrings[]={"tic","tac","rangers du risque"};
+	plop->setMyStrings(myStrings,3);
 	return 0;	
 }

@@ -45,5 +45,8 @@ For more information, see the file COPYING
 	  <param type="int[]" name="plop" />
 	  <param type="short[]" name="plop2" />
 	</method>
+	<method name="setMyStrings" returnType="void">
+	  <param type="String[]" name="plop" />
+	</method>
   </object>
 </package>

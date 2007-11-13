@@ -1,4 +1,10 @@
 
+giws (0.9.4)
+	* Manages array of String when it is used in input 
+	* Example 2 updated to show this change
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 13 Nov 2007 11:22:45 +0100
+
 giws (0.9.3)
 	* Current time removed in the header (force the commit everytime)
 	* Spelling mistake in an error message
