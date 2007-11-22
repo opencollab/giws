@@ -1,15 +1,15 @@
-giws (0.9.6)
+giws (0.9.5)
+                                                                                                
+ [ Vincent Couvert <vincent.couvert@inria.fr> ]
+ * Manages static methods
+
+ [ Sylvestre Ledru <sylvestre.ledru@inria.fr> ]
  * datatypes/charDataGiws.py / datatypes/booleanDataGiws.py / datatypes/byteDataGiws.py have been factorized too
  * cleaning of the code
  * bug in getMethodId causes by the static methodes call stuff
  * TODO list updated
 
- -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 22 Nov 2007 21:51:43 +0100
-
-giws (0.9.5)
-  * Manages static methods
-
- -- Vincent Couvert <vincent.couvert@inria.fr>  Tue, 22 Nov 2007 18:13:50 +0200
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 22 Nov 2007 22:13:50 +0200
 
 giws (0.9.4)
 	* Manages array of String when it is used in input 
