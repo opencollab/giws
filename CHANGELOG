@@ -7,7 +7,7 @@ giws (0.9.5)
  * datatypes/charDataGiws.py / datatypes/booleanDataGiws.py / datatypes/byteDataGiws.py have been factorized too
  * cleaning of the code
  * bug in getMethodId causes by the static methodes call stuff
- * TODO list updated
+ * BUG list updated
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 22 Nov 2007 22:13:50 +0200
 
