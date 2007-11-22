@@ -40,6 +40,8 @@ class booleanDataGiws(dataGiws):
 
 	type="jboolean"
 	nativeType="bool"
+	callMethod="CallBooleanMethod"
+	callStaticMethod="CallStaticBooleanMethod"
 	
 	def getTypeSignature(self):
 		return "Z"
@@ -49,12 +51,6 @@ class booleanDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "unsigned 8 bits"
-
-	def CallMethod(self):
-		return "CallBooleanMethod"
-        
-	def CallStaticMethod(self):
-		return "CallStaticBooleanMethod"
 
 if __name__ == '__main__':
 	print booleanDataGiws().getReturnTypeSyntax()

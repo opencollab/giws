@@ -103,12 +103,11 @@ class parseXMLEngine:
 		myFactory=dataFactoryGiws()
 		myReturnData=myFactory.create(returns)
 
-		modifier=method.properties.next.next.getContent();
-
-                if modifier!=None:
-                        Jmethod=methodGiws(method.properties.getContent(),myReturnData,modifier)
-                else:
-                        Jmethod=methodGiws(method.properties.getContent(),myReturnData,"")
+		modifier=method.properties.next.next
+		if modifier!=None:
+			Jmethod=methodGiws(method.properties.getContent(),myReturnData,modifier.getContent())
+		else:
+			Jmethod=methodGiws(method.properties.getContent(),myReturnData)
 		child = method.children
 		while child is not None: # We browse the parameters of the method
 			if child.type == "element":

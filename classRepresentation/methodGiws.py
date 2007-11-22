@@ -45,14 +45,14 @@ class methodGiws:
 	__modifier=""
 	__parameters=[]
 	
-	def __init__(self, name, returns, modifier):
+	def __init__(self, name, returns, modifier=None):
 		self.__name=name
 		if isinstance(returns,dataGiws):
 			self.__returns=returns
 		else:
 			raise Exception("The type must be a dataGiws object")
 		self.__parameters=[]
-                self.__modifier=modifier
+		self.__modifier=modifier
 	def addParameter(self, parameter):
 		if isinstance(parameter,parameterGiws):
 			self.__parameters.append(parameter)

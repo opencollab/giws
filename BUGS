@@ -1,2 +1,3 @@
 Plenty I guess...
 
+* when we load the XML declaration, we are (wrongly) assuming that the order will always be the same

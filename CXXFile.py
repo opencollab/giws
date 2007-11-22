@@ -100,7 +100,6 @@ class CXXFile:
 
 
 	def generateCXXHeader(self,config):
-
 		strCommonEnd="""
 		}
 		#endif

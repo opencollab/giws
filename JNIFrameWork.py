@@ -143,12 +143,12 @@ class JNIFrameWork:
                         firstParam = "this->instanceClass"
 
 		return ("""
-		jmethodID methodID = curEnv->%s(%s, "%s", "(%s)%s" ) ;
-		if (methodID == NULL) {
+		jmethodID %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
+		if (%s == NULL) {
 		std::cerr << "Could not access to the method " << "%s" << std::endl;
 		exit(EXIT_FAILURE);
 		}
-		""")%(getMethod, firstParam, method.getName(), params,signatureReturn , method.getName())
+		""")%(methodIdName, getMethod, firstParam, method.getName(), params,signatureReturn , methodIdName, method.getName())
 
 
 	def getCallObjectMethodProfile(self, method):

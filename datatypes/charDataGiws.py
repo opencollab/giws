@@ -39,7 +39,8 @@ from dataGiws import dataGiws
 class charDataGiws(dataGiws):
 
 	nativeType="char"
-	
+	callMethod="CallCharMethod"
+
 	def getTypeSignature(self):
 		return "C"
 
@@ -52,9 +53,6 @@ class charDataGiws(dataGiws):
 	def getDescription(self):
 		return "unsigned 16 bits"
 	
-	def CallMethod(self):
-		return "CallCharMethod"
-
 if __name__ == '__main__':
 	print charDataGiws().getReturnTypeSyntax()
 

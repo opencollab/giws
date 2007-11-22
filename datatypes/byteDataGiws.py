@@ -40,7 +40,9 @@ class byteDataGiws(dataGiws):
 
 	type="jbyte"
 	nativeType="byte"
-	
+	callMethod="CallByteMethod"
+	callStaticMethod="CallStaticByteMethod"
+				
 	def getTypeSignature(self):
 		return "B"
 
@@ -50,12 +52,6 @@ class byteDataGiws(dataGiws):
 	def getDescription(self):
 		return "signed 8 bits"
 	
-	def CallMethod(self):
-		return "CallByteMethod"
-
-	def CallStaticMethod(self):
-		return "CallStaticByteMethod"
-
 if __name__ == '__main__':
 	print byteDataGiws().getReturnTypeSyntax()
 
