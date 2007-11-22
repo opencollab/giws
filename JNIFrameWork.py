@@ -102,11 +102,19 @@ class JNIFrameWork:
 		}
 		""")%(objectName)
 	
-	def getObjectInstanceProfile(self):		
+        # For static methods, we can not call getCurrentEnv() because it is not static
+	def getStaticProfile(self):
 		return """
-		JNIEnv * curEnv = getCurrentEnv();
+		JNIEnv * curEnv = NULL;
+                jvm_->AttachCurrentThread((void **) &curEnv, NULL);
+                jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 
+	def getObjectInstanceProfile(self):
+		return """
+		JNIEnv * curEnv = getCurrentEnv();
+                jclass cls = curEnv->FindClass( className().c_str() );
+		""" 
 	def getExceptionCheckProfile(self):
 		return """
 		if (curEnv->ExceptionOccurred()) {
@@ -127,15 +135,21 @@ class JNIFrameWork:
 		if method.getReturn().isArray(): # Returns an array ... 
 			signatureReturn="["+signatureReturn
 		
+                if method.getModifier()=="static":
+                        getMethod = "GetStaticMethodID"
+                        firstParam = "cls"
+                else:
+                        getMethod = "GetMethodID"
+                        firstParam = "this->instanceClass"
+
 		return ("""
-		if (this->%s == NULL)
-		{
-		this->%s = curEnv->GetMethodID(this->instanceClass, "%s", "(%s)%s" ) ;
-		if (this->%s == NULL) {
+		jmethodID methodID = curEnv->%s(%s, "%s", "(%s)%s" ) ;
+		if (methodID == NULL) {
 		std::cerr << "Could not access to the method " << "%s" << std::endl;
 		exit(EXIT_FAILURE);
 		}
-		}""")%(methodIdName, methodIdName, method.getName(), params,signatureReturn ,methodIdName, method.getName())
+		""")%(getMethod, firstParam, method.getName(), params,signatureReturn , method.getName())
+
 
 	def getCallObjectMethodProfile(self, method):
 		parametersTypes=method.getParameters()
@@ -159,11 +173,19 @@ class JNIFrameWork:
 			typeOfReturn=returnType.getJavaTypeSyntax()
 			returns="""%s res =  (%s)"""%(typeOfReturn, typeOfReturn)
 
-		return """
-	 	%s curEnv->%s( this->instance, %s %s);
-		%s
-""" % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
+                if method.getModifier()=="static":
+                        return """
+                        %s curEnv->%s(cls, methodID %s);
+                        %s
+                        """ % (returns, returnType.getCallStaticMethod(), params,self.getExceptionCheckProfile())
+                else:
+                        return """
+                        %s curEnv->%s( this->instance, %s %s);
+                        %s
+                        """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
+
 
 	def getReturnProfile(self, returnType):
 		return returnType.getReturnSyntax()
 		
+

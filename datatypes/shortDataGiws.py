@@ -41,6 +41,7 @@ class shortDataGiws(dataGiws):
 	type="jshort"
 	nativeType="short"
 	callMethod="CallShortMethod"
+	callStaticMethod="CallStaticShortMethod"
 	
 	def getTypeSignature(self):
 		return "S"

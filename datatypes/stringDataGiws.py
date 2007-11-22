@@ -41,6 +41,7 @@ class stringDataGiws(dataGiws):
 
 	nativeType="char *"
 	callMethod="CallObjectMethod"
+	callStaticMethod="CallStaticObjectMethod"
 	
 	def getTypeSignature(self):
 		return "Ljava/lang/String;"

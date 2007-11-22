@@ -41,6 +41,7 @@ class floatDataGiws(dataGiws):
 	type="jfloat"
 	nativeType="float"
 	callMethod="CallFloatMethod"
+	callStaticMethod="CallStaticFloatMethod"
 	
 	def getTypeSignature(self):
 		return "F"

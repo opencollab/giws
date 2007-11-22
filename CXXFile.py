@@ -76,9 +76,9 @@ class CXXFile:
 		str=""
 		for object in self.package.getObjects():
 			if type=="header":
-				str=str+object.generateCXXHeader()
+				str=str+object.generateCXXHeader(self.package.getNameForJNI())
 			else:
-				str=str+object.generateCXXBody(self.package.getNameForJNI())
+				str=str+object.generateCXXBody()
 			if len(self.package.getObjects())!=i:
 				str+="""
 				"""
@@ -109,7 +109,7 @@ class CXXFile:
 		if config.getSplitPerObject()==True:
 			for object in self.package.getObjects():
 				fileName=self.__getFileNameForObjectDeclaration(config, "header",object)
-				str=self.getCXXHeader(config,object.getName())+object.generateCXXHeader()+strCommonEnd
+				str=self.getCXXHeader(config,object.getName())+object.generateCXXHeader(self.package.getNameForJNI())+strCommonEnd
 				outputWriter().writeIntoFile(config.getOutput(), fileName, str)
 				print "%s generated ..."%fileName
 		else:
@@ -140,7 +140,7 @@ class CXXFile:
 				"""%(self.__getFileNameForObjectDeclaration(config, "header",object))
 				
 				fileName=self.__getFileNameForObjectDeclaration(config, "body",object)
-				str=strInclude+strCommon+object.generateCXXBody(self.package.getNameForJNI())+strCommonEnd
+				str=strInclude+strCommon+object.generateCXXBody()+strCommonEnd
 				outputWriter().writeIntoFile(config.getOutput(),fileName, str)
 				print "%s generated ..."%fileName
 		else:

@@ -44,6 +44,7 @@ class longDataGiws(dataGiws):
 	type="jlong"
 	nativeType="long long"
 	callMethod="CallLongMethod"
+	callStaticMethod="CallStaticLongMethod"
 	
 	def getTypeSignature(self):
 		return "J"

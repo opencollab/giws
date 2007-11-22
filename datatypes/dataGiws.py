@@ -103,6 +103,14 @@ class dataGiws(object):
 		else:
 			return self.callMethod
 		
+	def getCallStaticMethod(self):
+		""" Returns the JNI static method call
+		"""
+		if self.isArray():
+			return "CallObjectMethod"
+		else:
+			return self.callStaticMethod
+		
 	def getRealJavaType(self):
 		""" Returns the real datatype 
 		"""

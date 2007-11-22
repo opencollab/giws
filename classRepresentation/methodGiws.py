@@ -42,16 +42,17 @@ from types import MethodType
 class methodGiws:
 	__name=""
 	__returns=""
+	__modifier=""
 	__parameters=[]
 	
-	def __init__(self, name, returns):
+	def __init__(self, name, returns, modifier):
 		self.__name=name
 		if isinstance(returns,dataGiws):
 			self.__returns=returns
 		else:
 			raise Exception("The type must be a dataGiws object")
 		self.__parameters=[]
-
+                self.__modifier=modifier
 	def addParameter(self, parameter):
 		if isinstance(parameter,parameterGiws):
 			self.__parameters.append(parameter)
@@ -62,13 +63,21 @@ class methodGiws:
 	def getReturn(self):
 		return self.__returns
 	
+	def getModifier(self):
+		return self.__modifier
+
 	def getParameters(self):
 		return self.__parameters
 
 	def getParametersCXX(self):
 		""" Returns the parameters with their types """
 		i=1
-		str=""
+                if self.getModifier()=="static":
+                        str="JavaVM * jvm_"
+                        if len(self.__parameters)!=0:
+                            str+=", "    
+                else:
+                        str=""
 		for parameter in self.__parameters:
 			str=str+parameter.generateCXXHeader()
 			if len(self.__parameters)!=i: 
@@ -77,8 +86,11 @@ class methodGiws:
 		return str
 	
 	def __createMethodBody(self):
-		str=JNIFrameWork().getObjectInstanceProfile()
-		str+=JNIFrameWork().getMethodIdProfile(self)
+                if self.getModifier()=="static":
+                        str=JNIFrameWork().getStaticProfile()
+                else:
+                        str=JNIFrameWork().getObjectInstanceProfile()
+                str+=JNIFrameWork().getMethodIdProfile(self)
 
 		for parameter in self.__parameters:
 			paramType=parameter.getType()
@@ -106,8 +118,14 @@ class methodGiws:
 	
 	def generateCXXHeader(self):
 		""" Generates the profile of the method ... for the header """
-		str="""%s %s(%s);
-		"""%(self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
+
+                if self.getModifier()=="static":
+                        static="static "
+                else:
+                        static=""
+                
+		str="""%s%s %s(%s);
+		"""%(static, self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
 		return str
 	 
 	def generateCXXBody(self, className):

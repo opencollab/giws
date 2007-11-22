@@ -53,6 +53,9 @@ class byteDataGiws(dataGiws):
 	def CallMethod(self):
 		return "CallByteMethod"
 
+	def CallStaticMethod(self):
+		return "CallStaticByteMethod"
+
 if __name__ == '__main__':
 	print byteDataGiws().getReturnTypeSyntax()
 

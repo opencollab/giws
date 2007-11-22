@@ -52,6 +52,9 @@ class booleanDataGiws(dataGiws):
 
 	def CallMethod(self):
 		return "CallBooleanMethod"
+        
+	def CallStaticMethod(self):
+		return "CallStaticBooleanMethod"
 
 if __name__ == '__main__':
 	print booleanDataGiws().getReturnTypeSyntax()

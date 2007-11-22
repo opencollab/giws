@@ -40,6 +40,8 @@ class voidDataGiws(dataGiws):
 
 	nativeType="void"	
 	callMethod="CallVoidMethod"
+	callStaticMethod="CallStaticVoidMethod"
+
 	def getTypeSignature(self):
 		return "V"
 

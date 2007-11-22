@@ -44,6 +44,7 @@ class doubleDataGiws(dataGiws):
 	type="jdouble"
 	nativeType="double"
 	callMethod="CallDoubleMethod"
+	callStaticMethod="CallStaticDoubleMethod"
 	
 	def getTypeSignature(self):
 		return "D"
