@@ -175,9 +175,9 @@ class JNIFrameWork:
 
                 if method.getModifier()=="static":
                         return """
-                        %s curEnv->%s(cls, methodID %s);
+                        %s curEnv->%s(cls, %s %s);
                         %s
-                        """ % (returns, returnType.getCallStaticMethod(), params,self.getExceptionCheckProfile())
+                        """ % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
                 else:
                         return """
                         %s curEnv->%s( this->instance, %s %s);
