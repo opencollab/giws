@@ -106,10 +106,11 @@ class stringDataGiws(dataGiws):
 			return """
 			jsize len = curEnv->GetArrayLength(res);
 			char **arrayOfString;
+                        arrayOfString= (char**)malloc ((len+1)*sizeof(char*));
 			for (jsize i = 0; i < len; i++){
 			jstring resString = (jstring)curEnv->GetObjectArrayElement(res, i);
 			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
-			arrayOfString[i]= (char*)malloc (strlen(tempString)*sizeof(char)+1);
+			arrayOfString[i]= (char*)malloc ((strlen(tempString)+1)*sizeof(char));
 			strcpy(arrayOfString[i], tempString);
 			curEnv->ReleaseStringUTFChars(resString, tempString);
 			}
