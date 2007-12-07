@@ -1,3 +1,10 @@
+giws (0.9.6)
+                                                                                                
+ [ Vincent Couvert <vincent.couvert@inria.fr> ]
+ * Bug fix for String[] return value type
+
+ -- Vincent Couvert <vincent.couvert@inria.fr>  Fri, 7 Dec 2008 08:38:50 +0200
+
 giws (0.9.5)
                                                                                                 
  [ Vincent Couvert <vincent.couvert@inria.fr> ]
