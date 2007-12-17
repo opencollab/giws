@@ -107,12 +107,14 @@ class JNIFrameWork:
 	def getStaticProfile(self):
 		return """
 		JNIEnv * curEnv = NULL;
-                jvm_->AttachCurrentThread((void **) &curEnv, NULL);
+		jvm_->AttachCurrentThread((void **) &curEnv, NULL);
+		jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 
 	def getObjectInstanceProfile(self):
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
+		jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 	def getExceptionCheckProfile(self):
 		return """
@@ -142,7 +144,7 @@ class JNIFrameWork:
                         firstParam = "this->instanceClass"
 
 		return ("""
-		%s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
+		jmethodID %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
 		if (%s == NULL) {
 		std::cerr << "Could not access to the method " << "%s" << std::endl;
 		exit(EXIT_FAILURE);
