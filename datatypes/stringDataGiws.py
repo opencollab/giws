@@ -69,8 +69,6 @@ class stringDataGiws(dataGiws):
 		name=parameter.getName()
 		if self.isArray():
 			return """			
-			// Might be saved. No need to find it each time.
-			jclass stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
 			
 			// create java array of strings.
 			jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);

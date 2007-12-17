@@ -48,5 +48,8 @@ For more information, see the file COPYING
 	<method name="setMyStrings" returnType="void">
 	  <param type="String[]" name="plop" />
 	</method>
+	<method name="dealingWithBooleans" returnType="boolean[]">
+	  <param type="boolean[]" name="plop" />
+	</method>
   </object>
 </package>

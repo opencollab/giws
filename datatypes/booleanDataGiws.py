@@ -51,7 +51,47 @@ class booleanDataGiws(dataGiws):
 	
 	def getDescription(self):
 		return "unsigned 8 bits"
+	
+	def specificPreProcessing(self, parameter):
+		name=parameter.getName()
+		if self.isArray():
+			return """			
+			jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
+			curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*) %s ) ;
+			""" % (name+"_", name, name+"_", name, name)
+		else:
+			return """
+			jboolean %s = ((bool) %s ? JNI_TRUE : JNI_FALSE);
+			"""%(name+"_",name)
 
+	def specificPostProcessing(self):
+		""" needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
+		if self.isArray():			                        
+			return """
+			jsize len = curEnv->GetArrayLength(res);
+			jboolean isCopy = JNI_FALSE;
+			
+			/* faster than getXXXArrayElements */
+			jboolean *resultsArray = (jboolean *) curEnv->GetPrimitiveArrayCritical(res, &isCopy);
+			bool * myArray= new bool[len];
+			
+			for (jsize i = 0; i < len; i++){
+			myArray[i]=(resultsArray[i] == JNI_TRUE);
+			}
+			curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+			"""
+		else:
+			return ""
+	def getReturnSyntax(self):
+		""" Avoids warnings about casting a jboolean to a bool """
+		if self.isArray():
+			return """
+			return myArray;
+			"""
+		else:
+			return """
+			return (res == JNI_TRUE);
+			"""
 if __name__ == '__main__':
 	print booleanDataGiws().getReturnTypeSyntax()
 

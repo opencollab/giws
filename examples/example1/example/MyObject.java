@@ -53,4 +53,10 @@ public class MyObject{
 	public int giveMeTheHashCodePlease(String a, String b){
 		return a.hashCode()+b.hashCode();
 	}
+
+	public boolean workingWithBoolean(boolean a){
+		return !a;
+	}
+	
+
 }

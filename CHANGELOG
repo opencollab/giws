@@ -1,20 +1,27 @@
+giws (0.9.7)
+    * Cast boolean when used (closes #3)
+    * Warnings removed 
+    * Examples extended to show boolean management
+    * Compilation error with gcc-4.3
+    * Search only once for all the class java.lang.String (closes #2)
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 17 Dec 2007 11:07:08 +0100
+
 giws (0.9.6)
-                                                                                                
- [ Vincent Couvert <vincent.couvert@inria.fr> ]
- * Bug fix for String[] return value type
+    * Bug fix for String[] return value type
 
  -- Vincent Couvert <vincent.couvert@inria.fr>  Fri, 7 Dec 2008 08:38:50 +0200
 
 giws (0.9.5)
-                                                                                                
+
  [ Vincent Couvert <vincent.couvert@inria.fr> ]
- * Manages static methods
+    * Manages static methods
 
  [ Sylvestre Ledru <sylvestre.ledru@inria.fr> ]
- * datatypes/charDataGiws.py / datatypes/booleanDataGiws.py / datatypes/byteDataGiws.py have been factorized too
- * cleaning of the code
- * bug in getMethodId causes by the static methodes call stuff
- * BUG list updated
+    * datatypes/charDataGiws.py / datatypes/booleanDataGiws.py / datatypes/byteDataGiws.py have been factorized too
+    * cleaning of the code
+    * bug in getMethodId causes by the static methodes call stuff
+    * BUG list updated
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 22 Nov 2007 22:13:50 +0200
 

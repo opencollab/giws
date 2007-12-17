@@ -36,6 +36,7 @@
 
 from methodGiws import methodGiws
 from JNIFrameWork import JNIFrameWork
+from datatypes.stringDataGiws import stringDataGiws
 
 class objectGiws:
 	__name=""
@@ -55,14 +56,27 @@ class objectGiws:
 	def getMethods(self):
 		return self.__methods
 
+	def __getDeclarationOfCachingMethodID(self):
+		### Init the list of the cache of methodID
+		str=""
+		stringClassSet=False
+		for method in self.__methods:
+			str+="""%s=NULL; 
+			"""%method.getUniqueNameOfTheMethod()
+
+			for param in  method.getParameters():
+				### Avoids to load the class String each time we need it
+				if isinstance(param.getType(),stringDataGiws) and param.getType().isArray()==True and stringClassSet!=True:
+					str+="""stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
+					"""
+					stringClassSet=True
+		return str
+	
 	def __getConstructorWhichInstanciateTheNewObject(self):
 		""" """
 
 		### Init the list of the cache of methodID
-		str=""
-		for method in self.__methods:
-			str+="""%s=NULL; 
-			"""%method.getUniqueNameOfTheMethod()
+		str=self.__getDeclarationOfCachingMethodID()
 			
 		return """
 		%s::%s {
@@ -113,11 +127,8 @@ class objectGiws:
 		
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
 		### Init the list of the cache of methodID
-		str=""
-		for method in self.__methods:
-			str+="""%s=NULL; 
-			"""%method.getUniqueNameOfTheMethod()
-			
+		str=self.__getDeclarationOfCachingMethodID()
+		
 		return """
 		%s::%s {
         jvm=jvm_;
@@ -161,9 +172,16 @@ class objectGiws:
 
 	def getMethodsProfileForMethodIdCache(self):
 		str=""
+		stringClassSet=False
 		for method in self.__methods:
 			str+="""jmethodID %s; // cache method id
 			"""%method.getUniqueNameOfTheMethod()
+			for param in  method.getParameters():
+				### Avoids to load the class String each time we need it
+				if isinstance(param.getType(),stringDataGiws) and param.getType().isArray()==True and stringClassSet!=True:
+					str+="""jclass stringArrayClass;
+					"""
+					stringClassSet=True
 		return str
 	
 	def getMethodsCXX(self, type="header"):

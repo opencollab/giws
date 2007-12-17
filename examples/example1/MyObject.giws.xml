@@ -46,6 +46,8 @@ For more information, see the file COPYING
 	  <param type="String" name="plop" />
 	  <param type="String" name="myString" />
 	</method>
-
+	<method name="workingWithBoolean" returnType="boolean">
+	  <param type="boolean" name="plop" />
+	</method>
   </object>
 </package>

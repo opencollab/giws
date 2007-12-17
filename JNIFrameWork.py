@@ -48,8 +48,9 @@ class JNIFrameWork:
 		return """
 		#ifndef __%s__
 		#define __%s__
-		#include <string>
 		#include <iostream>
+		#include <string>
+		#include <string.h>
 		#include <stdlib.h>
 		#include <jni.h>
 		"""%(namespaceName.upper(), namespaceName.upper())
@@ -107,13 +108,11 @@ class JNIFrameWork:
 		return """
 		JNIEnv * curEnv = NULL;
                 jvm_->AttachCurrentThread((void **) &curEnv, NULL);
-                jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 
 	def getObjectInstanceProfile(self):
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
-                jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 	def getExceptionCheckProfile(self):
 		return """
@@ -143,7 +142,7 @@ class JNIFrameWork:
                         firstParam = "this->instanceClass"
 
 		return ("""
-		jmethodID %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
+		%s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
 		if (%s == NULL) {
 		std::cerr << "Could not access to the method " << "%s" << std::endl;
 		exit(EXIT_FAILURE);

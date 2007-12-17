@@ -66,12 +66,19 @@ public class MyObjectWithArray{
         for(int i=0; i<a.length; i++){
 			System.out.println("Setting "+a[i]);
 		}
-
 	}
+
+
+	public boolean[] dealingWithBooleans(boolean[] a){
+        for(int i=0; i<a.length; i++){
+			a[i]=!a[i];
+		}
+		return a;
+	}
+
 
 	public static void main(String []args){
 		MyObjectWithArray plop = new MyObjectWithArray();
 		plop.getMyString();
-
 	}
 }

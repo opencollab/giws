@@ -86,5 +86,12 @@ int main(){
 
 	char *myStrings[]={"tic","tac","rangers du risque"};
 	plop->setMyStrings(myStrings,3);
+
+	bool arrayOfBool[]={true, false, true, true};
+	bool *boolReturned = plop->dealingWithBooleans(arrayOfBool, 4);
+	
+	for (int i=0; i < 4; i++){
+		cout << "Value " << i << " : " << boolReturned[i] << " (was " << arrayOfBool[i] << ")" << endl;
+	}
 	return 0;	
 }
