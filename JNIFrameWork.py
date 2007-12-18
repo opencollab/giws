@@ -70,18 +70,19 @@ class JNIFrameWork:
 		}"""%(objectName)
 
 	
-	def getObjectDestuctor(self,objectName):
-		return ("""
+	def getObjectDestuctor(self,objectName,stringClassSet=False):
+		myStr="""
 		%s::~%s() {
 		JNIEnv * curEnv = NULL;
 		this->jvm->AttachCurrentThread((void **) &curEnv, NULL);
 		
 		curEnv->DeleteGlobalRef(this->instance);
 		curEnv->DeleteGlobalRef(this->instanceClass);
-		curEnv->DeleteGlobalRef(this->stringArrayClass);
-		}
-		""")%(objectName, objectName)
-	
+		"""%(objectName, objectName)
+		if stringClassSet==True:
+			myStr += "curEnv->DeleteGlobalRef(this->stringArrayClass);"
+		myStr+="}"
+		return myStr
 
 	def getSynchronizeMethod(self,objectName):
 		return ("""

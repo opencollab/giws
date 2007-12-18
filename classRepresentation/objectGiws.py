@@ -41,7 +41,7 @@ from datatypes.stringDataGiws import stringDataGiws
 class objectGiws:
 	__name=""
 	__methods=[]
-	
+	__stringClassSet=False
 	def __init__(self, name):
 		self.__name=name
 		self.__methods=[]
@@ -183,6 +183,7 @@ class objectGiws:
 					str+="""jclass stringArrayClass;
 					"""
 					stringClassSet=True
+					self.__stringClassSet=True
 		return str
 	
 	def getMethodsCXX(self, type="header"):
@@ -273,7 +274,7 @@ class objectGiws:
 		%s
 		// Method(s)
 		%s
-			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName()), self.getConstructorBodyCXX(), JNIFrameWork().getSynchronizeMethod(self.getName()) , JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))
+			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName(),stringClassSet=self.__stringClassSet), self.getConstructorBodyCXX(), JNIFrameWork().getSynchronizeMethod(self.getName()) , JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))
 
         def getClassNameProfile(self, JNIObjectName):
                 return """
