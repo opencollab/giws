@@ -1,3 +1,8 @@
+giws (0.9.8)
+    * when java.lang.String is loaded, store it as a global variable
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 18 Dec 2007 14:50:02 +0100
+
 giws (0.9.7)
     * Cast boolean when used (closes #3)
     * Warnings removed 

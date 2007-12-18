@@ -78,6 +78,7 @@ class JNIFrameWork:
 		
 		curEnv->DeleteGlobalRef(this->instance);
 		curEnv->DeleteGlobalRef(this->instanceClass);
+		curEnv->DeleteGlobalRef(this->stringArrayClass);
 		}
 		""")%(objectName, objectName)
 	

@@ -68,6 +68,7 @@ class objectGiws:
 				### Avoids to load the class String each time we need it
 				if isinstance(param.getType(),stringDataGiws) and param.getType().isArray()==True and stringClassSet!=True:
 					str+="""stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
+					stringArrayClass = (jclass) curEnv->NewGlobalRef(stringArrayClass);					
 					"""
 					stringClassSet=True
 		return str
