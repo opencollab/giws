@@ -50,7 +50,10 @@ class giws:
 			opts, args = getopt.getopt(sys.argv[1:], "f:o:e:b:shv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","split-per-object","help","version"])
 			# if more than one "standalone" argument (more than conf file)
 			# show help and exit...
-			if len(args) > 1:
+			print len(opts)
+			if len(opts)==0:
+				self.show_help(argv,1)
+			elif len(args) > 1:
 				raise getopt.GetoptError
 				"""elif len(args) == 1:
 				self.__dict__["config_file"] = args[0]

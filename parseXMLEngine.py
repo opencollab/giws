@@ -36,6 +36,8 @@
 
 import sys, pprint
 import libxml2
+import os.path
+
 from classRepresentation.packageGiws import packageGiws
 from classRepresentation.objectGiws import objectGiws
 from classRepresentation.methodGiws import methodGiws
@@ -50,11 +52,14 @@ class parseXMLEngine:
 	Jpackage=None
 	
 	def __init__(self, descFile):
-		try: 
+		if os.path.isfile(descFile)!=True:
+			print ('Cound not find declaration file "%s"'%descFile)
+			sys.exit(-2)
+		try:
 			doc = libxml2.parseFile(descFile)
 		except libxml2.parserError:
 			print ('Error while parsing XML file "%s"'%descFile)
-			sys.exit
+			sys.exit(-3)
 		self.__ctxt = doc.xpathNewContext()
 		self.__loadPackage()
 		doc.freeDoc()

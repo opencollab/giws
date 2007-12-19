@@ -38,7 +38,7 @@
 
 class configGiws:
 	__version="0.9.8"
-	__descriptionFile="template.xml"
+	__descriptionFile=""
 	__splitPerObject=False
 	__output="." # Should be changed elsewhere
 	__headerCPPExtension=".hxx"
