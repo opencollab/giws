@@ -1,5 +1,7 @@
 giws (0.9.9)
     * Basic example added (same as the website)
+	* Split generated files per object by default (-s/--split-per-object replaced by -p/--per-package) and examples updated
+	* Developer documentation
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 20 Dec 2007 17:56:15 +0100
 
 giws (0.9.8)

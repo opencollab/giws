@@ -39,7 +39,7 @@
 class configGiws:
 	__version="0.9.9"
 	__descriptionFile=""
-	__splitPerObject=False
+	__splitPerObject=True
 	__output="." # Should be changed elsewhere
 	__headerCPPExtension=".hxx"
 	__bodyCPPExtension=".cpp"

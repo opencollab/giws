@@ -7,7 +7,7 @@ Compile the java file
 # $JAVA_HOME/bin/javac example/MyObject.java
 
 Generate the wrapper
-# ../../giws.py -f MyObject.giws.xml 
+# ../../giws.py -f MyObject.giws.xml -p
 
 Where are the JVM native libraries ? (if not using another arch, please update the path)
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JAVA_HOME/jre/lib/i386:$JAVA_HOME/jre/lib/i386/client/

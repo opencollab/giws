@@ -47,7 +47,7 @@ class giws:
 	config=configGiws()
 	def __init__(self, argv=sys.argv):
 		try:
-			opts, args = getopt.getopt(sys.argv[1:], "f:o:e:b:shv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","split-per-object","help","version"])
+			opts, args = getopt.getopt(sys.argv[1:], "f:o:e:b:phv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","help","version"])
 			# if more than one "standalone" argument (more than conf file)
 			# show help and exit...
 			if len(opts)==0:
@@ -81,8 +81,8 @@ class giws:
 					print ""
 					self.show_help(argv,0)
 					
-			if option in ("-s", "--split-per-object"):
-				self.config.setSplitPerObject(True)
+			if option in ("-p", "--per-package"):
+				self.config.setSplitPerObject(False)
 
 			if option in ('e','--header-extension-file'):
 				self.config.setCPPHeaderExtension(value)
@@ -115,7 +115,7 @@ class giws:
 		print "Options can be:"
 		print "-f     --description-file=file    Description of the method of the Java Object"
 		print "-o     --output-dir=dir           The directory where to export files"
-		print "-s     --split-per-object         Each wrapper classe will stored in one file"
+		print "-p     --per-package              Generates CXX/HXX files per package"
 		print "--header-extension-file           Specify the extension of the header file generated [Default : .hxx]"
 		print "--body-extension-file             Specify the extension of the body file generated [Default : .cpp]"
 		print "-v     --version                  Display the version informations"
