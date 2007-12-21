@@ -1,8 +1,11 @@
-Giws is providing a few examples of utilisation :
+GIWS is providing a few examples of utilisation :
+
+* basic_example
+The example detailed in the website
 
 * example1
-basic examples with String, primitive types (input and output)
+Basic examples with String, primitive types (input and output)
 
 * example2
-advanced examples with array of String or primitives types (input and output)
+Advanced examples with array of String or primitives types (input and output)
 	
