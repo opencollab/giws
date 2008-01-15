@@ -1,3 +1,7 @@
+giws (1.0)
+    * Bug fixed: a static method can now return String[] values
+ -- Vincent Couvert <vincent.couvert@inria.fr> Tue, 15 Jan 2008 17:05:15 +0100
+
 giws (0.9.9)
     * Basic example added (same as the website)
 	* Split generated files per object by default (-s/--split-per-object replaced by -p/--per-package) and examples updated

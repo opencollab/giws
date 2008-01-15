@@ -111,6 +111,7 @@ class JNIFrameWork:
 		JNIEnv * curEnv = NULL;
 		jvm_->AttachCurrentThread((void **) &curEnv, NULL);
 		jclass cls = curEnv->FindClass( className().c_str() );
+                jclass stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
 		""" 
 
 	def getObjectInstanceProfile(self):
