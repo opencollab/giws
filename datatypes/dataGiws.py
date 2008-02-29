@@ -134,7 +134,7 @@ class dataGiws(object):
 		return self.__isArray
 
 
-	def getProfileCreationOfTheArray(self, varName):
+	def __getProfileCreationOfTheArray(self, varName):
 		"""
 		When we deal with an array as input, we need to 'transform' it for
 		Java"""
@@ -153,9 +153,20 @@ class dataGiws(object):
 		""" Preprocessing before calling the java method
 		"""
 		if self.isArray():
-			return self.getProfileCreationOfTheArray(parameter.getName())
+			return self.__getProfileCreationOfTheArray(parameter.getName())
 		else:
 			return None
+
+
+	def specificPostDeleteMemory(self, parameter):
+		""" Preprocessing before calling the java method
+		"""
+		if self.isArray():
+			return """curEnv->DeleteLocalRef(%s_);
+			"""%(parameter.getName())
+		else:
+			return None
+		
 		
 	def specificPostProcessing(self):
 		""" Preprocessing after calling the java method

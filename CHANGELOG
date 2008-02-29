@@ -1,6 +1,14 @@
 giws (1.0)
+ [ Vincent Couvert <vincent.couvert@inria.fr> ]
     * Bug fixed: a static method can now return String[] values
- -- Vincent Couvert <vincent.couvert@inria.fr> Tue, 15 Jan 2008 17:05:15 +0100
+
+ [ Sylvestre Ledru <sylvestre.ledru@inria.fr> ]
+	* Performance improvement (use cache on the methodId)
+	* Warnings removed  (cls unused / shadowed variable)
+	* Documentation updated
+	* Memory leak issue removed
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Feb 2008 14:50:01 +0100
 
 giws (0.9.9)
     * Basic example added (same as the website)

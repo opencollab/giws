@@ -37,6 +37,7 @@
 from parameterGiws import parameterGiws
 from JNIFrameWork import JNIFrameWork
 from datatypes.dataGiws import dataGiws
+from datatypes.stringDataGiws import stringDataGiws
 from types import MethodType
 
 class methodGiws:
@@ -92,17 +93,36 @@ class methodGiws:
                         str=JNIFrameWork().getObjectInstanceProfile()
                 str+=JNIFrameWork().getMethodIdProfile(self)
 
+				
+		arrayOfStringDeclared=False
+		
 		for parameter in self.__parameters:
 			paramType=parameter.getType()
+			# Only declared once this object
+			if type(paramType) is stringDataGiws and paramType.isArray() and not arrayOfStringDeclared:
+				str+="""		jclass stringArrayClass = curEnv->FindClass("Ljava/lang/String;");"""
+				arrayOfStringDeclared=True
+				
 			if paramType.specificPreProcessing(parameter)!=None:
 				str+=paramType.specificPreProcessing(parameter)
-		
+
+		# Retrieve the call profile to the java object
 		str+=JNIFrameWork().getCallObjectMethodProfile(self)
-		
+
+		# add specific post processing stuff
 		if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
 			# For this datatype, there is some stuff to do AFTER the method call		
 			str+=self.getReturn().specificPostProcessing()
 
+		# Delete the stringArrayClass object if used before
+		if arrayOfStringDeclared:
+			str+="""curEnv->DeleteLocalRef(stringArrayClass);
+			"""
+
+		for parameter in self.__parameters:
+			if paramType.specificPostDeleteMemory(parameter)!=None:
+				str+=paramType.specificPostDeleteMemory(parameter)
+			
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())
 
 		return str

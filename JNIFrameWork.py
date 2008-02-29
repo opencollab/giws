@@ -111,14 +111,13 @@ class JNIFrameWork:
 		JNIEnv * curEnv = NULL;
 		jvm_->AttachCurrentThread((void **) &curEnv, NULL);
 		jclass cls = curEnv->FindClass( className().c_str() );
-                jclass stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
 		""" 
 
 	def getObjectInstanceProfile(self):
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
-		jclass cls = curEnv->FindClass( className().c_str() );
-		""" 
+		"""
+	
 	def getExceptionCheckProfile(self):
 		return """
 		if (curEnv->ExceptionOccurred()) {
@@ -145,14 +144,21 @@ class JNIFrameWork:
                 else:
                         getMethod = "GetMethodID"
                         firstParam = "this->instanceClass"
-
-		return ("""
-		jmethodID %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
+		if method.getModifier()=="static":
+			methodCall="jmethodID"
+		else:
+			methodCall="""if (%s==NULL) { /* Use the cache Luke */"""%methodIdName
+			
+		methodIdProfile="""
+		%s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
 		if (%s == NULL) {
 		std::cerr << "Could not access to the method " << "%s" << std::endl;
 		exit(EXIT_FAILURE);
 		}
-		""")%(methodIdName, getMethod, firstParam, method.getName(), params,signatureReturn , methodIdName, method.getName())
+		"""%(methodCall, methodIdName, getMethod, firstParam, method.getName(), params,signatureReturn, methodIdName, method.getName())
+		if method.getModifier()!="static":
+			methodIdProfile+="}" # Cached methodId 
+		return methodIdProfile
 
 
 	def getCallObjectMethodProfile(self, method):

@@ -13,8 +13,8 @@ Where files should be generated
 -f / --description-file= <file> :
 Specify the declaration file to use
 
--s / --split-per-object :
-Creates a file per object instead of a file per package
+-p / --per-package :
+Creates a file per package instead of a file per object
 
 --header-extension-file : 
 Specify the extension of the header file generated [Default : .hxx]
