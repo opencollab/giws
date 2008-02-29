@@ -120,7 +120,8 @@ class methodGiws:
 			"""
 
 		for parameter in self.__parameters:
-			if paramType.specificPostDeleteMemory(parameter)!=None:
+			paramType=parameter.getType()
+			if paramType.isArray():
 				str+=paramType.specificPostDeleteMemory(parameter)
 			
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())

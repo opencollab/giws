@@ -161,11 +161,8 @@ class dataGiws(object):
 	def specificPostDeleteMemory(self, parameter):
 		""" Preprocessing before calling the java method
 		"""
-		if self.isArray():
-			return """curEnv->DeleteLocalRef(%s_);
-			"""%(parameter.getName())
-		else:
-			return None
+		return """curEnv->DeleteLocalRef(%s_);
+		"""%(parameter.getName())
 		
 		
 	def specificPostProcessing(self):
