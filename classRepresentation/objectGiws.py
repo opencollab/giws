@@ -67,8 +67,7 @@ class objectGiws:
 			for param in  method.getParameters():
 				### Avoids to load the class String each time we need it
 				if isinstance(param.getType(),stringDataGiws) and param.getType().isArray()==True and stringClassSet!=True and method.getModifier()!="static":
-					str+="""stringArrayClass = curEnv->FindClass("Ljava/lang/String;");
-					stringArrayClass = (jclass) curEnv->NewGlobalRef(stringArrayClass);
+					str+="""
 					jclass localStringArrayClass = curEnv->FindClass("Ljava/lang/String;");
 					stringArrayClass = (jclass) curEnv->NewGlobalRef(localStringArrayClass);
 					curEnv->DeleteLocalRef(localStringArrayClass);
@@ -144,8 +143,6 @@ class objectGiws:
         jvm=jvm_;
 
         JNIEnv * curEnv = getCurrentEnv();
-
-        this->instanceClass = (jclass) curEnv->NewGlobalRef(curEnv->GetObjectClass(JObj));
 
 		jclass localClass = curEnv->GetObjectClass(JObj);
         this->instanceClass = (jclass) curEnv->NewGlobalRef(localClass);
