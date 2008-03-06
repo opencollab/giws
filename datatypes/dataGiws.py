@@ -187,6 +187,8 @@ class dataGiws(object):
 			myArray[i]=resultsArray[i];
 			}
 			curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+
+                        curEnv->DeleteLocalRef(res);
 			"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
 		else:
 			# Not post processing when dealing with primitive types
