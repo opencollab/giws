@@ -79,6 +79,8 @@ class booleanDataGiws(dataGiws):
 			myArray[i]=(resultsArray[i] == JNI_TRUE);
 			}
 			curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+
+                        curEnv->DeleteLocalRef(res);
 			"""
 		else:
 			return ""
