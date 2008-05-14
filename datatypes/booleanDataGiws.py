@@ -36,6 +36,8 @@
 
 from dataGiws import dataGiws
 
+# This class is not like other primitive datatypes because we need
+# to compare variables with JNI_TRUE or JNI_FALSE
 class booleanDataGiws(dataGiws):
 
 	type="jboolean"
