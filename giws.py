@@ -1,6 +1,6 @@
 #!/usr/bin/python -u 
-# Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
+# Matthieu WALTER - <gamo@tecp.info>
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
 # 
 # This software is a computer program whose purpose is to generate C++ wrapper 

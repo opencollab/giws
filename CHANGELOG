@@ -3,10 +3,12 @@ giws (1.0)
     * Bug fixed: a static method can now return String[] values
 
  [ Sylvestre Ledru <sylvestre.ledru@inria.fr> ]
+	* Missing author (Matthieu Walter)
 	* Performance improvement (use cache on the methodId)
 	* Warnings removed  (cls unused / shadowed variable)
 	* Documentation updated
-	* Memory leak issue removed
+	* Memory leaks removed
+	* Redefinition of a variable was causing some warning under Sun Compiler
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Feb 2008 14:50:01 +0100
 
