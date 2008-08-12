@@ -1,4 +1,4 @@
-giws (1.0)
+giws (0.9.9.1)
  [ Vincent Couvert <vincent.couvert@inria.fr> ]
     * Bug fixed: a static method can now return String[] values
 

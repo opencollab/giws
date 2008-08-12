@@ -1,5 +1,7 @@
 * Manage not empty constructors
 * Manage objects
+* Manage enums
+* C++ could trigger Exception instead of a crappy exit(EXIT_FAILURE);
 * When returning an array of primitive types, we do :
 
 jsize len = curEnv->GetArrayLength(res);
