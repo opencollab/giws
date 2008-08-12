@@ -95,12 +95,14 @@ class objectGiws:
 		localClass = curEnv->FindClass( this->className().c_str() ) ;
 		if (localClass == NULL) {
 		std::cerr << "Could not get the Class " << this->className() <<  std::endl;
+		curEnv->ExceptionDescribe();
 		exit(EXIT_FAILURE);
 		}
 		
 		this->instanceClass = (jclass) curEnv->NewGlobalRef(localClass) ;
 		if (this->instanceClass == NULL) {
 		std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
+		curEnv->ExceptionDescribe();
 		exit(EXIT_FAILURE);
 		}
 		
@@ -116,12 +118,14 @@ class objectGiws:
 		localInstance = curEnv->NewObject( this->instanceClass, constructObject ) ;
 		if(localInstance == NULL){
 		std::cerr << "Could not instantiate the object " << this->className() << " with the constructor : " << construct << param << std::endl;
+		curEnv->ExceptionDescribe();
 		exit(EXIT_FAILURE);
 		}
 		 
 		this->instance = curEnv->NewGlobalRef(localInstance) ;
 		if(this->instance == NULL){
 		std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
+		curEnv->ExceptionDescribe();
 		exit(EXIT_FAILURE);
 		}
 		/* localInstance not needed anymore */
@@ -150,6 +154,7 @@ class objectGiws:
 		
         if (this->instanceClass == NULL) {
                std::cerr << "Could not create a Global Ref of " << this->instanceClass <<  std::endl;
+			   curEnv->ExceptionDescribe();
                exit(EXIT_FAILURE);
 			   
         }
@@ -157,6 +162,7 @@ class objectGiws:
         this->instance = curEnv->NewGlobalRef(JObj) ;
         if(this->instance == NULL){
                std::cerr << "Could not create a new global ref of " << this->instanceClass << std::endl;
+			   curEnv->ExceptionDescribe();
                exit(EXIT_FAILURE);
         }
         /* Methods ID set to NULL */
