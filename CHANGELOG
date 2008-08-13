@@ -3,6 +3,8 @@ giws (0.9.9.2)
       exit(EXIT_FAILURE)
 	  Use the options: -e/--throws-exception-on-error
 	* Update of copyright notices
+	* some malloc replaced by new
+	* Memory leaks removed
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Wed, 13 Aug 2008 16:18:52 +0100
 
 giws (0.9.9.1)

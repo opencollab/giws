@@ -120,18 +120,23 @@ class stringDataGiws(dataGiws):
 			for (jsize i = 0; i < len; i++){
 			jstring resString = (jstring)curEnv->GetObjectArrayElement(res, i);
 			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
-			arrayOfString[i]= (char*)malloc ((strlen(tempString)+1)*sizeof(char));
+			arrayOfString[i] = new char[strlen(tempString) + 1];
+
 			strcpy(arrayOfString[i], tempString);
 			curEnv->ReleaseStringUTFChars(resString, tempString);
+			curEnv->DeleteLocalRef(resString);
 			}
 			"""
 		else:
 			return """
+			curEnv->DeleteLocalRef(%s);
+
 			const char *tempString = curEnv->GetStringUTFChars(res, 0);
-			char * myStringBuffer= (char*)malloc (strlen(tempString)*sizeof(char)+1);
+			char * myStringBuffer = new char[strlen(tempString) + 1];
 			strcpy(myStringBuffer, tempString);
 			curEnv->ReleaseStringUTFChars(res, tempString);
-			"""			
+			curEnv->DeleteLocalRef(res);
+			"""%(name+"_")
 
 	def getReturnSyntax(self):
 		if self.isArray():

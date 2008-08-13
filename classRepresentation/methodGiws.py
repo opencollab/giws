@@ -88,11 +88,11 @@ class methodGiws:
 		return str
 	
 	def __createMethodBody(self):
-                if self.getModifier()=="static":
-                        str=JNIFrameWork().getStaticProfile()
-                else:
-                        str=JNIFrameWork().getObjectInstanceProfile()
-                str+=JNIFrameWork().getMethodIdProfile(self)
+		if self.getModifier()=="static":
+			str=JNIFrameWork().getStaticProfile()
+		else:
+			str=JNIFrameWork().getObjectInstanceProfile()
+		str+=JNIFrameWork().getMethodIdProfile(self)
 
 				
 		arrayOfStringDeclared=False
@@ -124,6 +124,8 @@ class methodGiws:
 			paramType=parameter.getType()
 			if paramType.isArray():
 				str+=paramType.specificPostDeleteMemory(parameter)
+		if self.getModifier()=="static":
+			JNIFrameWork().getDeleteStaticProfile()
 
 		str+=JNIFrameWork().getExceptionCheckProfile()
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())

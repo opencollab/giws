@@ -120,6 +120,9 @@ class JNIFrameWork:
 		jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 
+	def getDeleteStaticProfile(self):
+		return """curEnv->DeleteLocalRef(cls);"""
+	
 	def getObjectInstanceProfile(self):
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
