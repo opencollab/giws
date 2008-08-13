@@ -35,7 +35,7 @@
 # For more information, see the file COPYING
 
 import sys
-
+from configGiws import configGiws
 
 def abstractMethod(obj=None):
     """ Use this instead of 'pass' for the body of abstract methods. """
@@ -148,9 +148,9 @@ class dataGiws(object):
 			if (%s_ == NULL)
 			{
 			// check that allocation succeed
-			throw giws::JniBadAllocException(curEnv);
+			throw %s::JniBadAllocException(curEnv);
 			}
-			"""%(varName)
+			"""%(varName,configGiws().getExceptionFileName())
 		else:
 			errorMgnt=""
   

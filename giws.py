@@ -108,7 +108,7 @@ class giws:
 		# this will be changed ... should not be called on the package itself
 		#		.generateCXXHeader(self.config)
 		#		templateObj.getJpackage().generateCXXBody(self.config)
-		if self.config.getThrowsException():
+		if self.config.getThrowsException() and not os.path.isfile(self.config.getOutput()+"/"+self.config.getExceptionFileName()+self.config.getCPPHeaderExtension()):
 			CXXExcep=CXXException()
 			CXXExcep.generateCXXHeader(self.config)
 			CXXExcep.generateCXXBody(self.config)
@@ -135,7 +135,7 @@ class giws:
 
 	def show_version(self, exit_status=0):
 		print "Swig %s"%self.config.getVersion()
-		print "Copyright (C) 2007 INRIA / Scilab"
+		print "Copyright (C) 2007-2008 INRIA / Scilab"
 		print """This software is governed by the CeCILL license under French law and
 abiding by the rules of distribution of free software. You can use, 
 modify and/ or redistribute the software under the terms of the CeCILL

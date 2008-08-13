@@ -46,7 +46,7 @@ class JNIFrameWork:
 	__JavaVMVariableType="JavaVM"
 
 	def getHeader(self,namespaceName):
-		return """
+		strHeader="""
 		#ifndef __%s__
 		#define __%s__
 		#include <iostream>
@@ -55,7 +55,13 @@ class JNIFrameWork:
 		#include <stdlib.h>
 		#include <jni.h>
 		"""%(namespaceName.upper(), namespaceName.upper())
-
+		# add the include for giws exception
+		if configGiws().getThrowsException() and not namespaceName==configGiws().getExceptionFileName():
+			strHeader+="""
+			#include "%s"
+			"""%(configGiws().getExceptionFileName()+configGiws().getCPPHeaderExtension())
+		return strHeader
+	
 	def getJavaVMVariable(self):
 		return self.__JavaVMVariable
 	
@@ -86,7 +92,7 @@ class JNIFrameWork:
 		return myStr
 
 	def getSynchronizeMethod(self,objectName):
-		return ("""
+		return """
 		
 		void %s::synchronize() {
 		if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
@@ -94,17 +100,17 @@ class JNIFrameWork:
 		exit(EXIT_FAILURE);
 		}
 		}
-		""")%(objectName)
+		"""%(objectName)
 	
 	def getEndSynchronizeMethod(self,objectName):
-		return ("""
+		return """
 		void %s::endSynchronize() {
 		if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
 		std::cerr << "Fail to exit monitor." << std::endl;
 		exit(EXIT_FAILURE);
 		}
 		}
-		""")%(objectName)
+		"""%(objectName)
 	
         # For static methods, we can not call getCurrentEnv() because it is not static
 	def getStaticProfile(self):
@@ -122,8 +128,8 @@ class JNIFrameWork:
 	def getExceptionCheckProfile(self):
 		if configGiws().getThrowsException():
 			return """if (curEnv->ExceptionCheck()) {
-			throw giws::JniCallMethodException(curEnv);
-			}"""
+			throw %s::JniCallMethodException(curEnv);
+			}"""%(configGiws().getExceptionFileName())
 		else:
 			return """
 			if (curEnv->ExceptionCheck()) {
@@ -157,7 +163,7 @@ class JNIFrameWork:
 
 		# Management of the error
 		if configGiws().getThrowsException():
-			errorMgnt="""throw giws::JniMethodNotFoundException(curEnv, "%s");"""%(method.getName())
+			errorMgnt="""throw %s::JniMethodNotFoundException(curEnv, "%s");"""%(configGiws().getExceptionFileName(),method.getName())
 		else:
 			errorMgnt="""std::cerr << "Could not access to the method " << "%s" << std::endl;
 			curEnv->ExceptionDescribe();

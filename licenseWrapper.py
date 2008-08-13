@@ -39,9 +39,9 @@ class licenseWrapper:
 	def getLicense(self):
 		return """/*
 
-Copyright 2007 INRIA
+Copyright 2007-2008 INRIA
 
-Author : Sylvestre Ledru
+Author : Sylvestre Ledru & others
 
 This software is a computer program whose purpose is to hide the complexity
 of accessing Java objects/methods from C++ code.

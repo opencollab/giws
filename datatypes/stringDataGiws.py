@@ -69,14 +69,14 @@ class stringDataGiws(dataGiws):
 		name=parameter.getName()
 		# Management of the error when not enought memory to create the string
 		if configGiws().getThrowsException():
-			errorMgntMem="""throw giws::JniBadAllocException(curEnv);"""
+			errorMgntMem="""throw %s::JniBadAllocException(curEnv);"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;
 			exit(EXIT_FAILURE);"""
 
 		# Management of the error when not enought memory to create the string
 		if configGiws().getThrowsException():
-			errorMgntMemBis="""throw giws::JniBadAllocException(curEnv);"""
+			errorMgntMemBis="""throw %s::JniBadAllocException(curEnv);"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;
 			exit(EXIT_FAILURE);"""

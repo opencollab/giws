@@ -82,7 +82,7 @@ class objectGiws:
 
 		# Management of the error when the class cannot be found
 		if configGiws().getThrowsException():
-			errorMgntClass="""  throw giws::JniClassNotFoundException(curEnv, this->className());"""
+			errorMgntClass="""  throw %s::JniClassNotFoundException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntClass="""std::cerr << "Could not get the Class " << this->className() <<  std::endl;
 			curEnv->ExceptionDescribe();
@@ -90,7 +90,7 @@ class objectGiws:
 
 		# Management of the error when the global ref could not be created
 		if configGiws().getThrowsException():
-			errorMgntCreation="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+			errorMgntCreation="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntCreation="""std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
 			curEnv->ExceptionDescribe();
@@ -98,7 +98,7 @@ class objectGiws:
 
 		# Management of the error when it is not possible to retrieve the constructor
 		if configGiws().getThrowsException():
-			errorMgntConstructor="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+			errorMgntConstructor="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntConstructor="""std::cerr << "Could not retrieve the constructor of the class " << this->className() << " with the profile : " << construct << param << std::endl;
 		curEnv->ExceptionDescribe();
@@ -106,7 +106,7 @@ class objectGiws:
 
 		# Management of the error when it is not possible instantiate the obj
 		if configGiws().getThrowsException():
-			errorMgntInstantiate="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+			errorMgntInstantiate="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntInstantiate="""std::cerr << "Could not instantiate the object " << this->className() << " with the constructor : " << construct << param << std::endl;
 			curEnv->ExceptionDescribe();
@@ -114,7 +114,7 @@ class objectGiws:
 
 		# Management of the error when it is not possible create a global ref
 		if configGiws().getThrowsException():
-			errorMgntRef="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+			errorMgntRef="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntRef="""std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
 			curEnv->ExceptionDescribe();
@@ -179,19 +179,19 @@ class objectGiws:
 		
 		# Management of the error when the instance class could not be created a global ref
 		if configGiws().getThrowsException():
-			errorMgntRef="""throw giws::JniObjectCreationException(curEnv, this->instanceClass);"""
+			errorMgntRef="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntRef="""
-			std::cerr << "Could not create a Global Ref of " << this->instanceClass <<  std::endl;
+			std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
 			curEnv->ExceptionDescribe();
 			exit(EXIT_FAILURE);"""
 
 		# Management of the error when the instance class could not be created a global ref
 		if configGiws().getThrowsException():
-			errorMgntNewRef="""throw giws::JniObjectCreationException(curEnv, this->instanceClass);"""
+			errorMgntNewRef="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
 		else:
 			errorMgntNewRef="""
-			std::cerr << "Could not create a new global ref of " << this->instanceClass << std::endl;
+			std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
 			curEnv->ExceptionDescribe();
 			exit(EXIT_FAILURE);"""
 
