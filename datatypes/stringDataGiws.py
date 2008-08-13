@@ -106,6 +106,8 @@ class stringDataGiws(dataGiws):
 			curEnv->DeleteLocalRef(TempString);
 			}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
 		else:
+			# Need to store is for the post processing (delete)
+			self.parameterName=name
 			return """
 			jstring %s = curEnv->NewStringUTF( %s );
 			"""%(name+"_",name)
@@ -128,15 +130,17 @@ class stringDataGiws(dataGiws):
 			}
 			"""
 		else:
-			return """
-			curEnv->DeleteLocalRef(%s);
+			str=""
+			if hasattr(self,"parameterName"):
+				str="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")
+			return str+"""
 
 			const char *tempString = curEnv->GetStringUTFChars(res, 0);
 			char * myStringBuffer = new char[strlen(tempString) + 1];
 			strcpy(myStringBuffer, tempString);
 			curEnv->ReleaseStringUTFChars(res, tempString);
 			curEnv->DeleteLocalRef(res);
-			"""%(name+"_")
+			"""
 
 	def getReturnSyntax(self):
 		if self.isArray():
