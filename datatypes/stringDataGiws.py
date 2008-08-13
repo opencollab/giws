@@ -35,7 +35,7 @@
 # For more information, see the file COPYING
 
 from dataGiws import dataGiws
-from JNIFrameWork import JNIFrameWork
+from configGiws import configGiws
 
 class stringDataGiws(dataGiws):
 
@@ -67,6 +67,20 @@ class stringDataGiws(dataGiws):
 	def specificPreProcessing(self, parameter):
 		""" Overrides the preprocessing of the array """
 		name=parameter.getName()
+		# Management of the error when not enought memory to create the string
+		if configGiws().getThrowsException():
+			errorMgntMem="""throw giws::JniBadAllocException(curEnv);"""
+		else:
+			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;
+			exit(EXIT_FAILURE);"""
+
+		# Management of the error when not enought memory to create the string
+		if configGiws().getThrowsException():
+			errorMgntMemBis="""throw giws::JniBadAllocException(curEnv);"""
+		else:
+			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;
+			exit(EXIT_FAILURE);"""
+
 		if self.isArray():
 			return """			
 			
@@ -74,8 +88,7 @@ class stringDataGiws(dataGiws):
 			jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
 			if (%s_ == NULL)
 			{
-			std::cerr << "Could not allocate Java string array, memory full." << std::endl;
-			exit(EXIT_FAILURE);
+			%s
 			}
 
 			// convert each char * to java strings and fill the java array.
@@ -84,15 +97,14 @@ class stringDataGiws(dataGiws):
 			jstring TempString = curEnv->NewStringUTF( %s[i] );
 			if (TempString == NULL)
 			{
-			std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;
-			exit(EXIT_FAILURE);
+			%s
 			}
 			
 			curEnv->SetObjectArrayElement( %s_, i, TempString);
 			
 			// avoid keeping reference on to many strings
 			curEnv->DeleteLocalRef(TempString);
-			}"""%(name,name,name,name,name,name)
+			}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
 		else:
 			return """
 			jstring %s = curEnv->NewStringUTF( %s );

@@ -35,15 +35,16 @@
 # For more information, see the file COPYING
 
 from types import MethodType
+from configGiws import configGiws
 
 class JNIFrameWork:
 	"""
 	This class provides the JNI code
 	"""
 	
-	JavaVMVariable="jvm"
-	JavaVMVariableType="JavaVM"
-	
+	__JavaVMVariable="jvm"
+	__JavaVMVariableType="JavaVM"
+
 	def getHeader(self,namespaceName):
 		return """
 		#ifndef __%s__
@@ -56,10 +57,10 @@ class JNIFrameWork:
 		"""%(namespaceName.upper(), namespaceName.upper())
 
 	def getJavaVMVariable(self):
-		return self.JavaVMVariable
+		return self.__JavaVMVariable
 	
 	def getJavaVMVariableType(self):
-		return self.JavaVMVariableType
+		return self.__JavaVMVariableType
 
 	def getMethodGetCurrentEnv(self,objectName):
 		return """
@@ -119,11 +120,16 @@ class JNIFrameWork:
 		"""
 	
 	def getExceptionCheckProfile(self):
-		return """
-		if (curEnv->ExceptionOccurred()) {
-		curEnv->ExceptionDescribe() ;
-		}
-		"""
+		if configGiws().getThrowsException():
+			return """if (curEnv->ExceptionCheck()) {
+			throw giws::JniCallMethodException(curEnv);
+			}"""
+		else:
+			return """
+			if (curEnv->ExceptionCheck()) {
+			curEnv->ExceptionDescribe() ;
+			}
+			"""
 
 	def getMethodIdProfile(self,method):
 		params=""
@@ -148,14 +154,21 @@ class JNIFrameWork:
 			methodCall="jmethodID"
 		else:
 			methodCall="""if (%s==NULL) { /* Use the cache Luke */"""%methodIdName
+
+		# Management of the error
+		if configGiws().getThrowsException():
+			errorMgnt="""throw giws::JniMethodNotFoundException(curEnv, "%s");"""%(method.getName())
+		else:
+			errorMgnt="""std::cerr << "Could not access to the method " << "%s" << std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""%(method.getName())
 			
 		methodIdProfile="""
 		%s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
 		if (%s == NULL) {
-		std::cerr << "Could not access to the method " << "%s" << std::endl;
-		exit(EXIT_FAILURE);
+		%s
 		}
-		"""%(methodCall, methodIdName, getMethod, firstParam, method.getName(), params,signatureReturn, methodIdName, method.getName())
+		"""%(methodCall, methodIdName, getMethod, firstParam, method.getName(), params,signatureReturn, methodIdName, errorMgnt)
 		if method.getModifier()!="static":
 			methodIdProfile+="}" # Cached methodId 
 		return methodIdProfile
@@ -186,13 +199,11 @@ class JNIFrameWork:
                 if method.getModifier()=="static":
                         return """
                         %s curEnv->%s(cls, %s %s);
-                        %s
-                        """ % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
+						""" % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params)
                 else:
                         return """
                         %s curEnv->%s( this->instance, %s %s);
-                        %s
-                        """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params,self.getExceptionCheckProfile())
+                        """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params)
 
 
 	def getReturnProfile(self, returnType):

@@ -54,6 +54,7 @@ class methodGiws:
 			raise Exception("The type must be a dataGiws object")
 		self.__parameters=[]
 		self.__modifier=modifier
+
 	def addParameter(self, parameter):
 		if isinstance(parameter,parameterGiws):
 			self.__parameters.append(parameter)
@@ -123,7 +124,8 @@ class methodGiws:
 			paramType=parameter.getType()
 			if paramType.isArray():
 				str+=paramType.specificPostDeleteMemory(parameter)
-			
+
+		str+=JNIFrameWork().getExceptionCheckProfile()
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())
 
 		return str

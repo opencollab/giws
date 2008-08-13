@@ -41,13 +41,14 @@ import os.path
 from parseXMLEngine import parseXMLEngine
 from configGiws import configGiws
 from CXXFile import CXXFile
+from CXXException import CXXException
 
 
 class giws:
 	config=configGiws()
 	def __init__(self, argv=sys.argv):
 		try:
-			opts, args = getopt.getopt(sys.argv[1:], "f:o:e:b:phv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","help","version"])
+			opts, args = getopt.getopt(sys.argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
 			# if more than one "standalone" argument (more than conf file)
 			# show help and exit...
 			if len(opts)==0:
@@ -69,7 +70,7 @@ class giws:
 				if os.path.isfile(value):
 					self.config.setDescriptionFile(value)
 				else:
-					print "Deadly error : Cannot find file %s"%value
+					print "Deadly error: Cannot find file %s"%value
 					print ""
 					self.show_help(argv,0)
 					
@@ -77,13 +78,16 @@ class giws:
 				if os.path.isdir(value):
 					self.config.setOutput(value)
 				else:
-					print "Deadly error : Cannot find output dir %s"%value
+					print "Deadly error: Cannot find output dir %s"%value
 					print ""
 					self.show_help(argv,0)
 					
 			if option in ("-p", "--per-package"):
 				self.config.setSplitPerObject(False)
 
+			if option in ("-e","--throws-exception-on-error"):
+				self.config.setThrowsException(True)
+				
 			if option in ('e','--header-extension-file'):
 				self.config.setCPPHeaderExtension(value)
 
@@ -102,8 +106,13 @@ class giws:
 		CXX.generateCXXHeader(self.config)
 		CXX.generateCXXBody(self.config)
 		# this will be changed ... should not be called on the package itself
-#		.generateCXXHeader(self.config)
-#		templateObj.getJpackage().generateCXXBody(self.config)
+		#		.generateCXXHeader(self.config)
+		#		templateObj.getJpackage().generateCXXBody(self.config)
+		if self.config.getThrowsException():
+			CXXExcep=CXXException()
+			CXXExcep.generateCXXHeader(self.config)
+			CXXExcep.generateCXXBody(self.config)
+
 		
 	"""
 	load configuration from command line parameters
@@ -116,6 +125,7 @@ class giws:
 		print "-f     --description-file=file    Description of the method of the Java Object"
 		print "-o     --output-dir=dir           The directory where to export files"
 		print "-p     --per-package              Generates CXX/HXX files per package"
+		print "-e     --throws-exception-on-error       Throws a C++ exception instead of an exit(EXIT_FAILURE)"
 		print "--header-extension-file           Specify the extension of the header file generated [Default : .hxx]"
 		print "--body-extension-file             Specify the extension of the body file generated [Default : .cpp]"
 		print "-v     --version                  Display the version informations"

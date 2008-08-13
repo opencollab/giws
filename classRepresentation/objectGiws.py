@@ -37,6 +37,8 @@
 from methodGiws import methodGiws
 from JNIFrameWork import JNIFrameWork
 from datatypes.stringDataGiws import stringDataGiws
+from configGiws import configGiws
+
 
 class objectGiws:
 	__name=""
@@ -78,6 +80,46 @@ class objectGiws:
 	def __getConstructorWhichInstanciateTheNewObject(self):
 		""" """
 
+		# Management of the error when the class cannot be found
+		if configGiws().getThrowsException():
+			errorMgntClass="""  throw giws::JniClassNotFoundException(curEnv, this->className());"""
+		else:
+			errorMgntClass="""std::cerr << "Could not get the Class " << this->className() <<  std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""
+
+		# Management of the error when the global ref could not be created
+		if configGiws().getThrowsException():
+			errorMgntCreation="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+		else:
+			errorMgntCreation="""std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""
+
+		# Management of the error when it is not possible to retrieve the constructor
+		if configGiws().getThrowsException():
+			errorMgntConstructor="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+		else:
+			errorMgntConstructor="""std::cerr << "Could not retrieve the constructor of the class " << this->className() << " with the profile : " << construct << param << std::endl;
+		curEnv->ExceptionDescribe();
+		exit(EXIT_FAILURE);"""
+
+		# Management of the error when it is not possible instantiate the obj
+		if configGiws().getThrowsException():
+			errorMgntInstantiate="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+		else:
+			errorMgntInstantiate="""std::cerr << "Could not instantiate the object " << this->className() << " with the constructor : " << construct << param << std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""
+
+		# Management of the error when it is not possible create a global ref
+		if configGiws().getThrowsException():
+			errorMgntRef="""throw giws::JniObjectCreationException(curEnv, this->className());"""
+		else:
+			errorMgntRef="""std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""
+			
 		### Init the list of the cache of methodID
 		str=self.__getDeclarationOfCachingMethodID()
 			
@@ -94,39 +136,32 @@ class objectGiws:
 		
 		localClass = curEnv->FindClass( this->className().c_str() ) ;
 		if (localClass == NULL) {
-		std::cerr << "Could not get the Class " << this->className() <<  std::endl;
-		curEnv->ExceptionDescribe();
-		exit(EXIT_FAILURE);
+		%s
 		}
 		
 		this->instanceClass = (jclass) curEnv->NewGlobalRef(localClass) ;
-		if (this->instanceClass == NULL) {
-		std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
-		curEnv->ExceptionDescribe();
-		exit(EXIT_FAILURE);
-		}
 		
 		/* localClass is not needed anymore */
 		curEnv->DeleteLocalRef(localClass);
+		
+		if (this->instanceClass == NULL) {
+		%s
+		}
+		
 
 		constructObject = curEnv->GetMethodID( this->instanceClass, construct.c_str() , param.c_str() ) ;
 		if(constructObject == NULL){
-		std::cerr << "Could not retrieve the constructor of the class " << this->className() << " with the profile : " << construct << param << std::endl;
-		exit(EXIT_FAILURE);
+		%s
 		}
 		
 		localInstance = curEnv->NewObject( this->instanceClass, constructObject ) ;
 		if(localInstance == NULL){
-		std::cerr << "Could not instantiate the object " << this->className() << " with the constructor : " << construct << param << std::endl;
-		curEnv->ExceptionDescribe();
-		exit(EXIT_FAILURE);
+		%s
 		}
 		 
 		this->instance = curEnv->NewGlobalRef(localInstance) ;
 		if(this->instance == NULL){
-		std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
-		curEnv->ExceptionDescribe();
-		exit(EXIT_FAILURE);
+		%s
 		}
 		/* localInstance not needed anymore */
 		curEnv->DeleteLocalRef(localInstance);
@@ -135,13 +170,32 @@ class objectGiws:
 		%s
 		
 		}
-		"""%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject(), str)
+		"""%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject(), errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, str)
 
 		
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
 		### Init the list of the cache of methodID
 		str=self.__getDeclarationOfCachingMethodID()
 		
+		# Management of the error when the instance class could not be created a global ref
+		if configGiws().getThrowsException():
+			errorMgntRef="""throw giws::JniObjectCreationException(curEnv, this->instanceClass);"""
+		else:
+			errorMgntRef="""
+			std::cerr << "Could not create a Global Ref of " << this->instanceClass <<  std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""
+
+		# Management of the error when the instance class could not be created a global ref
+		if configGiws().getThrowsException():
+			errorMgntNewRef="""throw giws::JniObjectCreationException(curEnv, this->instanceClass);"""
+		else:
+			errorMgntNewRef="""
+			std::cerr << "Could not create a new global ref of " << this->instanceClass << std::endl;
+			curEnv->ExceptionDescribe();
+			exit(EXIT_FAILURE);"""
+
+			   			   
 		return """
 		%s::%s {
         jvm=jvm_;
@@ -153,23 +207,18 @@ class objectGiws:
         curEnv->DeleteLocalRef(localClass);
 		
         if (this->instanceClass == NULL) {
-               std::cerr << "Could not create a Global Ref of " << this->instanceClass <<  std::endl;
-			   curEnv->ExceptionDescribe();
-               exit(EXIT_FAILURE);
-			   
+		%s
         }
 
         this->instance = curEnv->NewGlobalRef(JObj) ;
         if(this->instance == NULL){
-               std::cerr << "Could not create a new global ref of " << this->instanceClass << std::endl;
-			   curEnv->ExceptionDescribe();
-               exit(EXIT_FAILURE);
+		%s
         }
         /* Methods ID set to NULL */
         %s
 
 }
-		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject(), str)
+		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject(), errorMgntRef, errorMgntNewRef, str)
 
 		
 	def getConstructorBodyCXX(self):

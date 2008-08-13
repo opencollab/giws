@@ -40,10 +40,12 @@ class configGiws:
 	__version="0.9.9.1"
 	__descriptionFile=""
 	__splitPerObject=True
+	__throwsException=False
 	__output="." # Should be changed elsewhere
 	__headerCPPExtension=".hxx"
 	__bodyCPPExtension=".cpp"
-
+	__exceptionFileName="GiwsException"
+	
 	def setDescriptionFile(self, desc):
 		self.__descriptionFile=desc
 		
@@ -52,9 +54,9 @@ class configGiws:
 
 	def setSplitPerObject(self, split):
 		self.__splitPerObject=split
-		
-	def getSplitPerObject(self):
-		return self.__splitPerObject
+
+	def setThrowsException(self, excep):
+		configGiws.__throwsException=excep
 
 	def setOutput(self, output):
 		self.__output=output
@@ -74,5 +76,14 @@ class configGiws:
 	def getCPPBodyExtension(self):
 		return self.__bodyCPPExtension
 
+	def getExceptionFileName(self):
+		return self.__exceptionFileName
+
+	def getSplitPerObject(self):
+		return self.__splitPerObject
+
+	def getThrowsException(self):
+		return configGiws.__throwsException
+	
 	def getVersion(self):
 		return self.__version

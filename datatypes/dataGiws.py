@@ -143,11 +143,24 @@ class dataGiws(object):
 		# removes the leading j and put the first char uppercase
 		shortType=self.getJavaShortTypeForceNotArray()
 
+		if configGiws().getThrowsException():
+			errorMgnt="""
+			if (%s_ == NULL)
+			{
+			// check that allocation succeed
+			throw giws::JniBadAllocException(curEnv);
+			}
+			"""%(varName)
+		else:
+			errorMgnt=""
+  
 		# Yep, it seems ugly to have that much varName but it is normal.
 		return """
 		%sArray %s_ = curEnv->New%sArray( %sSize ) ;
+		%s
 		curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*) %s ) ;
-		"""%(javaType, varName, shortType, varName, shortType, varName, varName, javaType, varName) 
+
+		"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName) 
 
 	def specificPreProcessing(self, parameter):
 		""" Preprocessing before calling the java method
