@@ -331,19 +331,19 @@ class CXXException:
 		*/
 		std::string JniException::retrieveExceptionMessage(JNIEnv * curEnv)
 		{
-			// return the result of the toString method
+			// return the result of the getLocalizedMessage method
 
 			// first get the exception, this is a java object of type throwable
 			jthrowable javaException = curEnv->ExceptionOccurred();
 
 			// retrieve informations from the exception.
 			// get method id
-			jmethodID toStringId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
-                                               "toString",
+			jmethodID getLocalizedMessageId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
+                                               "getLocalizedMessage",
                                                "()Ljava/lang/String;");
 
-			// call toString
-			jstring description = (jstring) curEnv->CallObjectMethod(javaException, toStringId);
+			// call getLocalizedMessage
+			jstring description = (jstring) curEnv->CallObjectMethod(javaException, getLocalizedMessageId);
 
     if (description == NULL)
     {
