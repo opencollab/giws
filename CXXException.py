@@ -516,12 +516,13 @@ class CXXException:
   */
   
   /**
-  * @pram curEnv java envirnonment where the exception occured.
+  * @pram curEnv java environment where the exception occured.
   */
   JniCallMethodException::JniCallMethodException(JNIEnv * curEnv) throw() : JniException(curEnv)
   {
   std::string errorMessage = "Exception when calling Java method : ";
   errorMessage += getJavaDescription() + "\\n" + getJavaStackTrace();
+  errorMessage += what();
   setErrorMessage(errorMessage);
   }
   

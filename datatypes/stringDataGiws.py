@@ -118,7 +118,7 @@ class stringDataGiws(dataGiws):
 			return """
 			jsize len = curEnv->GetArrayLength(res);
 			char **arrayOfString;
-                        arrayOfString= (char**)malloc ((len+1)*sizeof(char*));
+                        arrayOfString= arrayOfString= new char *[len + 1];
 			for (jsize i = 0; i < len; i++){
 			jstring resString = (jstring)curEnv->GetObjectArrayElement(res, i);
 			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
@@ -145,6 +145,7 @@ class stringDataGiws(dataGiws):
 	def getReturnSyntax(self):
 		if self.isArray():
 			return """
+			curEnv->DeleteLocalRef(res);
 			return arrayOfString;
 			"""
 		else:
