@@ -1,3 +1,9 @@
+giws (0.9.9.4)
+    * native type for "int" changed to "int" from "long" (see
+	  http://java.sun.com/javase/6/docs/technotes/guides/jni/spec/types.html#wp428)
+
+ -- Simon Lipp <simon.lipp@scilab.org>  Tue, 26 Aug 2008 15:16:03 +0100
+
 giws (0.9.9.3)
     * A malloc replaced by new
 	* More feedback in the exception

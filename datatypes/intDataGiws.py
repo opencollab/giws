@@ -41,7 +41,7 @@ class intDataGiws(dataGiws):
 	Manages Java datatype int
 	"""
 	type="jint"
-	nativeType="long"
+	nativeType="int"
 	callMethod="CallIntMethod"
 	callStaticMethod="CallIntMethod"
 
