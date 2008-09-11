@@ -5,6 +5,7 @@ giws (1.0)
 	* Third example added (Exception management)
 	* Warning about bad class descriptor with the FindClass method removed
 	* Moved to version 1.0 to sync with the release 5.0 of Scilab
+	* Update of the README
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 11 Sept 2008 16:05:33 +0100
 
