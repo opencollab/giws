@@ -34,9 +34,11 @@ knowledge of the CeCILL license and that you accept its terms.
 
 For more information, see the file COPYING
 */
+
 #include <iostream>
-#include "example2.hxx"
 #include <jni.h>
+#include "example3.hxx"
+#include "GiwsException.hxx"
 
 JavaVM* create_vm() {
 	JavaVM* jvm;
@@ -57,41 +59,34 @@ JavaVM* create_vm() {
 	return jvm;
 }
 
-using namespace example2;
+using namespace example3;
 using namespace std;
 
 int main(){
 	int sizeArray=3;
   	JavaVM* jvm = create_vm();
-	MyObjectWithArray *plop = new MyObjectWithArray(jvm);
-	int myArrayOfLong[sizeArray];
-	myArrayOfLong[0]=42;
-	myArrayOfLong[1]=69;
-	myArrayOfLong[2]=12;
-	short myArrayOfShort[sizeArray+1];
-	myArrayOfShort[0]=4;
-	myArrayOfShort[1]=6;
-	myArrayOfShort[2]=1;
-	myArrayOfShort[3]=1;
-	plop->doNothingPleaseButDisplay(myArrayOfLong,sizeArray,myArrayOfShort, sizeArray+1 );
+	MyObjectWhichReturnsExceptions *plop = new MyObjectWhichReturnsExceptions(jvm);
 
-	char ** myString=plop->getMyString();
-	cout << "The first string from Java : " << myString[0]  <<endl;
-	cout << "The second string from Java : " << myString[1]  <<endl;
+	int myInts = plop->getIntFromArrayOfSizeThree(2);
+	cout << "Value from the Java with good pos : " << myInts << endl;
 
-	int *myInts=plop->getMyInts();
-	cout << "The first int from Java : " << myInts[0]  <<endl;
-	cout << "The second int from Java : " << myInts[1]  <<endl;
-	cout << "The third int from Java : " << myInts[2]  <<endl;
+	cout << "========================" << endl;
 
-	char *myStrings[]={"tic","tac","rangers du risque"};
-	plop->setMyStrings(myStrings,3);
-
-	bool arrayOfBool[]={true, false, true, true};
-	bool *boolReturned = plop->dealingWithBooleans(arrayOfBool, 4);
-	
-	for (int i=0; i < 4; i++){
-		cout << "Value " << i << " : " << boolReturned[i] << " (was " << arrayOfBool[i] << ")" << endl;
+	cout << "Exception catched:" << endl;
+	try {
+		int myIntsWithExceptionCatched = plop->getIntFromArrayOfSizeThree(42);
+		
+	}catch(GiwsException::JniException e) {
+		cout << "getJavaDescription: " << e.getJavaDescription() << endl;
+		cout << "getJavaStackTrace: " << e.getJavaStackTrace() << endl;
+		cout << "getJavaExceptionName: " << e.getJavaExceptionName() << endl;
 	}
+
+	cout << "========================" << endl;
+
+	cout << "Exception not catched:" << endl;
+	int myIntsWithException = plop->getIntFromArrayOfSizeThree(23);
+	cout << "Value from the Java with good pos : " << myInts  <<endl;
+
 	return 0;	
 }

@@ -70,7 +70,7 @@ class objectGiws:
 				### Avoids to load the class String each time we need it
 				if isinstance(param.getType(),stringDataGiws) and param.getType().isArray()==True and stringClassSet!=True and method.getModifier()!="static":
 					str+="""
-					jclass localStringArrayClass = curEnv->FindClass("Ljava/lang/String;");
+					jclass localStringArrayClass = curEnv->FindClass("java/lang/String");
 					stringArrayClass = (jclass) curEnv->NewGlobalRef(localStringArrayClass);
 					curEnv->DeleteLocalRef(localStringArrayClass);
 					"""

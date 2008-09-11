@@ -101,7 +101,7 @@ class methodGiws:
 			paramType=parameter.getType()
 			# Only declared once this object
 			if type(paramType) is stringDataGiws and paramType.isArray() and not arrayOfStringDeclared:
-				str+="""		jclass stringArrayClass = curEnv->FindClass("Ljava/lang/String;");"""
+				str+="""		jclass stringArrayClass = curEnv->FindClass("java/lang/String");"""
 				arrayOfStringDeclared=True
 				
 			if paramType.specificPreProcessing(parameter)!=None:

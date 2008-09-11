@@ -82,12 +82,18 @@ class CXXException:
 			
 			/** Name of the exception (ie class name).*/
 			std::string m_oJavaExceptionName;
+
+			/** The exception itself ... we store as a member otherwise JNI
+			complains about 'WARNING in native method: JNI call made with
+			exception pending' */
+			jthrowable javaException;
+			
 			public:
 			
 			/**
 			* Each subclass of JniExcpetion should call the super constructor
 			* and the setErrorMessage function to set the message.
-			* @param curEnv java envirnonment where the exception occured.
+			* @param curEnv java environment where the exception occured.
 			*/
 			JniException(JNIEnv * curEnv) throw() ;
 			
@@ -262,13 +268,16 @@ class CXXException:
 		JniException::JniException(JNIEnv * curEnv) throw() : exception()
 		{
 		// retrieve informations about the exception
+		javaException = curEnv->ExceptionOccurred();
+		/* Clear the Java Exception to avoid calling it again & again */
+		curEnv->ExceptionClear();
 		m_oJavaMessage = this->retrieveExceptionMessage(curEnv);
 		m_oJavaStackTrace = this->retrieveStackTrace(curEnv);
 		m_oJavaExceptionName = this->retrieveExceptionName(curEnv);
 
 		// by default JniExceptions display teh stack trace
 		setErrorMessage(m_oJavaMessage + "\\n" + m_oJavaStackTrace);
-
+		curEnv->DeleteLocalRef(javaException);
 		closeException(curEnv);
 		}
 
@@ -333,9 +342,6 @@ class CXXException:
 		{
 			// return the result of the getLocalizedMessage method
 
-			// first get the exception, this is a java object of type throwable
-			jthrowable javaException = curEnv->ExceptionOccurred();
-
 			// retrieve informations from the exception.
 			// get method id
 			jmethodID getLocalizedMessageId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
@@ -354,7 +360,6 @@ class CXXException:
 
     // release java ressources
     curEnv->DeleteLocalRef(description);
-    curEnv->DeleteLocalRef(javaException);
 
     return res;
   }
@@ -367,9 +372,6 @@ class CXXException:
 
 
     // return the result of the getStackTrace method
-
-    // first get the exception, this is a java object of type throwable
-    jthrowable javaException = curEnv->ExceptionOccurred();
 
     // retrieve informations from the exception.
     // get method id
@@ -391,7 +393,7 @@ class CXXException:
     std::string res = "";
 
     // get toString methodId of StackTraceElement class
-    jclass stackTraceElementClass = curEnv->FindClass("Ljava/lang/StackTraceElement;");
+    jclass stackTraceElementClass = curEnv->FindClass("java/lang/StackTraceElement");
     jmethodID toStringId = curEnv->GetMethodID(stackTraceElementClass, "toString", "()Ljava/lang/String;");
 
     for (jsize i = 0; i < stackTraceLength; i++)
@@ -406,7 +408,6 @@ class CXXException:
       {
         curEnv->DeleteLocalRef(stackTraceElementClass);
         curEnv->DeleteLocalRef(stackTrace);
-        curEnv->DeleteLocalRef(javaException);
         curEnv->DeleteLocalRef(curStackTraceElement);
         return res;
       }
@@ -421,7 +422,6 @@ class CXXException:
     // release java ressources
     curEnv->DeleteLocalRef(stackTraceElementClass);
     curEnv->DeleteLocalRef(stackTrace);
-    curEnv->DeleteLocalRef(javaException);
 
 
     return res;
@@ -432,8 +432,6 @@ class CXXException:
    */
   std::string JniException::retrieveExceptionName(JNIEnv * curEnv)
   {
-    // first get the exception, this is a java object of type throwable
-    jthrowable javaException = curEnv->ExceptionOccurred();
 
     // then get its class
     jclass exceptionClass = curEnv->GetObjectClass(javaException);
@@ -456,7 +454,6 @@ class CXXException:
     std::string res = convertJavaString(curEnv, javaName);
 
     // release java ressources
-    curEnv->DeleteLocalRef(javaException);
     curEnv->DeleteLocalRef(exceptionClass);
     curEnv->DeleteLocalRef(classClass);
     curEnv->DeleteLocalRef(javaName);

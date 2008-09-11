@@ -1,3 +1,13 @@
+giws (1.0)
+	* Fixed a bug in the Exception Class. JNI complained:
+	  'WARNING in native method: JNI call made with exception pending'
+	* Mandatory output about on C++ exception removed
+	* Third example added (Exception management)
+	* Warning about bad class descriptor with the FindClass method removed
+	* Moved to version 1.0 to sync with the release 5.0 of Scilab
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 11 Sept 2008 16:05:33 +0100
+
 giws (0.9.9.4)
     * native type for "int" changed to "int" from "long" (see
 	  http://java.sun.com/javase/6/docs/technotes/guides/jni/spec/types.html#wp428)
@@ -17,6 +27,7 @@ giws (0.9.9.2)
 	* Update of copyright notices
 	* some malloc replaced by new
 	* Memory leaks removed
+
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Wed, 13 Aug 2008 16:18:52 +0100
 
 giws (0.9.9.1)
