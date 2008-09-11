@@ -1,5 +1,5 @@
 #include <iostream>
-#include "MyComplexClass.hxx"
+#include "basic_example.hxx"
 #include <jni.h>
 /*
 Copyright or © or Copr. INRIA/Scilab - Sylvestre LEDRU
