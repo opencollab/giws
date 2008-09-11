@@ -1,4 +1,4 @@
-giws (1.0)
+giws (0.9.9.1)
  [ Vincent Couvert <vincent.couvert@inria.fr> ]
     * Bug fixed: a static method can now return String[] values
 
@@ -9,6 +9,7 @@ giws (1.0)
 	* Documentation updated
 	* Memory leaks removed
 	* Redefinition of a variable was causing some warning under Sun Compiler
+	* Print the exception in case of error (Closes: #7)
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Feb 2008 14:50:01 +0100
 
