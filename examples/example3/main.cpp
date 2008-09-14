@@ -67,14 +67,14 @@ int main(){
   	JavaVM* jvm = create_vm();
 	MyObjectWhichReturnsExceptions *plop = new MyObjectWhichReturnsExceptions(jvm);
 
-	int myInts = plop->getIntFromArrayOfSizeThree(2);
+	int myInts = plop->getIntFromArrayOfSizeThree(0);
 	cout << "Value from the Java with good pos : " << myInts << endl;
 
 	cout << "========================" << endl;
 
 	cout << "Exception catched:" << endl;
 	try {
-		int myIntsWithExceptionCatched = plop->getIntFromArrayOfSizeThree(42);
+		int myIntsWithExceptionCatched = plop->getIntFromArrayOfSizeThree(22);
 		
 	}catch(GiwsException::JniException e) {
 		cout << "getJavaDescription: " << e.getJavaDescription() << endl;
@@ -85,7 +85,7 @@ int main(){
 	cout << "========================" << endl;
 
 	cout << "Exception not catched:" << endl;
-	int myIntsWithException = plop->getIntFromArrayOfSizeThree(23);
+	int myIntsWithException = plop->getIntFromArrayOfSizeThree(223);
 	cout << "Value from the Java with good pos : " << myInts  <<endl;
 
 	return 0;	
