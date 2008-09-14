@@ -44,7 +44,7 @@ setup (name = "giws",
     author_email="sylvestre.ledru@inria.fr",
     url="http://www.scilab.org/giws/",
     packages=['.','classRepresentation','datatypes'],
-    scripts=['giws.py'],
+    scripts=['giws'],
     license="CeCILL",
     long_description="""Giws is basically doing the same stuff as SWIG but the opposite.
  Calling Java from C/C++ can be tricky: JNI calls are complicated 

@@ -8,7 +8,7 @@
 	Python objects matching the datatype (provides the different method, type declaration ...)
 * configGiws.py
 	Specifies default values
-* giws.py
+* giws
 	Manages arguments, help and version info
 * licenseWrapper.py
 	Provides the license information for the generated code

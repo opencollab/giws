@@ -5,6 +5,7 @@ giws (1.0)
 	* Third example added (Exception management)
 	* Warning about bad class descriptor with the FindClass method removed
 	* Moved to version 1.0 to sync with the release 5.0 of Scilab
+	* Main program renamed giws.py => giws
 	* setup.py added to facilitate the packaging
 	* Update of the README
 

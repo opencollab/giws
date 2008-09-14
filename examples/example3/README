@@ -7,7 +7,7 @@ Compile the java file
 # $JAVA_HOME/bin/javac example3/MyObjectWhichReturnsExceptions.java
 
 Generate the wrapper
-# ../../giws.py --throws-exception-on-error -p -f MyObjectWhichReturnsExceptions.giws.xml
+# ../../giws --throws-exception-on-error -p -f MyObjectWhichReturnsExceptions.giws.xml
 
 Note GiwsException.cpp & GiwsException.hxx are also generated here.
 
