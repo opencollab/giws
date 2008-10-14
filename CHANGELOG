@@ -1,3 +1,11 @@
+giws (1.0.1)
+	* Fixed a bug in the Exception check in a method call
+	In some cases (like a Java method returning a String), the check of 
+	Exception was done on the clean of the variable, not on the potential 
+	exception raised by the method.
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 13 Oct 2008 17:25:33 +0100
+
 giws (1.0)
 	* Fixed a bug in the Exception Class. JNI complained:
 	  'WARNING in native method: JNI call made with exception pending'

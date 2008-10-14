@@ -36,6 +36,7 @@
 
 from dataGiws import dataGiws
 from configGiws import configGiws
+from JNIFrameWork import JNIFrameWork
 
 class stringDataGiws(dataGiws):
 
@@ -114,8 +115,16 @@ class stringDataGiws(dataGiws):
 	
 	def specificPostProcessing(self):
 		""" Called when we are returning a string or an array of string """
+		# We are doing an exception check here JUST in this case because
+		# in methodGiws::__createMethodBody we usually do it at the end
+		# of the method just after deleting the variable
+		# but when dealing with string, in this method, we are calling some
+		# methods which override the "exception engine" which drive the JNI
+		# engine crazy.
+		str=JNIFrameWork().getExceptionCheckProfile()
+
 		if self.isArray():
-			return """
+			return str+"""
 			jsize len = curEnv->GetArrayLength(res);
 			char **arrayOfString;
                         arrayOfString= arrayOfString= new char *[len + 1];
@@ -130,9 +139,8 @@ class stringDataGiws(dataGiws):
 			}
 			"""
 		else:
-			str=""
 			if hasattr(self,"parameterName"):
-				str="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")
+				str+="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")
 			return str+"""
 
 			const char *tempString = curEnv->GetStringUTFChars(res, 0);
