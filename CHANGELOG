@@ -110,7 +110,7 @@ giws (0.9.3)
 
 giws (0.9.2)
 	* License is also added in the header file
-	* In the generated files, informations are provided about the generator (version of GIWS and current date/time)
+	* In the generated files, information are provided about the generator (version of GIWS and current date/time)
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 4 Oct 2007 10:56:17 +0200
 

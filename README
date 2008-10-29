@@ -47,7 +47,7 @@ Specify the extension of the header file generated [Default : .hxx]
 Specify the extension of the body file generated [Default : .cpp]
 
 -v / --version :
-Displays the version and other informations
+Displays the version and other information
 
 -h / --help :
 Displays the help

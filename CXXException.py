@@ -146,7 +146,7 @@ class CXXException:
 			*/
 			std::string retrieveExceptionName(JNIEnv * curEnv);
 			/**
-			* To be called when all the informations about the exceptions have been
+			* To be called when all the information about the exceptions have been
 			* retrived.
 			* Remove the exception from the environement.
 			*/
@@ -267,7 +267,7 @@ class CXXException:
 		*/
 		JniException::JniException(JNIEnv * curEnv) throw() : exception()
 		{
-		// retrieve informations about the exception
+		// retrieve information about the exception
 		javaException = curEnv->ExceptionOccurred();
 		/* Clear the Java Exception to avoid calling it again & again */
 		curEnv->ExceptionClear();
@@ -342,7 +342,7 @@ class CXXException:
 		{
 			// return the result of the getLocalizedMessage method
 
-			// retrieve informations from the exception.
+			// retrieve information from the exception.
 			// get method id
 			jmethodID getLocalizedMessageId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
                                                "getLocalizedMessage",
@@ -373,7 +373,7 @@ class CXXException:
 
     // return the result of the getStackTrace method
 
-    // retrieve informations from the exception.
+    // retrieve information from the exception.
     // get method id
     // getStackTrace returns an array of StackTraceElement
     jmethodID getStackTraceId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
@@ -462,7 +462,7 @@ class CXXException:
   }
 
   /**
-   * To be called when all the informations about the exceptions have been
+   * To be called when all the information about the exceptions have been
    * retrived.
    * Remove the exception from the environement.
    */
