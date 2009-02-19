@@ -13,7 +13,7 @@ EX = basic_example example1 example2 example3
 
 # verify that JAVA_HOME is set to something (should be the bare minimum)
 ifndef JAVA_HOME
-	$(error ERROR: Variable JAVA_HOME is not set!)
+    $(error ERROR: Variable JAVA_HOME is not set!)
 endif
 
 
