@@ -54,9 +54,12 @@ class giws:
 		except getopt.GetoptError, e:
 			print "%s: %s"%(e.__class__.__name__, str(e))
 			self.show_help(1)    # exit with EXIT_FAILURE return code
-	
+			
+	"""
+	load configuration from command line parameters
+	"""
 	def __parse_cmdline(self):
-		opts, args = getopt.getopt(sys.argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
+		opts, args = getopt.getopt(argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
 
 		# we know at least one options is required (-f file...)
 		if len(opts)==0:
@@ -117,10 +120,6 @@ class giws:
 			CXXExcep.generateCXXBody(self.config)
 
 		
-	"""
-	load configuration from command line parameters
-	takes sys.argv as parameter and does all the job...
-	"""
 	def show_help(self, exit_status=0):
 		print "Giws usage: %s <-f file|--description-file=file> [options]"%self.argv[0]
 		print ""
