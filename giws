@@ -47,23 +47,22 @@ from CXXException import CXXException
 class giws:
 	config=configGiws()
 	def __init__(self, argv=sys.argv):
+		self.argv = argv
+
 		try:
-			opts, args = getopt.getopt(sys.argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
-			# if more than one "standalone" argument (more than conf file)
-			# show help and exit...
-			if len(opts)==0:
-				self.show_help(argv,1)
-			elif len(args) > 1:
-				raise getopt.GetoptError
-				"""elif len(args) == 1:
-				self.__dict__["config_file"] = args[0]
-				self.__cmd_opt.append("config_file")"""
-			elif len(args) == 1:
-				self.__dict__["module"] = args[0]
-				
-		except getopt.GetoptError:
-			raise
-			self.show_help(argv,1)    # exit with EXIT_FAILURE return code
+			self.__parse_cmdline()
+		except getopt.GetoptError, e:
+			print "%s: %s"%(e.__class__.__name__, str(e))
+			self.show_help(1)    # exit with EXIT_FAILURE return code
+	
+	def __parse_cmdline(self):
+		opts, args = getopt.getopt(sys.argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
+
+		# we know at least one options is required (-f file...)
+		if len(opts)==0:
+			raise getopt.GetoptError, "too few options"
+		elif len(args):
+			raise getopt.GetoptError, "too many arguments"
 
 		for option, value in opts:
 			if option in ("-f", "--description-file"):
@@ -72,33 +71,37 @@ class giws:
 				else:
 					print "Deadly error: Cannot find file %s"%value
 					print ""
-					self.show_help(argv,0)
+					self.show_help(0)
 					
-			if option in ("-o", "--output-dir"):
+			elif option in ("-o", "--output-dir"):
 				if os.path.isdir(value):
 					self.config.setOutput(value)
 				else:
 					print "Deadly error: Cannot find output dir %s"%value
 					print ""
-					self.show_help(argv,0)
+					self.show_help(0)
 					
-			if option in ("-p", "--per-package"):
+			elif option in ("-p", "--per-package"):
 				self.config.setSplitPerObject(False)
 
-			if option in ("-e","--throws-exception-on-error"):
+			elif option in ("-e","--throws-exception-on-error"):
 				self.config.setThrowsException(True)
 				
-			if option in ('e','--header-extension-file'):
+			elif option == '--header-extension-file':
 				self.config.setCPPHeaderExtension(value)
 
-			if option in ('b','--body-extension-file'):
+			elif option == '--body-extension-file':
 				self.config.setCPPBodyExtension(value)
 
-			if option in ("-v", "--version"):
+			elif option in ("-v", "--version"):
 				self.show_version(0)
 				
 			elif option in ("-h", "--help"):
-				self.show_help(argv,0)
+				self.show_help(0)
+
+		# check for some mandatory paramters
+		if not self.config.getDescriptionFile():
+			raise getopt.GetoptError, "you have to specify a description file"
 
 		templateObj=parseXMLEngine(self.config.getDescriptionFile())
 
@@ -108,7 +111,7 @@ class giws:
 		# this will be changed ... should not be called on the package itself
 		#		.generateCXXHeader(self.config)
 		#		templateObj.getJpackage().generateCXXBody(self.config)
-		if self.config.getThrowsException() and not os.path.isfile(self.config.getOutput()+"/"+self.config.getExceptionFileName()+self.config.getCPPHeaderExtension()):
+		if self.config.getThrowsException() and not os.path.isfile(os.path.join(self.config.getOutput(), self.config.getExceptionFileName()+self.config.getCPPHeaderExtension())):
 			CXXExcep=CXXException()
 			CXXExcep.generateCXXHeader(self.config)
 			CXXExcep.generateCXXBody(self.config)
@@ -118,16 +121,16 @@ class giws:
 	load configuration from command line parameters
 	takes sys.argv as parameter and does all the job...
 	"""
-	def show_help(self, argv, exit_status=0):
-		print "Giws usage: %s [options]"%argv[0]
+	def show_help(self, exit_status=0):
+		print "Giws usage: %s <-f file|--description-file=file> [options]"%self.argv[0]
 		print ""
 		print "Options can be:"
 		print "-f     --description-file=file    Description of the method of the Java Object"
 		print "-o     --output-dir=dir           The directory where to export files"
 		print "-p     --per-package              Generates CXX/HXX files per package"
 		print "-e     --throws-exception-on-error       Throws a C++ exception instead of an exit(EXIT_FAILURE)"
-		print "--header-extension-file           Specify the extension of the header file generated [Default : .hxx]"
-		print "--body-extension-file             Specify the extension of the body file generated [Default : .cpp]"
+		print "--header-extension-file=ext       Specify the extension of the header file generated [Default : .hxx]"
+		print "--body-extension-file=ext         Specify the extension of the body file generated [Default : .cpp]"
 		print "-v     --version                  Display the version informations"
 		print "-h     --help                     Display the help"
 		
