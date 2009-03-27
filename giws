@@ -59,7 +59,7 @@ class giws:
 	load configuration from command line parameters
 	"""
 	def __parse_cmdline(self):
-		opts, args = getopt.getopt(argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
+		opts, args = getopt.getopt(self.argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
 
 		# we know at least one options is required (-f file...)
 		if len(opts)==0:
