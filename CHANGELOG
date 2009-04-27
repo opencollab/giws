@@ -1,3 +1,22 @@
+giws (1.0.2)
+
+	[ Sylvestre Ledru ]
+	* Typos fixed
+	* synchronize & endSynchronize are also managed by option 
+	  -e/--throws-exception-on-error
+
+	[ Matthieu Walter ]
+	* Better management of the argument
+	* Removed old unused code (__dict__...)
+	* show_help wasn't called when a wrong cmdline param was given 
+	  (uncatched exception was thrown instead)
+	* Description is now mandatory: no -f/--description-file prints help
+	* Fixed opts/args len checking to fit the real usage
+	* Makefiles added to build quickly the examples:
+	  cd examples; make
+
+ -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 27 Apr 2009 13:40:15 +0100
+
 giws (1.0.1)
 	* Fixed a bug in the Exception check in a method call
 	In some cases (like a Java method returning a String), the check of 

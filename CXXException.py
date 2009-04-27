@@ -148,7 +148,7 @@ class CXXException:
 			/**
 			* To be called when all the information about the exceptions have been
 			* retrived.
-			* Remove the exception from the environement.
+			* Remove the exception from the environment.
 			*/
 			void closeException(JNIEnv * curEnv);
 			
@@ -181,7 +181,7 @@ class CXXException:
 			public:
 			
 			  /**
-			   * @pram curEnv java envirnonment where the exception occured.
+			   * @param curEnv java envirnonment where the exception occured.
 			   */
 			  JniCallMethodException(JNIEnv * curEnv) throw();
 
@@ -196,7 +196,7 @@ class CXXException:
 			public:
 
 			/**
-			* @pram className name of the class which haven't been found
+			* @param className name of the class which haven't been found
 			*/
 			JniClassNotFoundException(JNIEnv * curEnv, const std::string & className) throw();
 			
@@ -212,7 +212,7 @@ class CXXException:
 			public:
 					
 			/**
-			* @pram className name of the method which haven't been found
+			* @param className name of the method which haven't been found
 			*/
 			JniMethodNotFoundException(JNIEnv * curEnv, const std::string & methodName) throw();
 			virtual ~JniMethodNotFoundException(void) throw();
@@ -230,10 +230,27 @@ class CXXException:
 			public:
 			
 			/**
-			* @pram curEnv java envirnonment where the exception occured.
+			* @param curEnv java envirnonment where the exception occured.
 			*/
 			JniObjectCreationException(JNIEnv * curEnv, const std::string & className) throw();
 			virtual ~JniObjectCreationException(void) throw();
+			
+			};
+
+						
+			/**
+			* Exception that should be thrown when a call to the Java monitor
+			* failed
+			*/
+			class JniMonitorException : public JniException
+			{
+			public:
+			
+			/**
+			* @param curEnv java envirnonment where the exception occured.
+			*/
+			JniMonitorException(JNIEnv * curEnv, const std::string & className) throw();
+			virtual ~JniMonitorException(void) throw();
 			
 			};
 		"""
@@ -464,7 +481,7 @@ class CXXException:
   /**
    * To be called when all the information about the exceptions have been
    * retrived.
-   * Remove the exception from the environement.
+   * Remove the exception from the environment.
    */
   void JniException::closeException(JNIEnv * curEnv)
   {
@@ -513,7 +530,7 @@ class CXXException:
   */
   
   /**
-  * @pram curEnv java environment where the exception occured.
+  * @param curEnv java environment where the exception occured.
   */
   JniCallMethodException::JniCallMethodException(JNIEnv * curEnv) throw() : JniException(curEnv)
   {
@@ -525,7 +542,7 @@ class CXXException:
   
   JniCallMethodException::~JniCallMethodException(void) throw() {}
   /**
-  * @pram className name of the class which haven't been found
+  * @param className name of the class which haven't been found
   */
   JniClassNotFoundException::JniClassNotFoundException(JNIEnv * curEnv, const std::string & className) throw() : JniException(curEnv)
 			  {
@@ -536,7 +553,7 @@ class CXXException:
 			  JniClassNotFoundException::~JniClassNotFoundException(void) throw() {}
 
 			  /**
-			   * @pram className name of the method which haven't been found
+			   * @param className name of the method which haven't been found
 			   */
 			  JniMethodNotFoundException::JniMethodNotFoundException(JNIEnv * curEnv, const std::string & methodName) throw() : JniException(curEnv)
 			  {
@@ -545,8 +562,9 @@ class CXXException:
 			  }
 
 			  JniMethodNotFoundException::~JniMethodNotFoundException(void) throw() {}
+			  
 			  /**
-			   * @pram curEnv java envirnonment where the exception occured.
+			   * @param curEnv java envirnonment where the exception occured.
 			   */
 			  JniObjectCreationException::JniObjectCreationException(JNIEnv * curEnv, const std::string & className) throw() : JniException(curEnv)
 			  {
@@ -555,6 +573,17 @@ class CXXException:
 			  }
 
 			  JniObjectCreationException::~JniObjectCreationException(void) throw() {}
+
+			  /**
+			   * @param curEnv java envirnonment where the exception occured.
+			   */
+			  JniMonitorException::JniMonitorException(JNIEnv * curEnv, const std::string & className) throw() : JniException(curEnv)
+			  {
+				std::string errorMessage = "Error in the access (Enter or exit) or a Java env monitor of class " + className + ".";
+				setErrorMessage(errorMessage);
+			  }
+
+			  JniMonitorException::~JniMonitorException(void) throw() {}
 
 			"""
 

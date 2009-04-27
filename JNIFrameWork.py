@@ -92,25 +92,34 @@ class JNIFrameWork:
 		return myStr
 
 	def getSynchronizeMethod(self,objectName):
-		return """
-		
+		myStr="""
 		void %s::synchronize() {
 		if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
-		std::cerr << "Fail to enter monitor." << std::endl;
-		exit(EXIT_FAILURE);
-		}
-		}
 		"""%(objectName)
+		if configGiws().getThrowsException():
+			myStr += """throw %s::JniMonitorException(getCurrentEnv(), "%s");"""%(configGiws().getExceptionFileName(),objectName)
+		else:
+			myStr += """std::cerr << "Fail to enter monitor." << std::endl;
+			exit(EXIT_FAILURE);
+			"""
+		return myStr + """
+		}
+		}"""
 	
 	def getEndSynchronizeMethod(self,objectName):
-		return """
+		myStr="""
 		void %s::endSynchronize() {
 		if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
-		std::cerr << "Fail to exit monitor." << std::endl;
-		exit(EXIT_FAILURE);
-		}
-		}
 		"""%(objectName)
+		if configGiws().getThrowsException():
+			myStr+="""throw %s::JniMonitorException(getCurrentEnv(), "%s");"""%(configGiws().getExceptionFileName(),objectName)
+		else:
+			myStr+= """
+			std::cerr << "Fail to exit monitor." << std::endl;
+			exit(EXIT_FAILURE);"""
+		return myStr + """
+		}
+		}"""
 	
         # For static methods, we can not call getCurrentEnv() because it is not static
 	def getStaticProfile(self):
