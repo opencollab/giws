@@ -43,7 +43,7 @@ class intDataGiws(dataGiws):
 	type="jint"
 	nativeType="int"
 	callMethod="CallIntMethod"
-	callStaticMethod="CallIntMethod"
+	callStaticMethod="CallStaticIntMethod"
 
 	def getTypeSignature(self):
 		return "I"
