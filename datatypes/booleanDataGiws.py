@@ -35,6 +35,7 @@
 # For more information, see the file COPYING
 
 from dataGiws import dataGiws
+from JNIFrameWork import JNIFrameWork
 
 # This class is not like other primitive datatypes because we need
 # to compare variables with JNI_TRUE or JNI_FALSE
