@@ -112,7 +112,7 @@ class methodGiws:
 
 		# add specific post processing stuff
 		if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
-			# For this datatype, there is some stuff to do AFTER the method call		
+			# For this datatype, there is some stuff to do AFTER the method call
 			str+=self.getReturn().specificPostProcessing()
 
 		# Delete the stringArrayClass object if used before
