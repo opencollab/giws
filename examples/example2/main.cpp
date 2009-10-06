@@ -48,8 +48,8 @@ JavaVM* create_vm() {
 	args.version = JNI_VERSION_1_4;
 
 	args.nOptions = 2;
-	options[0].optionString = "-Djava.class.path=.";
-	options[1].optionString = "-Xcheck:jni";
+	options[0].optionString = const_cast<char*>("-Djava.class.path=.");
+	options[1].optionString = const_cast<char*>("-Xcheck:jni");
 	args.options = options;
 	args.ignoreUnrecognized = JNI_FALSE;
 
