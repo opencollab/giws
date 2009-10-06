@@ -68,8 +68,9 @@ class booleanDataGiws(dataGiws):
 
 	def specificPostProcessing(self):
 		""" needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
-		if self.isArray():			                        
-			return """
+		if self.isArray():
+			str=JNIFrameWork().getExceptionCheckProfile()
+			return str+"""
 			jsize len = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			

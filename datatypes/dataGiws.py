@@ -36,6 +36,7 @@
 
 import sys
 from configGiws import configGiws
+from JNIFrameWork import JNIFrameWork
 
 def abstractMethod(obj=None):
     """ Use this instead of 'pass' for the body of abstract methods. """
@@ -188,7 +189,8 @@ class dataGiws(object):
 		nativeTypeForceNotArray=self.getNativeTypeForceNotArray()
 		
 		if self.isArray():
-			return """
+			str=JNIFrameWork().getExceptionCheckProfile()
+			return str+"""
 			jsize len = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 

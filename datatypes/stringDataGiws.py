@@ -121,6 +121,7 @@ class stringDataGiws(dataGiws):
 		# but when dealing with string, in this method, we are calling some
 		# methods which override the "exception engine" which drive the JNI
 		# engine crazy.
+
 		str=JNIFrameWork().getExceptionCheckProfile()
 
 		if self.isArray():

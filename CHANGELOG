@@ -1,3 +1,10 @@
+giws (1.0.4)
+
+	* Missing exception check on some calls of methods returning an array
+	* Use a const_cast in the examples (to avoid warnings)
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 06 Oct 2009 12:10:12 +0200
+
 giws (1.0.3)
 
 	* The use of a static method returning an int wasn't calling the right
