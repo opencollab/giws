@@ -1,5 +1,5 @@
 /*
-Copyright or © or Copr. INRIA/Scilab - Sylvestre LEDRU
+Copyright INRIA/Scilab - Sylvestre LEDRU
 #
 Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
 

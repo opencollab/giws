@@ -65,7 +65,7 @@ int main(){
 	MyObject *plop = new MyObject(jvm);
 	cout << "A string from Java : " << plop->getMyString() <<endl;
 	plop->doNothingPleaseButDisplay(23);
-	cout << "Hashcode of my two strings " << plop->giveMeTheHashCodePlease("plop", "plop2") << endl;
+	cout << "Hashcode of my two strings " << plop->giveMeTheHashCodePlease(const_cast<char*>("plop"), const_cast<char*>("plop2")) << endl;
 	cout << "Inverse my boolean. True becomes : " << plop->workingWithBoolean(true) << endl << "False becomes : " << plop->workingWithBoolean(false) << endl;;
 	return 0;	
 }
