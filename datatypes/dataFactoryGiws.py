@@ -78,7 +78,7 @@ class dataFactoryGiws:
 
                   
             if dataTypeToCreate not in self.dict:
-                  raise Exception("Don't know how to manage the data type %s",%dataTypeToCreate)
+                  raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
             
             myType=self.dict[dataTypeToCreate]()
             myType.setIsArray(isArray)
