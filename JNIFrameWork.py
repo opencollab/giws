@@ -72,7 +72,7 @@ class JNIFrameWork:
 		return """
 		JNIEnv * %s::getCurrentEnv() {
 		JNIEnv * curEnv = NULL;
-		this->jvm->AttachCurrentThread((void **) &curEnv, NULL);
+		this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		return curEnv;
 		}"""%(objectName)
 
@@ -81,7 +81,7 @@ class JNIFrameWork:
 		myStr="""
 		%s::~%s() {
 		JNIEnv * curEnv = NULL;
-		this->jvm->AttachCurrentThread((void **) &curEnv, NULL);
+		this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		
 		curEnv->DeleteGlobalRef(this->instance);
 		curEnv->DeleteGlobalRef(this->instanceClass);
@@ -125,7 +125,7 @@ class JNIFrameWork:
 	def getStaticProfile(self):
 		return """
 		JNIEnv * curEnv = NULL;
-		jvm_->AttachCurrentThread((void **) &curEnv, NULL);
+		jvm_->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		jclass cls = curEnv->FindClass( className().c_str() );
 		""" 
 
@@ -143,8 +143,7 @@ class JNIFrameWork:
 			throw %s::JniCallMethodException(curEnv);
 			}"""%(configGiws().getExceptionFileName())
 		else:
-			return """
-			if (curEnv->ExceptionCheck()) {
+			return """if (curEnv->ExceptionCheck()) {
 			curEnv->ExceptionDescribe() ;
 			}
 			"""
@@ -208,22 +207,22 @@ class JNIFrameWork:
 				params+=", "
 			i=i+1
 			
+			
 		if returnType.getNativeType()=="void": # Dealing with a void ... 
 			returns=""
+			returnsEnd=""
 		else:
 			typeOfReturn=returnType.getJavaTypeSyntax()
-			returns="""%s res =  (%s)"""%(typeOfReturn, typeOfReturn)
+			returns="""%s res =  static_cast<%s>("""%(typeOfReturn, typeOfReturn)
+			returnsEnd=")"
 
                 if method.getModifier()=="static":
                         return """
-                        %s curEnv->%s(cls, %s %s);
-						""" % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params)
+                        %s curEnv->%s(cls, %s %s)%s;""" % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
                 else:
                         return """
-                        %s curEnv->%s( this->instance, %s %s);
-                        """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params)
-
-
+                        %s curEnv->%s( this->instance, %s %s)%s;""" % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
+		
 	def getReturnProfile(self, returnType):
 		return returnType.getReturnSyntax()
 		
