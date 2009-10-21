@@ -71,7 +71,7 @@ class objectGiws:
 				if isinstance(param.getType(),stringDataGiws) and param.getType().isArray()==True and stringClassSet!=True and method.getModifier()!="static":
 					str+="""
 					jclass localStringArrayClass = curEnv->FindClass("java/lang/String");
-					stringArrayClass = (jclass) curEnv->NewGlobalRef(localStringArrayClass);
+					stringArrayClass = static_cast<jclass>(curEnv->NewGlobalRef(localStringArrayClass));
 					curEnv->DeleteLocalRef(localStringArrayClass);
 					"""
 					stringClassSet=True
@@ -139,7 +139,7 @@ class objectGiws:
 		%s
 		}
 		
-		this->instanceClass = (jclass) curEnv->NewGlobalRef(localClass) ;
+		this->instanceClass = static_cast<jclass>(curEnv->NewGlobalRef(localClass));
 		
 		/* localClass is not needed anymore */
 		curEnv->DeleteLocalRef(localClass);
@@ -203,7 +203,7 @@ class objectGiws:
         JNIEnv * curEnv = getCurrentEnv();
 
 		jclass localClass = curEnv->GetObjectClass(JObj);
-        this->instanceClass = (jclass) curEnv->NewGlobalRef(localClass);
+        this->instanceClass = static_cast<jclass>(curEnv->NewGlobalRef(localClass));
         curEnv->DeleteLocalRef(localClass);
 		
         if (this->instanceClass == NULL) {
