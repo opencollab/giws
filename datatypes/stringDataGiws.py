@@ -128,9 +128,9 @@ class stringDataGiws(dataGiws):
 			return str+"""
 			jsize len = curEnv->GetArrayLength(res);
 			char **arrayOfString;
-                        arrayOfString= arrayOfString= new char *[len + 1];
+                        arrayOfString = new char *[len + 1];
 			for (jsize i = 0; i < len; i++){
-			jstring resString = (jstring)curEnv->GetObjectArrayElement(res, i);
+			jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
 			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
 			arrayOfString[i] = new char[strlen(tempString) + 1];
 

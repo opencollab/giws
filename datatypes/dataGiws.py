@@ -108,7 +108,7 @@ class dataGiws(object):
 		""" Returns the JNI static method call
 		"""
 		if self.isArray():
-			return "CallObjectMethod"
+			return "CallStaticObjectMethod"
 		else:
 			return self.callStaticMethod
 		
@@ -159,7 +159,7 @@ class dataGiws(object):
 		return """
 		%sArray %s_ = curEnv->New%sArray( %sSize ) ;
 		%s
-		curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*) %s ) ;
+		curEnv->Set%sArrayRegion( %s_, 0, %sSize, const_cast<%s*>(%s) ) ;
 
 		"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName) 
 
@@ -195,7 +195,7 @@ class dataGiws(object):
 			jboolean isCopy = JNI_FALSE;
 
 			/* faster than getXXXArrayElements */
-			%s *resultsArray = (%s *) curEnv->GetPrimitiveArrayCritical(res, &isCopy);
+			%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
 			%s myArray= new %s[len];
 
 			for (jsize i = 0; i < len; i++){

@@ -60,11 +60,11 @@ class booleanDataGiws(dataGiws):
 		if self.isArray():
 			return """			
 			jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
-			curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*) %s ) ;
+			curEnv->SetBooleanArrayRegion( %s, 0, %sSize, static_cast<jboolean*>(%s) ) ;
 			""" % (name+"_", name, name+"_", name, name)
 		else:
 			return """
-			jboolean %s = ((bool) %s ? JNI_TRUE : JNI_FALSE);
+			jboolean %s = (static_cast<bool>(%s) ? JNI_TRUE : JNI_FALSE);
 			"""%(name+"_",name)
 
 	def specificPostProcessing(self):
@@ -76,7 +76,7 @@ class booleanDataGiws(dataGiws):
 			jboolean isCopy = JNI_FALSE;
 			
 			/* faster than getXXXArrayElements */
-			jboolean *resultsArray = (jboolean *) curEnv->GetPrimitiveArrayCritical(res, &isCopy);
+			jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
 			bool * myArray= new bool[len];
 			
 			for (jsize i = 0; i < len; i++){
