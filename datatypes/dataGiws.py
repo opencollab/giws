@@ -159,7 +159,7 @@ class dataGiws(object):
 		return """
 		%sArray %s_ = curEnv->New%sArray( %sSize ) ;
 		%s
-		curEnv->Set%sArrayRegion( %s_, 0, %sSize, const_cast<%s*>(%s) ) ;
+		curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*)(%s) ) ;
 
 		"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName) 
 
