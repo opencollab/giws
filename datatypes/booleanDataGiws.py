@@ -60,7 +60,7 @@ class booleanDataGiws(dataGiws):
 		if self.isArray():
 			return """			
 			jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
-			curEnv->SetBooleanArrayRegion( %s, 0, %sSize, static_cast<jboolean*>(%s) ) ;
+			curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*)%s ) ;
 			""" % (name+"_", name, name+"_", name, name)
 		else:
 			return """

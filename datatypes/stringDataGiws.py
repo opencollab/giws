@@ -128,7 +128,7 @@ class stringDataGiws(dataGiws):
 			return str+"""
 			jsize len = curEnv->GetArrayLength(res);
 			char **arrayOfString;
-                        arrayOfString = new char *[len + 1];
+			arrayOfString = new char *[len + 1];
 			for (jsize i = 0; i < len; i++){
 			jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
 			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
@@ -138,6 +138,7 @@ class stringDataGiws(dataGiws):
 			curEnv->ReleaseStringUTFChars(resString, tempString);
 			curEnv->DeleteLocalRef(resString);
 			}
+			arrayOfString[len]=NULL;
 			"""
 		else:
 			if hasattr(self,"parameterName"):

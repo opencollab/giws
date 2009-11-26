@@ -1,3 +1,14 @@
+giws (1.0.6)
+
+	* When using an array of bool, a static_cast was failing. Rollback to the
+	  classic cast. This bug has been introduced in the version 1.0.5 
+	  (Closes: #3)
+	* When a java method returns a String[], the length of the array is 
+	  lost in the generated cpp, then, we set arrayOfString[len]=NULL.
+	  (Closes: #4)
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Wed, 21 Oct 2009 15:02:40 +0200
+
 giws (1.0.5)
 
 	* Classical cast changed for *_cast 
