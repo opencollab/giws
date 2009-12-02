@@ -1,3 +1,9 @@
+giws (1.0.7)
+
+	* Example3 updated: Shows how to retrieve the example text error
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Wed, 02 Dec 2009 15:50:38 +0100
+
 giws (1.0.6)
 
 	* When using an array of bool, a static_cast was failing. Rollback to the
