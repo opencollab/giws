@@ -84,6 +84,17 @@ int main(){
 
 	cout << "========================" << endl;
 
+	cout << "Exception will be trigger. This will display the message of the exception" << endl;
+	try {
+		int value = plop->thisMethodWillFailWithMessage();
+	}catch(GiwsException::JniException e) {
+		cout << "getJavaDescription: " << e.getJavaDescription() << endl;
+		cout << "getJavaStackTrace: " << e.getJavaStackTrace() << endl;
+		cout << "getJavaExceptionName: " << e.getJavaExceptionName() << endl;
+	}
+
+	cout << "========================" << endl;
+
 	cout << "Exception not catched:" << endl;
 	int myIntsWithException = plop->getIntFromArrayOfSizeThree(223);
 	cout << "Value from the Java with good pos : " << myInts  <<endl;

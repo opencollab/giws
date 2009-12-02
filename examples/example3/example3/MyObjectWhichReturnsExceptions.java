@@ -10,6 +10,10 @@ public class MyObjectWhichReturnsExceptions{
 		int[] arrayOfInt={42,12,69};
 		return arrayOfInt[pos];
 	}
+
+	public int thisMethodWillFailWithMessage() throws RuntimeException {
+		throw new RuntimeException("I said that will fail!");
+	}
 	
 	public static void main(String []args){
 		MyObjectWhichReturnsExceptions plop = new MyObjectWhichReturnsExceptions();
