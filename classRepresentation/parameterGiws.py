@@ -65,5 +65,8 @@ class parameterGiws(dataGiws):
 		""" Generate the profil of the parameter """
 		str="""%s %s""" % (self.getType().getNativeType(), self.getName())
 		if self.getType().isArray():
-			str+=", int %sSize"%self.getName()
+			if self.getType().getDimensionArray() == 1:
+				str+=", int %sSize"%self.getName()
+			else:
+				str+=", int %sSize, int %sSizeCol"%(self.getName(),self.getName())
 		return str

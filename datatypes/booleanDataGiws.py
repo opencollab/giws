@@ -58,10 +58,21 @@ class booleanDataGiws(dataGiws):
 	def specificPreProcessing(self, parameter):
 		name=parameter.getName()
 		if self.isArray():
-			return """			
-			jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
-			curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*)%s ) ;
-			""" % (name+"_", name, name+"_", name, name)
+			if self.getDimensionArray() == 1: 
+				return """			
+				jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
+				curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*)%s ) ;
+				""" % (name+"_", name, name+"_", name, name)
+			else:
+				return """			
+				jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL)
+				for (int i=0; i<%sSize; i++){
+	                        jbooleanArray %sLocal = curEnv->NewBooleanArray( %sSizeCol ) ;
+        	                curEnv->SetBooleanArrayRegion( %sLocal, 0, %sSizeCol, (jboolean*)(%s[i]) ) ;
+                	        curEnv->SetObjectArrayElement(%s_, i, %sLocal);
+                        	curEnv->DeleteLocalRef(%sLocal);
+	                        }
+				""" % (name, name, self.getTypeSignature(), name, name, name, name, name, name, name, name)
 		else:
 			return """
 			jboolean %s = (static_cast<bool>(%s) ? JNI_TRUE : JNI_FALSE);
@@ -71,21 +82,43 @@ class booleanDataGiws(dataGiws):
 		""" needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
-			return str+"""
+			strCommon="""                   
 			jsize len = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
-			
-			/* faster than getXXXArrayElements */
-			jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
-			bool * myArray= new bool[len];
-			
-			for (jsize i = 0; i < len; i++){
-			myArray[i]=(resultsArray[i] == JNI_TRUE);
-			}
-			curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
-
-                        curEnv->DeleteLocalRef(res);
 			"""
+
+			if self.getDimensionArray() == 1: 
+
+				return str+strCommon+"""
+			
+				/* faster than getXXXArrayElements */
+				jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
+				bool * myArray= new bool[len];
+				
+				for (jsize i = 0; i < len; i++){
+				myArray[i]=(resultsArray[i] == JNI_TRUE);
+				}
+				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+	
+				curEnv->DeleteLocalRef(res);
+				"""
+			else:
+				return str+strCommon+"""
+				bool ** myArray = new bool*[len];
+				for(int i=0; i<len; i++) {
+				jbooleanArray oneDim = (jbooleanArray)curEnv->GetObjectArrayElement(res, i);
+				int lenCol=curEnv->GetArrayLength(oneDim);
+				bool *resultsArray = static_cast<bool *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
+				myArray[i] = new bool[lenCol];
+				for(int j=0; j<lenCol; j++) {
+				myArray[i][j]=(resultsArray[i] == JNI_TRUE);
+				}
+				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+				}
+ 
+				curEnv->DeleteLocalRef(res);
+				"""
+
 		else:
 			return ""
 	def getReturnSyntax(self):

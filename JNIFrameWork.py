@@ -152,14 +152,14 @@ class JNIFrameWork:
 		params=""
 		for parameter in method.getParameters():
 			if parameter.getType().isArray(): # It is an array
-				params+="["
+				params+="[" * parameter.getType().getDimensionArray()
 			params+=parameter.getType().getTypeSignature()
 
 		methodIdName=method.getUniqueNameOfTheMethod()
 		
 		signatureReturn=method.getReturn().getTypeSignature()
 		if method.getReturn().isArray(): # Returns an array ... 
-			signatureReturn="["+signatureReturn
+			signatureReturn="["* method.getReturn().getDimensionArray() + signatureReturn
 		
                 if method.getModifier()=="static":
                         getMethod = "GetStaticMethodID"

@@ -61,7 +61,7 @@ class stringDataGiws(dataGiws):
 
 	def getNativeType(self):
 		if self.isArray():
-			return "char **"
+			return "char *" + "*" * self.getDimensionArray()
 		else:
 			return "char *"
 
@@ -125,21 +125,45 @@ class stringDataGiws(dataGiws):
 		str=JNIFrameWork().getExceptionCheckProfile()
 
 		if self.isArray():
-			return str+"""
+			strCommon="""
 			jsize len = curEnv->GetArrayLength(res);
-			char **arrayOfString;
-			arrayOfString = new char *[len + 1];
-			for (jsize i = 0; i < len; i++){
-			jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
-			const char *tempString = curEnv->GetStringUTFChars(resString, 0);
-			arrayOfString[i] = new char[strlen(tempString) + 1];
-
-			strcpy(arrayOfString[i], tempString);
-			curEnv->ReleaseStringUTFChars(resString, tempString);
-			curEnv->DeleteLocalRef(resString);
-			}
-			arrayOfString[len]=NULL;
 			"""
+			if self.getDimensionArray() == 1:
+				return str+strCommon+"""
+				char **arrayOfString;
+				arrayOfString = new char *[len + 1];
+				for (jsize i = 0; i < len; i++){
+				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
+				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
+				arrayOfString[i] = new char[strlen(tempString) + 1];
+	
+				strcpy(arrayOfString[i], tempString);
+				curEnv->ReleaseStringUTFChars(resString, tempString);
+				curEnv->DeleteLocalRef(resString);
+				}
+				arrayOfString[len]=NULL;
+				"""
+			else:
+				return str+strCommon+"""
+				char ***arrayOfString;
+				arrayOfString = new char **[len + 1];
+				for (jsize i = 0; i < len; i++){ /* Line of the array */
+				jobjectArray resStringLine = reinterpret_cast<jobjectArray>(curEnv->GetObjectArrayElement(res, i));
+				jsize lenCol = curEnv->GetArrayLength(resStringLine);
+				arrayOfString[i]=new char*[lenCol+1];
+				for (jsize j = 0; j < lenCol; j++){
+				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(resStringLine, j));
+				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
+				arrayOfString[i][j] = new char[strlen(tempString) + 1];
+				strcpy(arrayOfString[i][j], tempString);
+				curEnv->ReleaseStringUTFChars(resString, tempString);
+				curEnv->DeleteLocalRef(resString);
+}
+				arrayOfString[i][lenCol]=NULL;
+				curEnv->DeleteLocalRef(resStringLine);
+				 }
+				"""
+
 		else:
 			if hasattr(self,"parameterName"):
 				str+="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")

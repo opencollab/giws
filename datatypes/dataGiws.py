@@ -47,6 +47,7 @@ def abstractMethod(obj=None):
 # see http://en.wikipedia.org/wiki/Java_Native_Interface#Mapping_types
 class dataGiws(object):
 	__isArray=False
+	__dimensionArray=0
 	"""
 	Interface for the datatype mapping
 	"""
@@ -56,7 +57,10 @@ class dataGiws(object):
 		when applies
 		"""
 		if self.isArray() and not ForceNotArray:
+                    if self.getDimensionArray == 1: 
 			return self.type+"Array"
+                    else:
+                        return "jobjectArray"
 		else:
 			return self.type
 		
@@ -80,7 +84,7 @@ class dataGiws(object):
 		""" Returns the native type (C/C++)
 		"""
 		if self.isArray() and not ForceNotArray:
-			return self.nativeType+" *"
+			return self.nativeType + "*" * self.__dimensionArray
 		else:
 			return self.nativeType
 
@@ -134,6 +138,18 @@ class dataGiws(object):
 		"""
 		return self.__isArray
 
+		
+		
+	def setDimensionArray(self, dimensionArray):
+		""" Defines the size of the array
+		"""
+		self.__dimensionArray=dimensionArray
+
+	def getDimensionArray(self):
+		""" return the size of the array
+		"""
+		return self.__dimensionArray
+
 
 	def __getProfileCreationOfTheArray(self, varName):
 		"""
@@ -154,14 +170,27 @@ class dataGiws(object):
 			"""%(varName,configGiws().getExceptionFileName())
 		else:
 			errorMgnt=""
-  
-		# Yep, it seems ugly to have that much varName but it is normal.
-		return """
-		%sArray %s_ = curEnv->New%sArray( %sSize ) ;
-		%s
-		curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*)(%s) ) ;
 
-		"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName) 
+                if self.getDimensionArray() == 1:
+			# Yep, it seems ugly to have that much varName but it is normal.
+			return """
+			%sArray %s_ = curEnv->New%sArray( %sSize ) ;
+			%s
+			curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*)(%s) ) ;
+	
+			"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName) 
+                else:
+			return """
+			 jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL);
+			%s
+			 for (int i=0; i<%sSize; i++){
+ 
+			%sArray %sLocal = curEnv->New%sArray( %sSizeCol ) ;
+			curEnv->Set%sArrayRegion( %sLocal, 0, %sSizeCol, (%s*)(%s[i]) ) ;
+			curEnv->SetObjectArrayElement(%s_, i, %sLocal);
+			curEnv->DeleteLocalRef(%sLocal);
+			}
+			"""%(varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, shortType, varName, varName, javaType, varName, varName, varName, varName) 
 
 	def specificPreProcessing(self, parameter):
 		""" Preprocessing before calling the java method
@@ -190,21 +219,40 @@ class dataGiws(object):
 		
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
-			return str+"""
+                        strCommon="""			
 			jsize len = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
+			"""
+                        if self.getDimensionArray() == 1: 
+                            	return str+strCommon+"""
+				/* GetPrimitiveArrayCritical is faster than getXXXArrayElements */
+				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
+				%s myArray= new %s[len];
+	
+				for (jsize i = 0; i < len; i++){
+				myArray[i]=resultsArray[i];
+				}
+				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 
-			/* faster than getXXXArrayElements */
-			%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
-			%s myArray= new %s[len];
+                        	curEnv->DeleteLocalRef(res);
+				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
+                        else:
+				return str+strCommon+"""
+				%s ** myArray = new %s*[len];
+				for(int i=0; i<len; i++) {
+				%sArray oneDim = (%sArray)curEnv->GetObjectArrayElement(res, i);
+				int lenCol=curEnv->GetArrayLength(oneDim);
+				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
+				myArray[i] = new %s[lenCol];
+				for(int j=0; j<lenCol; j++) {
+				myArray[i][j]= resultsArray[j];
+				}
+				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
+				}
+ 
+				curEnv->DeleteLocalRef(res);
+				"""%(self.nativeType, self.nativeType, javaTypeNotArray, javaTypeNotArray, self.nativeType, self.nativeType, nativeTypeForceNotArray)
 
-			for (jsize i = 0; i < len; i++){
-			myArray[i]=resultsArray[i];
-			}
-			curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
-
-                        curEnv->DeleteLocalRef(res);
-			"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
 		else:
 			# Not post processing when dealing with primitive types
 			return ""

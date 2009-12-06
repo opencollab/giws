@@ -71,10 +71,12 @@ class dataFactoryGiws:
 
             """
             isArray=False
+            arrayDimension=0 # Scalar
             if dataTypeToCreate.endswith("[]"): # It is an array
                   isArray=True
+                  arrayDimension=dataTypeToCreate.count("[]")
                   # Trim to load the right object
-                  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-2]
+                  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-(arrayDimension*2)]
 
                   
             if dataTypeToCreate not in self.dict:
@@ -82,6 +84,7 @@ class dataFactoryGiws:
             
             myType=self.dict[dataTypeToCreate]()
             myType.setIsArray(isArray)
+            myType.setDimensionArray(arrayDimension)
             return myType
 
 if __name__ == '__main__':
