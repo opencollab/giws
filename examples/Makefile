@@ -8,7 +8,7 @@
 SHELL = /bin/sh
 
 # list of buildable examples
-EX = basic_example example1 example2 example3
+EX = basic_example example1 example2 example3 example4
 
 
 # verify that JAVA_HOME is set to something (should be the bare minimum)
