@@ -135,8 +135,9 @@ class methodGiws:
 	def getUniqueNameOfTheMethod(self):
 		paramStr=""
 		for parameter in self.getParameters(): #Creates a unique string of all the profiles
-			paramStr+=parameter.getType().getJavaTypeSyntax() 
-		str="""%s%s%sID"""%(self.getReturn().getJavaTypeSyntax(), self.getName(), paramStr)
+			paramStr+=parameter.getType().getJavaTypeSyntax() + "_"*parameter.getType().getDimensionArray()
+
+		str="""%s%s%sID"""%(self.getReturn().getJavaTypeSyntax() + "_" * self.getReturn().getDimensionArray(), self.getName(), paramStr)
 		
 
 		return str
