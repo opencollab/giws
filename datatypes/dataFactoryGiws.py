@@ -35,6 +35,7 @@
 # For more information, see the file COPYING
 
 from datatypes.intDataGiws import intDataGiws
+from datatypes.charDataGiws import charDataGiws
 from datatypes.longDataGiws import longDataGiws
 from datatypes.doubleDataGiws import doubleDataGiws
 from datatypes.booleanDataGiws import booleanDataGiws
@@ -52,6 +53,7 @@ class dataFactoryGiws:
 
 		  self.dict = {
 			  "int":    intDataGiws,
+			  "char":    charDataGiws,
 			  "long":   longDataGiws,
 			  "double": doubleDataGiws,
               "boolean": booleanDataGiws,
@@ -64,7 +66,7 @@ class dataFactoryGiws:
 
 	  def create(self, dataTypeToCreate):
             """ Create an GIWS datatype
-            it can be int, long, double, boolean, byte, float, short,
+            it can be int, char, long, double, boolean, byte, float, short,
             String and void
             if there is a trailing [], this object will consider it as an
             array of this data

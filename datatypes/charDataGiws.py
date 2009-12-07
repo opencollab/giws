@@ -38,14 +38,13 @@ from dataGiws import dataGiws
 
 class charDataGiws(dataGiws):
 
+	type="jchar"
 	nativeType="char"
 	callMethod="CallCharMethod"
+	callStaticMethod="CallStaticCharMethod"
 
 	def getTypeSignature(self):
 		return "C"
-
-	def getJavaTypeSyntax(self):
-		return "jchar"
 
 	def getRealJavaType(self):
 		return "char"
