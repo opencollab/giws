@@ -43,5 +43,8 @@ For more information, see the file COPYING
 	<method name="doNothingPleaseButDisplay" returnType="void">
 	  <param type="int[][]" name="plop" />
 	</method>
+	<method name="displayMatrixOfString" returnType="void">
+	  <param type="String[][]" name="plop" />
+	</method>
   </object>
 </package>

@@ -67,4 +67,13 @@ public class MyObjectWithArray{
 		}
 	}
 
+	public void displayMatrixOfString(String[][] a){
+		System.out.println("Your first array has a size of ["+a.length+","+a[0].length+"] elements");
+        for(int i=0; i<a.length; i++) {
+			for (int j=0; j<a[0].length; j++) {
+				System.out.println("I did display some very interesting things like the int Array : "+a[i][j]);
+			}
+		}
+	}
+
 }

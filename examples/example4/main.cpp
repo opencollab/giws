@@ -97,5 +97,14 @@ int main(){
 	cout << "Bool from Java [1,2] : " << myBool[1][2]  <<endl;
 
 
+	char ***sendToJava = new char **[2];
+	sendToJava[0] = new char *[2];
+	sendToJava[0][0]="string1";
+	sendToJava[0][1]="string2";
+	sendToJava[1] = new char *[2];
+	sendToJava[1][0]="string3";
+	sendToJava[1][1]="Final string";
+	plop->displayMatrixOfString(sendToJava,2,2);
+
 	return 0;	
 }
