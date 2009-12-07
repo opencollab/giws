@@ -60,6 +60,14 @@ class JNIFrameWork:
 			strHeader+="""
 			#include "%s"
 			"""%(configGiws().getExceptionFileName()+configGiws().getCPPHeaderExtension())
+		# Byte support
+		strHeader+="""
+		#if !defined(byte)
+		typedef signed char byte;
+		#else
+		#prama message("Byte has been refined elsewhere. Some problems can happen")
+		#endif
+		"""
 		return strHeader
 	
 	def getJavaVMVariable(self):
