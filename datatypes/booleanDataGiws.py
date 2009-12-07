@@ -111,7 +111,7 @@ class booleanDataGiws(dataGiws):
 				bool *resultsArray = static_cast<bool *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
 				myArray[i] = new bool[lenCol];
 				for(int j=0; j<lenCol; j++) {
-				myArray[i][j]=(resultsArray[i] == JNI_TRUE);
+				myArray[i][j]=(resultsArray[j] == JNI_TRUE);
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 				}
