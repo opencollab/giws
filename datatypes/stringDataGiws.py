@@ -83,29 +83,61 @@ class stringDataGiws(dataGiws):
 			exit(EXIT_FAILURE);"""
 
 		if self.isArray():
-			return """			
+			if self.getDimensionArray() == 1:
+				return """			
 			
-			// create java array of strings.
-			jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
-			if (%s_ == NULL)
-			{
-			%s
-			}
+				// create java array of strings.
+				jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
+				if (%s_ == NULL)
+				{
+				%s
+				}
 
-			// convert each char * to java strings and fill the java array.
-			for ( int i = 0; i < %sSize; i++)
-			{
-			jstring TempString = curEnv->NewStringUTF( %s[i] );
-			if (TempString == NULL)
-			{
-			%s
-			}
+				// convert each char * to java strings and fill the java array.
+				for ( int i = 0; i < %sSize; i++)
+				{
+				jstring TempString = curEnv->NewStringUTF( %s[i] );
+				if (TempString == NULL)
+				{
+				%s
+				}
 			
-			curEnv->SetObjectArrayElement( %s_, i, TempString);
+				curEnv->SetObjectArrayElement( %s_, i, TempString);
 			
-			// avoid keeping reference on to many strings
-			curEnv->DeleteLocalRef(TempString);
-			}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
+				// avoid keeping reference on to many strings
+				curEnv->DeleteLocalRef(TempString);
+				}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
+			else:
+				return """
+				// create java array of array of strings.
+				jobjectArray %s_ = curEnv->NewObjectArray( %sSize, curEnv->FindClass("[Ljava/lang/String;"), NULL);
+				if (%s_ == NULL)
+				{
+				%s
+				}
+
+				for ( int i = 0; i < %sSize; i++)
+				{
+				jobjectArray %sLocal = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
+				// convert each char * to java strings and fill the java array.
+				for ( int j = 0; j < %sSizeCol; j++) {
+				jstring TempString = curEnv->NewStringUTF( %s[i][j] );
+				
+				if (TempString == NULL)
+				{
+				%s
+				}
+
+				curEnv->SetObjectArrayElement( %sLocal, j, TempString);
+
+				// avoid keeping reference on to many strings
+				curEnv->DeleteLocalRef(TempString);
+				}
+				curEnv->SetObjectArrayElement(%s_, i, %sLocal);
+				curEnv->DeleteLocalRef(%sLocal);
+
+				}"""%(name,name,name,errorMgntMem,name,name,name,name,name,errorMgntMemBis,name,name,name,name)
+
 		else:
 			# Need to store is for the post processing (delete)
 			self.parameterName=name
