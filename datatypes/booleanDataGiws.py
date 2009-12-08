@@ -65,14 +65,14 @@ class booleanDataGiws(dataGiws):
 				""" % (name+"_", name, name+"_", name, name)
 			else:
 				return """			
-				jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL)
+				jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL);
 				for (int i=0; i<%sSize; i++){
 	                        jbooleanArray %sLocal = curEnv->NewBooleanArray( %sSizeCol ) ;
         	                curEnv->SetBooleanArrayRegion( %sLocal, 0, %sSizeCol, (jboolean*)(%s[i]) ) ;
                 	        curEnv->SetObjectArrayElement(%s_, i, %sLocal);
                         	curEnv->DeleteLocalRef(%sLocal);
 	                        }
-				""" % (name, name, self.getTypeSignature(), name, name, name, name, name, name, name, name)
+				""" % (name, name, self.getTypeSignature(), name, name, name, name, name, name, name, name, name)
 		else:
 			return """
 			jboolean %s = (static_cast<bool>(%s) ? JNI_TRUE : JNI_FALSE);
