@@ -118,7 +118,7 @@ class stringDataGiws(dataGiws):
 
 				for ( int i = 0; i < %sSize; i++)
 				{
-				jobjectArray %sLocal = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
+				jobjectArray %sLocal = curEnv->NewObjectArray( %sSizeCol, stringArrayClass, NULL);
 				// convert each char * to java strings and fill the java array.
 				for ( int j = 0; j < %sSizeCol; j++) {
 				jstring TempString = curEnv->NewStringUTF( %s[i][j] );
