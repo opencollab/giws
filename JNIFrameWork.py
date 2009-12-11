@@ -66,7 +66,7 @@ class JNIFrameWork:
 		#if !defined(byte)
 		typedef signed char byte;
 		#else
-		#pragma message("Byte has been refined elsewhere. Some problems can happen")
+		#pragma message("Byte has been redefined elsewhere. Some problems can happen")
 		#endif
 		#endif
 		"""
