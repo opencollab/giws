@@ -158,13 +158,13 @@ class stringDataGiws(dataGiws):
 
 		if self.isArray():
 			strCommon="""
-			jsize len = curEnv->GetArrayLength(res);
+			*lenRow = curEnv->GetArrayLength(res);
 			"""
 			if self.getDimensionArray() == 1:
 				return str+strCommon+"""
 				char **arrayOfString;
-				arrayOfString = new char *[len + 1];
-				for (jsize i = 0; i < len; i++){
+				arrayOfString = new char *[*lenRow];
+				for (jsize i = 0; i < *lenRow; i++){
 				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
 				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
 				arrayOfString[i] = new char[strlen(tempString) + 1];
@@ -173,17 +173,16 @@ class stringDataGiws(dataGiws):
 				curEnv->ReleaseStringUTFChars(resString, tempString);
 				curEnv->DeleteLocalRef(resString);
 				}
-				arrayOfString[len]=NULL;
 				"""
 			else:
 				return str+strCommon+"""
 				char ***arrayOfString;
-				arrayOfString = new char **[len + 1];
-				for (jsize i = 0; i < len; i++){ /* Line of the array */
+				arrayOfString = new char **[*lenRow];
+				for (jsize i = 0; i < *lenRow; i++){ /* Line of the array */
 				jobjectArray resStringLine = reinterpret_cast<jobjectArray>(curEnv->GetObjectArrayElement(res, i));
-				jsize lenCol = curEnv->GetArrayLength(resStringLine);
-				arrayOfString[i]=new char*[lenCol+1];
-				for (jsize j = 0; j < lenCol; j++){
+				*lenCol = curEnv->GetArrayLength(resStringLine);
+				arrayOfString[i]=new char*[*lenCol];
+				for (jsize j = 0; j < *lenCol; j++){
 				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(resStringLine, j));
 				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
 				arrayOfString[i][j] = new char[strlen(tempString) + 1];
@@ -191,7 +190,6 @@ class stringDataGiws(dataGiws):
 				curEnv->ReleaseStringUTFChars(resString, tempString);
 				curEnv->DeleteLocalRef(resString);
 }
-				arrayOfString[i][lenCol]=NULL;
 				curEnv->DeleteLocalRef(resStringLine);
 				 }
 				"""

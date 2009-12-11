@@ -83,7 +83,7 @@ class booleanDataGiws(dataGiws):
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
 			strCommon="""                   
-			jsize len = curEnv->GetArrayLength(res);
+			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			"""
 
@@ -93,9 +93,9 @@ class booleanDataGiws(dataGiws):
 			
 				/* faster than getXXXArrayElements */
 				jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
-				bool * myArray= new bool[len];
+				bool * myArray= new bool[*lenRow];
 				
-				for (jsize i = 0; i < len; i++){
+				for (jsize i = 0; i < *lenRow; i++){
 				myArray[i]=(resultsArray[i] == JNI_TRUE);
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
@@ -104,13 +104,13 @@ class booleanDataGiws(dataGiws):
 				"""
 			else:
 				return str+strCommon+"""
-				bool ** myArray = new bool*[len];
-				for(int i=0; i<len; i++) {
+				bool ** myArray = new bool*[*lenRow];
+				for(int i=0; i<*lenRow; i++) {
 				jbooleanArray oneDim = (jbooleanArray)curEnv->GetObjectArrayElement(res, i);
-				int lenCol=curEnv->GetArrayLength(oneDim);
+				*lenCol=curEnv->GetArrayLength(oneDim);
 				bool *resultsArray = static_cast<bool *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
-				myArray[i] = new bool[lenCol];
-				for(int j=0; j<lenCol; j++) {
+				myArray[i] = new bool[*lenCol];
+				for(int j=0; j<*lenCol; j++) {
 				myArray[i][j]=(resultsArray[j] == JNI_TRUE);
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);

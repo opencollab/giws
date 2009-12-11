@@ -220,16 +220,16 @@ class dataGiws(object):
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
                         strCommon="""			
-			jsize len = curEnv->GetArrayLength(res);
+			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			"""
                         if self.getDimensionArray() == 1: 
                             	return str+strCommon+"""
 				/* GetPrimitiveArrayCritical is faster than getXXXArrayElements */
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
-				%s myArray= new %s[len];
+				%s myArray= new %s[*lenRow];
 	
-				for (jsize i = 0; i < len; i++){
+				for (jsize i = 0; i < *lenRow; i++){
 				myArray[i]=resultsArray[i];
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
@@ -238,13 +238,13 @@ class dataGiws(object):
 				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
                         else:
 				return str+strCommon+"""
-				%s ** myArray = new %s*[len];
-				for(int i=0; i<len; i++) {
+				%s ** myArray = new %s*[*lenRow];
+				for(int i=0; i<*lenRow; i++) {
 				%sArray oneDim = (%sArray)curEnv->GetObjectArrayElement(res, i);
-				int lenCol=curEnv->GetArrayLength(oneDim);
+				*lenCol=curEnv->GetArrayLength(oneDim);
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
-				myArray[i] = new %s[lenCol];
-				for(int j=0; j<lenCol; j++) {
+				myArray[i] = new %s[*lenCol];
+				for(int j=0; j<*lenCol; j++) {
 				myArray[i][j]= resultsArray[j];
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);

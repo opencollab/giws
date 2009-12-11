@@ -149,17 +149,31 @@ class methodGiws:
                         static="static "
                 else:
                         static=""
-                
-		str="""%s%s %s(%s);
-		"""%(static, self.getReturn().getNativeType(), self.getName(), self.getParametersCXX())
+		
+		ret=""
+		if self.getReturn().isArray():
+			if self.getReturn().getDimensionArray() == 1:
+				ret+=", int *lenRow"
+			else:
+				ret+=", int *lenRow, int *lenCol"
+
+		str="""%s%s %s(%s%s);
+		"""%(static, self.getReturn().getNativeType(), self.getName(), self.getParametersCXX(),ret)
 		return str
 	 
 	def generateCXXBody(self, className):
 		""" Generates the content of the method ... for the body """
 		baseProfile="""%s %s::%s"""%(self.getReturn().getNativeType(),className, self.getName())
 		
+		ret=""
+		if self.getReturn().isArray():
+			if self.getReturn().getDimensionArray() == 1:
+				ret+=", int *lenRow"
+			else:
+				ret+=", int *lenRow, int *lenCol"
+
 		str="""
-		%s (%s)"""%(baseProfile,self.getParametersCXX())
+		%s (%s%s)"""%(baseProfile,self.getParametersCXX(),ret)
 			
 		str+="""{
 		%s
