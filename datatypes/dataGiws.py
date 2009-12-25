@@ -219,7 +219,10 @@ class dataGiws(object):
 		
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
-                        strCommon="""			
+                        strCommon=""
+			if configGiws().getDisableReturnSize()==True:
+				strCommon+="int *lenRow;"
+                        strCommon+="""			
 			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			"""
@@ -237,6 +240,8 @@ class dataGiws(object):
                         	curEnv->DeleteLocalRef(res);
 				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
                         else:
+				if configGiws().getDisableReturnSize()==True:
+					str+="int *lenCol;"
 				return str+strCommon+"""
 				%s ** myArray = new %s*[*lenRow];
 				for(int i=0; i<*lenRow; i++) {

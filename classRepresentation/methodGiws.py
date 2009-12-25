@@ -39,6 +39,7 @@ from JNIFrameWork import JNIFrameWork
 from datatypes.dataGiws import dataGiws
 from datatypes.stringDataGiws import stringDataGiws
 from types import MethodType
+from configGiws import configGiws
 
 class methodGiws:
 	__name=""
@@ -151,11 +152,13 @@ class methodGiws:
                         static=""
 		
 		ret=""
-		if self.getReturn().isArray():
+		if self.getReturn().isArray() and configGiws().getDisableReturnSize()!=True:
+			if len(self.__parameters)!=0:
+				ret+=", "
 			if self.getReturn().getDimensionArray() == 1:
-				ret+=", int *lenRow"
+				ret+="int *lenRow"
 			else:
-				ret+=", int *lenRow, int *lenCol"
+				ret+="int *lenRow, int *lenCol"
 
 		str="""%s%s %s(%s%s);
 		"""%(static, self.getReturn().getNativeType(), self.getName(), self.getParametersCXX(),ret)
@@ -166,11 +169,13 @@ class methodGiws:
 		baseProfile="""%s %s::%s"""%(self.getReturn().getNativeType(),className, self.getName())
 		
 		ret=""
-		if self.getReturn().isArray():
+		if self.getReturn().isArray() and configGiws().getDisableReturnSize()!=True:
+			if len(self.__parameters)!=0:
+				ret+=", "
 			if self.getReturn().getDimensionArray() == 1:
-				ret+=", int *lenRow"
+				ret+="int *lenRow"
 			else:
-				ret+=", int *lenRow, int *lenCol"
+				ret+="int *lenRow, int *lenCol"
 
 		str="""
 		%s (%s%s)"""%(baseProfile,self.getParametersCXX(),ret)

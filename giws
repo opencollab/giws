@@ -59,7 +59,7 @@ class giws:
 	load configuration from command line parameters
 	"""
 	def __parse_cmdline(self):
-		opts, args = getopt.getopt(self.argv[1:], "f:o:b:pehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","help","version"])
+		opts, args = getopt.getopt(self.argv[1:], "f:o:b:prehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","disable-return-size-array","help","version"])
 
 		# we know at least one options is required (-f file...)
 		if len(opts)==0:
@@ -90,6 +90,9 @@ class giws:
 			elif option in ("-e","--throws-exception-on-error"):
 				self.config.setThrowsException(True)
 				
+			elif option in ("-r","--disable-return-size-array"):
+				self.config.setDisableReturnSize()
+
 			elif option == '--header-extension-file':
 				self.config.setCPPHeaderExtension(value)
 
@@ -128,6 +131,7 @@ class giws:
 		print "-o     --output-dir=dir           The directory where to export files"
 		print "-p     --per-package              Generates CXX/HXX files per package"
 		print "-e     --throws-exception-on-error       Throws a C++ exception instead of an exit(EXIT_FAILURE)"
+		print "-r     --disable-return-size-array       Disable the return of the size of the array/arrays through int*"
 		print "--header-extension-file=ext       Specify the extension of the header file generated [Default : .hxx]"
 		print "--body-extension-file=ext         Specify the extension of the body file generated [Default : .cpp]"
 		print "-v     --version                  Display the version informations"

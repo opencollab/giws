@@ -6,6 +6,9 @@ giws (1.1.0)
 	  (Closes: #6)
 	* Management of the char datatype (Closes: #7)
 	* Example3 updated: Shows how to retrieve the example text error
+	* By default, when dealing with array, an argument (int*) is added to 
+	  provide the size of the array. Option -r/--disable-return-size-array to
+	  go back to the previous behavior.
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Wed, 02 Dec 2009 15:50:38 +0100
 

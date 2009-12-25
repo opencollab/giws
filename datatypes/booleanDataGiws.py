@@ -36,6 +36,7 @@
 
 from dataGiws import dataGiws
 from JNIFrameWork import JNIFrameWork
+from configGiws import configGiws
 
 # This class is not like other primitive datatypes because we need
 # to compare variables with JNI_TRUE or JNI_FALSE
@@ -82,7 +83,10 @@ class booleanDataGiws(dataGiws):
 		""" needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
-			strCommon="""                   
+			strCommon=""
+			if configGiws().getDisableReturnSize()==True:
+				strCommon+="int *lenRow;"
+			strCommon+="""                   
 			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			"""
@@ -103,6 +107,8 @@ class booleanDataGiws(dataGiws):
 				curEnv->DeleteLocalRef(res);
 				"""
 			else:
+				if configGiws().getDisableReturnSize()==True:
+					str+="int *lenCol;"
 				return str+strCommon+"""
 				bool ** myArray = new bool*[*lenRow];
 				for(int i=0; i<*lenRow; i++) {

@@ -61,7 +61,7 @@ using namespace example4;
 using namespace std;
 
 int main(){
-	int sizeArray=3, sizeArrayCol = 2, i;
+	int sizeArray=3, sizeArrayCol = 2, i, j;
   	JavaVM* jvm = create_vm();
 	MyObjectWithArray *plop = new MyObjectWithArray(jvm);
 	int **myArrayOfLong= (int**)malloc(sizeof(int) * sizeArray);//[sizeArray][sizeArrayCol];
@@ -72,15 +72,17 @@ int main(){
 	}
 
 	plop->doNothingPleaseButDisplay(myArrayOfLong,sizeArray,sizeArrayCol);
-
-	char *** myString=plop->getMatrixString();
-	cout << "String from Java [0,0] : " << myString[0][0]  <<endl;
-	cout << "String from Java [0,1] : " << myString[0][1]  <<endl;
-	cout << "String from Java [1,0] : " << myString[1][0]  <<endl;
-	cout << "String from Java [1,1] : " << myString[1][1]  <<endl;
+	int lenRow, lenCol;
+	char *** myString=plop->getMatrixString(&lenRow, &lenCol);
+	cout << "Going to get a String[" << lenRow << "][" << lenCol << "]" << endl;
+	for (i = 0; i < lenRow; i++) {
+		for (j = 0; j < lenCol; j++) {
+			cout << "String from Java [" << i << "," << j << "] : " << myString[i][j]  <<endl;
+		}
+	}
 	
 
-	int **myInts=plop->getMatrixInts();
+	int **myInts=plop->getMatrixInts(&lenRow, &lenCol);
 	cout << "From Java [0,0] : " << myInts[0][0]  <<endl;
 	cout << "From Java [0,1] : " << myInts[0][1]  <<endl;
 	cout << "From Java [0,2] : " << myInts[0][2]  <<endl;
@@ -88,7 +90,7 @@ int main(){
 	cout << "From Java [1,1] : " << myInts[1][1]  <<endl;
 	cout << "From Java [1,2] : " << myInts[1][2]  <<endl;
 
-	bool **myBool=plop->getArrayOfBoolean();
+	bool **myBool=plop->getArrayOfBoolean(&lenRow, &lenCol);
 	cout << "Bool from Java [0,0] : " << myBool[0][0]  <<endl;
 	cout << "Bool from Java [0,1] : " << myBool[0][1]  <<endl;
 	cout << "Bool from Java [0,2] : " << myBool[0][2]  <<endl;

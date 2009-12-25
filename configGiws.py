@@ -41,6 +41,7 @@ class configGiws:
 	__descriptionFile=""
 	__splitPerObject=True
 	__throwsException=False
+	__disableReturnSize=False
 	__output="." # Should be changed elsewhere
 	__headerCPPExtension=".hxx"
 	__bodyCPPExtension=".cpp"
@@ -57,6 +58,12 @@ class configGiws:
 
 	def setThrowsException(self, excep):
 		configGiws.__throwsException=excep
+
+	def setDisableReturnSize(self):
+		configGiws.__disableReturnSize=True
+
+	def getDisableReturnSize(self):
+		return configGiws.__disableReturnSize
 
 	def setOutput(self, output):
 		self.__output=output

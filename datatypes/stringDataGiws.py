@@ -157,7 +157,10 @@ class stringDataGiws(dataGiws):
 		str=JNIFrameWork().getExceptionCheckProfile()
 
 		if self.isArray():
-			strCommon="""
+			strCommon=""
+			if configGiws().getDisableReturnSize()==True:
+				strCommon+="int *lenRow;"
+			strCommon+="""
 			*lenRow = curEnv->GetArrayLength(res);
 			"""
 			if self.getDimensionArray() == 1:
@@ -175,6 +178,8 @@ class stringDataGiws(dataGiws):
 				}
 				"""
 			else:
+				if configGiws().getDisableReturnSize()==True:
+					str+="int *lenCol;"
 				return str+strCommon+"""
 				char ***arrayOfString;
 				arrayOfString = new char **[*lenRow];
