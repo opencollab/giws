@@ -159,7 +159,7 @@ class CXXException:
 			};
 		
 			/**
-			* Exception that should be thrown when allocation of Java ressources from C++
+			* Exception that should be thrown when allocation of Java resources from C++
 			* code fails (sur as NewDoubleArray or NewStringUTF).
 			*/
 			class JniBadAllocException : public JniException
@@ -375,7 +375,7 @@ class CXXException:
 
     std::string res = convertJavaString(curEnv, description);
 
-    // release java ressources
+    // release java resources
     curEnv->DeleteLocalRef(description);
 
     return res;
@@ -436,7 +436,7 @@ class CXXException:
       curEnv->DeleteLocalRef(stackElementString);
     }
 
-    // release java ressources
+    // release java resources
     curEnv->DeleteLocalRef(stackTraceElementClass);
     curEnv->DeleteLocalRef(stackTrace);
 
@@ -470,7 +470,7 @@ class CXXException:
 
     std::string res = convertJavaString(curEnv, javaName);
 
-    // release java ressources
+    // release java resources
     curEnv->DeleteLocalRef(exceptionClass);
     curEnv->DeleteLocalRef(classClass);
     curEnv->DeleteLocalRef(javaName);
@@ -509,7 +509,7 @@ class CXXException:
 
 
   /**
-  * Exception that should be thrown when allocation of Java ressources from C++
+  * Exception that should be thrown when allocation of Java resources from C++
   * code fails (sur as NewDoubleArray or NewStringUTF).
   */
   
