@@ -39,7 +39,7 @@ from dataGiws import dataGiws
 class charDataGiws(dataGiws):
 
 	type="jchar"
-	nativeType="char"
+	nativeType="unsigned short"
 	callMethod="CallCharMethod"
 	callStaticMethod="CallStaticCharMethod"
 
