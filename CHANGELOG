@@ -1,3 +1,10 @@
+giws (UNRELEASED)
+
+	* Management of inheritance in GIWS
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 27 Apr 2010 10:12:37 +0200
+
+
 giws (1.1.0)
 
 	* GIWS can now manage array of array. String[][] for example. (Closes: #5)
