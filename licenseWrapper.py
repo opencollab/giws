@@ -40,8 +40,11 @@ class licenseWrapper:
 		return """/*
 
 Copyright 2007-2008 INRIA
+Copyright 2008-2010 DIGITEO
 
 Author : Sylvestre Ledru & others
+
+This is generated code.
 
 This software is a computer program whose purpose is to hide the complexity
 of accessing Java objects/methods from C++ code.
