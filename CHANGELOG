@@ -1,6 +1,7 @@
 giws (UNRELEASED)
 
 	* Management of inheritance in GIWS
+	* Fixes the build process under Windows (Thanks to Iuri de Silvio)
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 27 Apr 2010 10:12:37 +0200
 
