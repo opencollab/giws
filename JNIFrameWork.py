@@ -70,13 +70,6 @@ class JNIFrameWork:
 		#endif
 		#endif
 		"""
-		# Extends support
-		strHeader+="""
-		namespace fakeGiwsDataType {
-		struct fakeGiwsDataType {
-		};
-		}
-		"""
 		return strHeader
 	
 	def getJavaVMVariable(self):
@@ -86,21 +79,12 @@ class JNIFrameWork:
 		return self.__JavaVMVariableType
 
 	def getMethodGetCurrentEnv(self,objectName):
-		error = """std::cerr << "Could not retrieve the current JVM." << std::endl;
-		exit(EXIT_FAILURE);
-		"""
 		return """
 		JNIEnv * %s::getCurrentEnv() {
 		JNIEnv * curEnv = NULL;
-		try {
-		jint res=this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
-		if (res != JNI_OK) {
-		%s
-		}
-		}catch (const std::exception & e){
-		}
+		this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		return curEnv;
-		}"""%(objectName, error)
+		}"""%(objectName)
 
 	
 	def getObjectDestuctor(self,objectName,stringClassSet=False):
@@ -196,8 +180,7 @@ class JNIFrameWork:
 		if method.getModifier()=="static":
 			methodCall="jmethodID"
 		else:
-			methodCall="""if (%s==NULL) { /* Use the cache Luke */
-			"""%methodIdName
+			methodCall="""if (%s==NULL) { /* Use the cache Luke */"""%methodIdName
 
 		# Management of the error
 		if configGiws().getThrowsException():
