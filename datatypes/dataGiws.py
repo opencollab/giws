@@ -2,22 +2,22 @@
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
-# 
-# This software is a computer program whose purpose is to generate C++ wrapper 
+#
+# This software is a computer program whose purpose is to generate C++ wrapper
 # for Java objects/methods.
-# 
+#
 # This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info". 
-# 
+# "http://www.cecill.info".
+#
 # As a counterpart to the access to the source code and  rights to copy,
 # modify and redistribute granted by the license, users are provided only
 # with a limited warranty  and the software's author,  the holder of the
 # economic rights,  and the successive licensors  have only  limited
-# liability. 
-# 
+# liability.
+#
 # In this respect, the user's attention is drawn to the risks associated
 # with loading,  using,  modifying and/or developing or reproducing the
 # software by the user in light of its specific status of free software,
@@ -25,13 +25,13 @@
 # therefore means  that it is reserved for developers  and  experienced
 # professionals having in-depth computer knowledge. Users are therefore
 # encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or 
-# data to be ensured and,  more generally, to use and operate it in the 
-# same conditions as regards security. 
-# 
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
-# 
+#
 # For more information, see the file COPYING
 
 import sys
@@ -57,17 +57,17 @@ class dataGiws(object):
 		when applies
 		"""
 		if self.isArray() and not ForceNotArray:
-                    if self.getDimensionArray == 1: 
+                    if self.getDimensionArray() == 1:
 			return self.type+"Array"
                     else:
                         return "jobjectArray"
 		else:
 			return self.type
-		
+
 	def getJavaTypeSyntaxForceNotArray(self):
-		""" Return the java type any time""" 
+		""" Return the java type any time"""
 		return self.getJavaTypeSyntax(ForceNotArray=True)
-		
+
 	def getJavaShortType(self, forceNotArray=False):
 		if forceNotArray:
 			type=self.getJavaTypeSyntaxForceNotArray()
@@ -91,7 +91,7 @@ class dataGiws(object):
 	def getNativeTypeForceNotArray(self):
 		return self.getNativeType(ForceNotArray=True)
 
-	
+
 	def getTypeSignature(self):
 		""" Returns the java type signature
 		"""
@@ -107,7 +107,7 @@ class dataGiws(object):
 			return "CallObjectMethod"
 		else:
 			return self.callMethod
-		
+
 	def getCallStaticMethod(self):
 		""" Returns the JNI static method call
 		"""
@@ -115,9 +115,9 @@ class dataGiws(object):
 			return "CallStaticObjectMethod"
 		else:
 			return self.callStaticMethod
-		
+
 	def getRealJavaType(self):
-		""" Returns the real datatype 
+		""" Returns the real datatype
 		"""
 		abstractMethod(self)
 
@@ -126,8 +126,8 @@ class dataGiws(object):
 		"""
 		abstractMethod(self)
 
-		
-		
+
+
 	def setIsArray(self, isItAnArray):
 		""" Defines if we have to deal with an array or not
 		"""
@@ -138,8 +138,8 @@ class dataGiws(object):
 		"""
 		return self.__isArray
 
-		
-		
+
+
 	def setDimensionArray(self, dimensionArray):
 		""" Defines the size of the array
 		"""
@@ -156,7 +156,7 @@ class dataGiws(object):
 		When we deal with an array as input, we need to 'transform' it for
 		Java"""
 		javaType=self.getJavaTypeSyntaxForceNotArray()
-		
+
 		# removes the leading j and put the first char uppercase
 		shortType=self.getJavaShortTypeForceNotArray()
 
@@ -177,20 +177,20 @@ class dataGiws(object):
 			%sArray %s_ = curEnv->New%sArray( %sSize ) ;
 			%s
 			curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*)(%s) ) ;
-	
-			"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName) 
+
+			"""%(javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName)
                 else:
 			return """
 			 jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL);
 			%s
 			 for (int i=0; i<%sSize; i++){
- 
+
 			%sArray %sLocal = curEnv->New%sArray( %sSizeCol ) ;
 			curEnv->Set%sArrayRegion( %sLocal, 0, %sSizeCol, (%s*)(%s[i]) ) ;
 			curEnv->SetObjectArrayElement(%s_, i, %sLocal);
 			curEnv->DeleteLocalRef(%sLocal);
 			}
-			"""%(varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, shortType, varName, varName, javaType, varName, varName, varName, varName) 
+			"""%(varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, shortType, varName, varName, javaType, varName, varName, varName, varName)
 
 	def specificPreProcessing(self, parameter):
 		""" Preprocessing before calling the java method
@@ -206,8 +206,8 @@ class dataGiws(object):
 		"""
 		return """curEnv->DeleteLocalRef(%s_);
 		"""%(parameter.getName())
-		
-		
+
+
 	def specificPostProcessing(self):
 		""" Preprocessing after calling the java method
 		"""
@@ -216,22 +216,22 @@ class dataGiws(object):
 		javaTypeNotArray=self.getJavaTypeSyntaxForceNotArray()
 		shortType=self.getJavaShortType(forceNotArray=True)
 		nativeTypeForceNotArray=self.getNativeTypeForceNotArray()
-		
+
 		if self.isArray():
 			str=JNIFrameWork().getExceptionCheckProfile()
                         strCommon=""
 			if configGiws().getDisableReturnSize()==True:
 				strCommon+="int *lenRow;"
-                        strCommon+="""			
+                        strCommon+="""
 			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			"""
-                        if self.getDimensionArray() == 1: 
+                        if self.getDimensionArray() == 1:
                             	return str+strCommon+"""
 				/* GetPrimitiveArrayCritical is faster than getXXXArrayElements */
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
 				%s myArray= new %s[*lenRow];
-	
+
 				for (jsize i = 0; i < *lenRow; i++){
 				myArray[i]=resultsArray[i];
 				}
@@ -254,7 +254,7 @@ class dataGiws(object):
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 				}
- 
+
 				curEnv->DeleteLocalRef(res);
 				"""%(self.nativeType, self.nativeType, javaTypeNotArray, javaTypeNotArray, self.nativeType, self.nativeType, nativeTypeForceNotArray)
 
@@ -263,7 +263,7 @@ class dataGiws(object):
 			return ""
 
 	def getReturnSyntax(self):
-		
+
 		if self.isArray():
 			return """
 			return myArray;
