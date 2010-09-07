@@ -1,0 +1,19 @@
+Here is a example of the use of giws with inheritance
+
+Defines where is the JDK
+# export JAVA_HOME=/path/to/java/
+
+# make
+
+Try it !
+# ./main
+
+NOTE:
+* This is NOT working
+inherit.cpp. & inherit.hxx. shows a better solution.
+This have been edited by hand and the changes haven't been merged into giws
+main code because, in random cases,
+sonSecond->fatherMethod() 
+is failing.
+
+
