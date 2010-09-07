@@ -24,7 +24,7 @@ JFLAGS =
 # GIWS options
 #
 GIWS = ../../giws
-GFLAGS = -p
+GFLAGS = -p --disable-return-size-array
 
 #
 # GIWS PROJECT INFORMATIONS 

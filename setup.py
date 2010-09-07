@@ -36,6 +36,11 @@
 
 from distutils.core import setup
 from configGiws import configGiws
+import os
+
+root_dir = os.path.dirname(__file__)
+if root_dir:
+	os.chdir(root_dir)
 
 setup (name = "giws",
     description="Generate C++ class wrappers to call Java methods/objects",

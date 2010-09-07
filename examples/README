@@ -1,4 +1,4 @@
-GIWS is providing a few examples of utilisation :
+GIWS is providing a few examples of use-cases:
 
 * basic_example
 The example detailed in the website
@@ -11,3 +11,7 @@ Advanced examples with array of String or primitives types (input and output)
 
 * example3
 Example with Giws Exception in C++
+
+* example4
+Shows how to use array of array in GIWS.
+
