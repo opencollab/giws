@@ -81,14 +81,17 @@ class parseXMLEngine:
 	def __loadObject(self):
 		objectsNode = self.__ctxt.xpathEval("//package/object")
 		for objectNode in objectsNode:
+			extends=None
 			propObj=objectNode.properties
 			# look for the name of the object
 			while propObj is not None:
 				if propObj.name=="name":
 					objectName=propObj.getContent()
-					propObj = propObj.next
+				if propObj.name=="extends":
+					extends=propObj.getContent()
+				propObj = propObj.next
 			# creates the object
-			newObject=objectGiws(objectName)
+			newObject=objectGiws(objectName,extends)
 
 			# Load the methods
 			methods=objectNode.children

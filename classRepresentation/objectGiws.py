@@ -44,9 +44,17 @@ class objectGiws:
 	__name=""
 	__methods=[]
 	__stringClassSet=False
+	# Which class it extends
+	__extends=None
+
 	def __init__(self, name):
 		self.__name=name
 		self.__methods=[]
+
+	def __init__(self, name, extends):
+		self.__name=name
+		self.__methods=[]
+		self.__extends=extends
 		
 	def addMethod(self, method):
 		if isinstance(method,methodGiws):
@@ -122,9 +130,10 @@ class objectGiws:
 			
 		### Init the list of the cache of methodID
 		str=self.__getDeclarationOfCachingMethodID()
-			
-		return """
-		%s::%s {
+		constructorProfile="""%s::%s """%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
+		if self.__extends!=None:
+			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends)
+		return """%s {
 		jmethodID constructObject = NULL ;
 		jobject localInstance ;
 		jclass localClass ;
@@ -170,7 +179,7 @@ class objectGiws:
 		%s
 		
 		}
-		"""%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject(), errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, str)
+		"""%(constructorProfile, errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, str)
 
 		
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
@@ -194,10 +203,11 @@ class objectGiws:
 			std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
 			curEnv->ExceptionDescribe();
 			exit(EXIT_FAILURE);"""
-
-			   			   
+		constructorProfile="""%s::%s"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
+		if self.__extends!=None:
+			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends)
 		return """
-		%s::%s {
+		%s {
         jvm=jvm_;
 
         JNIEnv * curEnv = getCurrentEnv();
@@ -218,7 +228,7 @@ class objectGiws:
         %s
 
 }
-		"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject(), errorMgntRef, errorMgntNewRef, str)
+		"""%(constructorProfile, errorMgntRef, errorMgntNewRef, str)
 
 		
 	def getConstructorBodyCXX(self):
@@ -227,7 +237,10 @@ class objectGiws:
 		return str
 
 	def __getConstructorProfileWhichInstanciateTheNewObject(self):
-	  return """%s(%s * %s_)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
+	  str="""%s(%s * %s_)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
+#	  if self.__extends!=None:
+#		  str+=""": %s(fakeGiwsDataType::fakeGiwsDataType())"""%(self.__extends)
+	  return str
 
   	def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
 	  return """%s(%s * %s_, jobject JObj)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
@@ -237,6 +250,20 @@ class objectGiws:
   
 	def getConstructorWhichInstanciateTheNewObjectHeaderCXX(self):
 		return """%s;"""%self.__getConstructorProfileWhichInstanciateTheNewObject()
+
+	def __getFakeConstructorForExtendedClasses(self):
+		str=""
+		if self.__extends==None:
+			# It is a potential master class, add the fake constructor
+			str+="""
+			/** 
+			* This is a fake constructor to avoid the constructor
+			* chaining when dealing with extended giws classes 
+			*/
+			%s(fakeGiwsDataType::fakeGiwsDataType /* unused */) {}
+			"""%(self.getName())
+			
+		return str
 
 	def getMethodsProfileForMethodIdCache(self):
 		str=""
@@ -269,8 +296,13 @@ class objectGiws:
 		
         def generateCXXHeader(self, packageName):
                 JNIObjectName=packageName+"/"+self.getName()
-		return """
-		class %s {
+		if self.__extends==None:
+			classProfile="""class %s {""" % (self.getName())
+		else:
+			classProfile="""class %s : public %s {
+			""" % (self.getName(), self.__extends)
+		return """%s
+
 			private:
 			%s * %s;
 			jobject instance;
@@ -291,6 +323,7 @@ class objectGiws:
 			* @param JEnv_ the Java Env
 			*/
 			%s
+
 			/**
 			* Create a wrapping of an already existing object from a JNIEnv.
 			* The object must have already been instantiated
@@ -299,6 +332,7 @@ class objectGiws:
 			*/
 			%s
 
+			%s
 			// Destructor
 			~%s();
 
@@ -326,7 +360,7 @@ class objectGiws:
                         %s
 			};
 
-			""" % (self.getName(),  JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
+			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
 
 	def generateCXXBody(self):
 		return """

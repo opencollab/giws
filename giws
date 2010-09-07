@@ -141,14 +141,14 @@ class giws:
 
 	def show_version(self, exit_status=0):
 		print "Swig %s"%self.config.getVersion()
-		print "Copyright (C) 2007-2008 INRIA / Scilab"
+		print "Copyright (C) 2007-2009 INRIA / Digiteo / Scilab"
 		print """This software is governed by the CeCILL license under French law and
 abiding by the rules of distribution of free software. You can use, 
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 http://www.cecill.info/ . """
 		print ""
-		print "Written by Sylvestre Ledru <sylvestre.ledru@inria.fr>"
+		print "Written by Sylvestre Ledru <sylvestre.ledru@scilab.org>"
 		sys.exit(exit_status)
 
 if __name__ == '__main__':
