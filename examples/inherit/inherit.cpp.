@@ -282,13 +282,13 @@ curEnv->DeleteLocalRef(localInstance);
 
                 /* Methods ID set to NULL */
 jstringsonMethodID=NULL; 
+jstringfatherMethodID = NULL;
 
 
 }
 
 Son::Son(JavaVM * jvm_, jobject JObj) : Father(fakeGiwsDataType::fakeGiwsDataType())  {
         jvm=jvm_;
-
         JNIEnv * curEnv = getCurrentEnv();
 
 jclass localClass = curEnv->GetObjectClass(JObj);
@@ -311,7 +311,7 @@ exit(EXIT_FAILURE);
         }
         /* Methods ID set to NULL */
         jstringsonMethodID=NULL; 
-
+	jstringfatherMethodID = NULL;
 
 }
 
