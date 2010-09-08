@@ -81,7 +81,7 @@ class parseXMLEngine:
 	def __loadObject(self):
 		objectsNode = self.__ctxt.xpathEval("//package/object")
 		for objectNode in objectsNode:
-			extends=None
+			extendsObject=None
 			propObj=objectNode.properties
 			# look for the name of the object
 			while propObj is not None:
@@ -89,9 +89,15 @@ class parseXMLEngine:
 					objectName=propObj.getContent()
 				if propObj.name=="extends":
 					extends=propObj.getContent()
+					# Retrieve the father (inheritance)
+					extendsObject=self.Jpackage.getObject(extends)
+					if extendsObject==None:
+						print ('Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".'%(extends, extends, objectName))
+						sys.exit(-4)
 				propObj = propObj.next
+
 			# creates the object
-			newObject=objectGiws(objectName,extends)
+			newObject=objectGiws(objectName,extendsObject)
 
 			# Load the methods
 			methods=objectNode.children

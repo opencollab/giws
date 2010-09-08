@@ -46,6 +46,7 @@ from CXXException import CXXException
 
 class giws:
 	config=configGiws()
+	templateObj = None
 	def __init__(self, argv=sys.argv):
 		self.argv = argv
 

@@ -39,7 +39,6 @@ from JNIFrameWork import JNIFrameWork
 from datatypes.stringDataGiws import stringDataGiws
 from configGiws import configGiws
 
-
 class objectGiws:
 	__name=""
 	__methods=[]
@@ -83,6 +82,11 @@ class objectGiws:
 					curEnv->DeleteLocalRef(localStringArrayClass);
 					"""
 					stringClassSet=True
+
+		if self.__extends!=None:
+			# Get the father object to work on it.
+			str+=self.__extends.__getDeclarationOfCachingMethodID()
+
 		return str
 	
 	def __getConstructorWhichInstanciateTheNewObject(self):
@@ -129,10 +133,12 @@ class objectGiws:
 			exit(EXIT_FAILURE);"""
 			
 		### Init the list of the cache of methodID
-		str=self.__getDeclarationOfCachingMethodID()
+		strMethodID=self.__getDeclarationOfCachingMethodID()
 		constructorProfile="""%s::%s """%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
 		if self.__extends!=None:
-			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends)
+			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends.getName())
+
+
 		return """%s {
 		jmethodID constructObject = NULL ;
 		jobject localInstance ;
@@ -179,12 +185,12 @@ class objectGiws:
 		%s
 		
 		}
-		"""%(constructorProfile, errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, str)
+		"""%(constructorProfile, errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, strMethodID)
 
 		
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
 		### Init the list of the cache of methodID
-		str=self.__getDeclarationOfCachingMethodID()
+		strMethodID=self.__getDeclarationOfCachingMethodID()
 		
 		# Management of the error when the instance class could not be created a global ref
 		if configGiws().getThrowsException():
@@ -205,7 +211,7 @@ class objectGiws:
 			exit(EXIT_FAILURE);"""
 		constructorProfile="""%s::%s"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
 		if self.__extends!=None:
-			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends)
+			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends.getName())
 		return """
 		%s {
         jvm=jvm_;
@@ -228,7 +234,7 @@ class objectGiws:
         %s
 
 }
-		"""%(constructorProfile, errorMgntRef, errorMgntNewRef, str)
+		"""%(constructorProfile, errorMgntRef, errorMgntNewRef, strMethodID)
 
 		
 	def getConstructorBodyCXX(self):
@@ -300,7 +306,7 @@ class objectGiws:
 			classProfile="""class %s {""" % (self.getName())
 		else:
 			classProfile="""class %s : public %s {
-			""" % (self.getName(), self.__extends)
+			""" % (self.getName(), self.__extends.getName())
 		return """%s
 
 			private:
@@ -308,13 +314,16 @@ class objectGiws:
 			jobject instance;
 			
 			jclass instanceClass; // cache class
-			%s
 			
+
+			protected:
+			%s
+
 			/**
 			* Get the environment matching to the current thread.
 			*/
-			JNIEnv * getCurrentEnv();
-			
+			virtual JNIEnv * getCurrentEnv();
+
 			public:
 			// Constructor
 			/**

@@ -282,7 +282,7 @@ curEnv->DeleteLocalRef(localInstance);
 
                 /* Methods ID set to NULL */
 jstringsonMethodID=NULL; 
-jstringfatherMethodID = NULL;
+jstringfatherMethodID=NULL;
 
 
 }
@@ -311,7 +311,7 @@ exit(EXIT_FAILURE);
         }
         /* Methods ID set to NULL */
         jstringsonMethodID=NULL; 
-	jstringfatherMethodID = NULL;
+	jstringfatherMethodID=NULL;
 
 }
 

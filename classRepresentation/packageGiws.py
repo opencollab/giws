@@ -59,3 +59,9 @@ class packageGiws:
 	def addObject(self, object):
 		if isinstance(object,objectGiws):
 			self.__objects.append(object)
+
+	def getObject(self, name):
+		for object in self.__objects:
+			if object.getName() == name:
+				return object
+		return None
