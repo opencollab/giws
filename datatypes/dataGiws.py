@@ -168,8 +168,17 @@ class dataGiws(object):
 			throw %s::JniBadAllocException(curEnv);
 			}
 			"""%(varName,configGiws().getExceptionFileName())
+                        errorMgntLocal="""
+			if (%sLocal == NULL)
+			{
+			// check that allocation succeed
+			curEnv->DeleteLocalRef(%s_);
+			throw %s::JniBadAllocException(curEnv);
+			}
+			"""%(varName, varName, configGiws().getExceptionFileName())
 		else:
 			errorMgnt=""
+                        errorMgntLocal=""
 
                 if self.getDimensionArray() == 1:
 			# Yep, it seems ugly to have that much varName but it is normal.
@@ -186,11 +195,12 @@ class dataGiws(object):
 			 for (int i=0; i<%sSize; i++){
 
 			%sArray %sLocal = curEnv->New%sArray( %sSizeCol ) ;
+			%s
 			curEnv->Set%sArrayRegion( %sLocal, 0, %sSizeCol, (%s*)(%s[i]) ) ;
 			curEnv->SetObjectArrayElement(%s_, i, %sLocal);
 			curEnv->DeleteLocalRef(%sLocal);
 			}
-			"""%(varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, shortType, varName, varName, javaType, varName, varName, varName, varName)
+			"""%(varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, errorMgntLocal, shortType, varName, varName, javaType, varName, varName, varName, varName)
 
 	def specificPreProcessing(self, parameter):
 		""" Preprocessing before calling the java method

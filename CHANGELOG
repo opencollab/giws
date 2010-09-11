@@ -1,5 +1,9 @@
 giws (UNRELEASED)
 
+	* All the array creation were not checked.
+
+ -- Calixte Denizet <calixte@contrib.scilab.org>  Sun, 12 Sep 2010 00:33:37 +0200
+
 	* Management of inheritance in GIWS
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 27 Apr 2010 10:12:37 +0200
