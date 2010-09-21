@@ -1,17 +1,15 @@
-giws (UNRELEASED)
-
-    * Manage Java Arrays returning null. Give NULL back to C++
-
- -- Bruno JOFRET <bruno.jofret@scilab.org>  Tue, 21 Sep 2010 15:10:42 +0200
-
-	* All the array creation were not checked.
-
- -- Calixte Denizet <calixte@contrib.scilab.org>  Sun, 12 Sep 2010 00:33:37 +0200
+giws (1.2.0)
 
 	* Management of inheritance in GIWS
+	  See /giws/examples/inherit for a usage example
 
- -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 27 Apr 2010 10:12:37 +0200
+    [ Bruno Jofret ]
+    * Manage Java Arrays returning null. Give NULL back to C++
 
+	[ Calixte Denizet ]
+	* All the array creations were not checked.
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 21 Sep 2010 21:08:13 +0200
 
 giws (1.1.0)
 
