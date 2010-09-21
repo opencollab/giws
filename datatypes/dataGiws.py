@@ -232,49 +232,49 @@ class dataGiws(object):
                         """
                         str+=JNIFrameWork().getExceptionCheckProfile()
                         strCommon=""
+                        strDeclaration=""
 			if configGiws().getDisableReturnSize()==True:
-				strCommon+="int *lenRow=(int*)malloc(sizeof(int));"
+                            strCommon+="int lenRow;"
+                        else:
+                            # The size of the array is returned as output argument of the function 
+                            strDeclaration="*"
                         strCommon+="""
-			*lenRow = curEnv->GetArrayLength(res);
+			%s lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
-			"""
+			"""%(strDeclaration)
                         if self.getDimensionArray() == 1:
                             	str+=strCommon+"""
 				/* GetPrimitiveArrayCritical is faster than getXXXArrayElements */
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
-				%s myArray= new %s[*lenRow];
+				%s myArray= new %s[%s lenRow];
 
-				for (jsize i = 0; i < *lenRow; i++){
+				for (jsize i = 0; i < %s lenRow; i++){
 				myArray[i]=resultsArray[i];
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 
                         	curEnv->DeleteLocalRef(res);
-				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
-               			if configGiws().getDisableReturnSize()==True:
-                                    str+="free(lenRow);"
+				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray, strDeclaration, strDeclaration)
                                 return str
 
                         else:
 				if configGiws().getDisableReturnSize()==True:
-					str+="int *lenCol=(int*)malloc(sizeof(int));"
+					str+="int lenCol"
 				str+=strCommon+"""
-				%s ** myArray = new %s*[*lenRow];
-				for(int i=0; i<*lenRow; i++) {
+				%s ** myArray = new %s*[%s lenRow];
+				for(int i=0; i<%s lenRow; i++) {
 				%sArray oneDim = (%sArray)curEnv->GetObjectArrayElement(res, i);
-				*lenCol=curEnv->GetArrayLength(oneDim);
+				%s lenCol=curEnv->GetArrayLength(oneDim);
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
-				myArray[i] = new %s[*lenCol];
-				for(int j=0; j<*lenCol; j++) {
+				myArray[i] = new %s[%s lenCol];
+				for(int j=0; j<%s lenCol; j++) {
 				myArray[i][j]= resultsArray[j];
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 				}
 
 				curEnv->DeleteLocalRef(res);
-				"""%(self.nativeType, self.nativeType, javaTypeNotArray, javaTypeNotArray, self.nativeType, self.nativeType, nativeTypeForceNotArray)
-               			if configGiws().getDisableReturnSize()==True:
-                                    str+="free(lenRow); freel(lenCol);"
+				"""%(self.nativeType, self.nativeType, strDeclaration,  strDeclaration, javaTypeNotArray, javaTypeNotArray, strDeclaration, self.nativeType, self.nativeType, nativeTypeForceNotArray, strDeclaration, strDeclaration)
                                 return str
 		else:
 			# Not post processing when dealing with primitive types

@@ -158,16 +158,20 @@ class stringDataGiws(dataGiws):
 
 		if self.isArray():
 			strCommon=""
+			strDeclaration=""
 			if configGiws().getDisableReturnSize()==True:
-				strCommon+="int *lenRow=(int*)malloc(sizeof(int));"
+				strCommon+="int lenRow;"
+			else:
+				# The size of the array is returned as output argument of the function 
+				strDeclaration="*"
 			strCommon+="""
-			*lenRow = curEnv->GetArrayLength(res);
-			"""
+			%s lenRow = curEnv->GetArrayLength(res);
+			"""%(strDeclaration)
 			if self.getDimensionArray() == 1:
 				str+=strCommon+"""
 				char **arrayOfString;
-				arrayOfString = new char *[*lenRow];
-				for (jsize i = 0; i < *lenRow; i++){
+				arrayOfString = new char *[%slenRow];
+				for (jsize i = 0; i < %slenRow; i++){
 				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
 				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
 				arrayOfString[i] = new char[strlen(tempString) + 1];
@@ -176,21 +180,19 @@ class stringDataGiws(dataGiws):
 				curEnv->ReleaseStringUTFChars(resString, tempString);
 				curEnv->DeleteLocalRef(resString);
 				}
-				"""
-				if configGiws().getDisableReturnSize()==True:
-					str+="free(lenRow);"
+				"""%(strDeclaration, strDeclaration)
 				return str
 			else:
 				if configGiws().getDisableReturnSize()==True:
-					str+="int *lenCol=(int*)malloc(sizeof(int));"
+					str+="int lenCol;"
 				str+=strCommon+"""
 				char ***arrayOfString;
-				arrayOfString = new char **[*lenRow];
-				for (jsize i = 0; i < *lenRow; i++){ /* Line of the array */
+				arrayOfString = new char **[%slenRow];
+				for (jsize i = 0; i < %slenRow; i++){ /* Line of the array */
 				jobjectArray resStringLine = reinterpret_cast<jobjectArray>(curEnv->GetObjectArrayElement(res, i));
-				*lenCol = curEnv->GetArrayLength(resStringLine);
-				arrayOfString[i]=new char*[*lenCol];
-				for (jsize j = 0; j < *lenCol; j++){
+				%slenCol = curEnv->GetArrayLength(resStringLine);
+				arrayOfString[i]=new char*[%slenCol];
+				for (jsize j = 0; j < %slenCol; j++){
 				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(resStringLine, j));
 				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
 				arrayOfString[i][j] = new char[strlen(tempString) + 1];
@@ -200,9 +202,7 @@ class stringDataGiws(dataGiws):
 }
 				curEnv->DeleteLocalRef(resStringLine);
 				 }
-				"""
-				if configGiws().getDisableReturnSize()==True:
-					str+="free(lenCol); free(lenRow);"
+				"""%(strDeclaration, strDeclaration, strDeclaration, strDeclaration, strDeclaration)
 				return str
 
 		else:
