@@ -94,8 +94,9 @@ class CXXFile:
 		return """%s
 		%s
 		%s
+		%s
 		namespace %s {
-		""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(),JNIFrameWork().getHeader(defineHeader),self.package.getNameForCXX())
+		""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(), JNIFrameWork().getHeader(defineHeader), JNIFrameWork().getHeaderInheritance(), self.package.getNameForCXX())
 
 
 

@@ -70,15 +70,18 @@ class JNIFrameWork:
 		#endif
 		#endif
 		"""
-		# Extends support
-		strHeader+="""
+		return strHeader
+
+	# For the extends (inheritance) support
+	def getHeaderInheritance(self):
+		strHeader="""
 		namespace fakeGiwsDataType {
 		struct fakeGiwsDataType {
 		};
 		}
 		"""
 		return strHeader
-	
+
 	def getJavaVMVariable(self):
 		return self.__JavaVMVariable
 	
