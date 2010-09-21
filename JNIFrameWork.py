@@ -248,10 +248,12 @@ class JNIFrameWork:
 
                 if method.getModifier()=="static":
                         return """
-                        %s curEnv->%s(cls, %s %s)%s;""" % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
+                        %s curEnv->%s(cls, %s %s)%s;
+                        """ % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
                 else:
                         return """
-                        %s curEnv->%s( this->instance, %s %s)%s;""" % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
+                        %s curEnv->%s( this->instance, %s %s)%s;
+                        """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
 		
 	def getReturnProfile(self, returnType):
 		return returnType.getReturnSyntax()
