@@ -228,7 +228,9 @@ class dataGiws(object):
 		nativeTypeForceNotArray=self.getNativeTypeForceNotArray()
 
 		if self.isArray():
-			str=JNIFrameWork().getExceptionCheckProfile()
+                        str="""if (res == NULL) { return NULL; }
+                        """
+                        str+=JNIFrameWork().getExceptionCheckProfile()
                         strCommon=""
 			if configGiws().getDisableReturnSize()==True:
 				strCommon+="int *lenRow;"
