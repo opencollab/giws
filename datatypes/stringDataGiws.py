@@ -164,7 +164,7 @@ class stringDataGiws(dataGiws):
 			*lenRow = curEnv->GetArrayLength(res);
 			"""
 			if self.getDimensionArray() == 1:
-				return str+strCommon+"""
+				str+=strCommon+"""
 				char **arrayOfString;
 				arrayOfString = new char *[*lenRow];
 				for (jsize i = 0; i < *lenRow; i++){
@@ -177,10 +177,13 @@ class stringDataGiws(dataGiws):
 				curEnv->DeleteLocalRef(resString);
 				}
 				"""
+				if configGiws().getDisableReturnSize()==True:
+					str+="free(lenRow);"
+				return str
 			else:
 				if configGiws().getDisableReturnSize()==True:
-					str+="int *lenCol;"
-				return str+strCommon+"""
+					str+="int *lenCol=(int*)malloc(sizeof(int));"
+				str+=strCommon+"""
 				char ***arrayOfString;
 				arrayOfString = new char **[*lenRow];
 				for (jsize i = 0; i < *lenRow; i++){ /* Line of the array */
@@ -198,6 +201,9 @@ class stringDataGiws(dataGiws):
 				curEnv->DeleteLocalRef(resStringLine);
 				 }
 				"""
+				if configGiws().getDisableReturnSize()==True:
+					str+="free(lenCol); free(lenRow);"
+				return str
 
 		else:
 			if hasattr(self,"parameterName"):

@@ -239,7 +239,7 @@ class dataGiws(object):
 			jboolean isCopy = JNI_FALSE;
 			"""
                         if self.getDimensionArray() == 1:
-                            	return str+strCommon+"""
+                            	str+=strCommon+"""
 				/* GetPrimitiveArrayCritical is faster than getXXXArrayElements */
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
 				%s myArray= new %s[*lenRow];
@@ -251,10 +251,14 @@ class dataGiws(object):
 
                         	curEnv->DeleteLocalRef(res);
 				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
+               			if configGiws().getDisableReturnSize()==True:
+                                    str+="free(lenRow);"
+                                return str
+
                         else:
 				if configGiws().getDisableReturnSize()==True:
 					str+="int *lenCol=(int*)malloc(sizeof(int));"
-				return str+strCommon+"""
+				str+=strCommon+"""
 				%s ** myArray = new %s*[*lenRow];
 				for(int i=0; i<*lenRow; i++) {
 				%sArray oneDim = (%sArray)curEnv->GetObjectArrayElement(res, i);
@@ -269,7 +273,9 @@ class dataGiws(object):
 
 				curEnv->DeleteLocalRef(res);
 				"""%(self.nativeType, self.nativeType, javaTypeNotArray, javaTypeNotArray, self.nativeType, self.nativeType, nativeTypeForceNotArray)
-
+               			if configGiws().getDisableReturnSize()==True:
+                                    str+="free(lenRow); freel(lenCol);"
+                                return str
 		else:
 			# Not post processing when dealing with primitive types
 			return ""
