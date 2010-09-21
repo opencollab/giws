@@ -199,7 +199,7 @@ class JNIFrameWork:
 		if method.getModifier()=="static":
 			methodCall="jmethodID"
 		else:
-			methodCall="""if (%s==NULL) { /* Use the cache Luke */
+			methodCall="""if (%s==NULL) { /* Use the cache */
 			"""%methodIdName
 
 		# Management of the error
