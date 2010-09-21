@@ -75,10 +75,13 @@ class JNIFrameWork:
 	# For the extends (inheritance) support
 	def getHeaderInheritance(self):
 		strHeader="""
+		#ifndef FAKEGIWSDATATYPE
+		#define FAKEGIWSDATATYPE
 		namespace fakeGiwsDataType {
 		struct fakeGiwsDataType {
 		};
 		}
+		#endif
 		"""
 		return strHeader
 

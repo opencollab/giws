@@ -83,9 +83,9 @@ class objectGiws:
 					"""
 					stringClassSet=True
 
-		if self.__extends!=None:
+		if self.getExtendedClass()!=None:
 			# Get the father object to work on it.
-			str+=self.__extends.__getDeclarationOfCachingMethodID()
+			str+=self.getExtendedClass().__getDeclarationOfCachingMethodID()
 
 		return str
 	
@@ -134,9 +134,9 @@ class objectGiws:
 			
 		### Init the list of the cache of methodID
 		strMethodID=self.__getDeclarationOfCachingMethodID()
-		constructorProfile="""%s::%s """%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
-		if self.__extends!=None:
-			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends.getName())
+		constructorProfile="""%s::%s"""%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
+		if self.getExtendedClass()!=None:
+			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType())""" % (self.getExtendedClass().getName())
 
 
 		return """%s {
@@ -210,8 +210,8 @@ class objectGiws:
 			curEnv->ExceptionDescribe();
 			exit(EXIT_FAILURE);"""
 		constructorProfile="""%s::%s"""%(self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
-		if self.__extends!=None:
-			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.__extends.getName())
+		if self.getExtendedClass()!=None:
+			constructorProfile+=""" : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (self.getExtendedClass().getName())
 		return """
 		%s {
         jvm=jvm_;
@@ -235,7 +235,11 @@ class objectGiws:
 
 }
 		"""%(constructorProfile, errorMgntRef, errorMgntNewRef, strMethodID)
-
+	
+	# Returns the class the current one is extending
+	# Returns None if not existing
+	def getExtendedClass(self):
+		return self.__extends
 		
 	def getConstructorBodyCXX(self):
 		str=self.__getConstructorWhichInstanciateTheNewObject()
@@ -259,14 +263,16 @@ class objectGiws:
 
 	def __getFakeConstructorForExtendedClasses(self):
 		str=""
-		if self.__extends==None:
+		if self.getExtendedClass()==None:
 			# It is a potential master class, add the fake constructor
 			str+="""
 			/** 
 			* This is a fake constructor to avoid the constructor
 			* chaining when dealing with extended giws classes 
 			*/
+			#ifdef FAKEGIWSDATATYPE
 			%s(fakeGiwsDataType::fakeGiwsDataType /* unused */) {}
+			#endif
 			"""%(self.getName())
 			
 		return str
@@ -288,7 +294,7 @@ class objectGiws:
 	
 	def getProtectedFields(self):
 		str=""
-		if self.__extends==None:
+		if self.getExtendedClass()==None:
 			str+="""
 			jobject instance;
 			jclass instanceClass; // cache class
@@ -313,11 +319,11 @@ class objectGiws:
 		
         def generateCXXHeader(self, packageName):
                 JNIObjectName=packageName+"/"+self.getName()
-		if self.__extends==None:
+		if self.getExtendedClass()==None:
 			classProfile="""class %s {""" % (self.getName())
 		else:
 			classProfile="""class %s : public %s {
-			""" % (self.getName(), self.__extends.getName())
+			""" % (self.getName(), self.getExtendedClass().getName())
 		return """%s
 
 			private:
