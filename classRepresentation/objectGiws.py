@@ -286,6 +286,17 @@ class objectGiws:
 					self.__stringClassSet=True
 		return str
 	
+	def getProtectedFields(self):
+		str=""
+		if self.__extends==None:
+			str+="""
+			jobject instance;
+			jclass instanceClass; // cache class
+			"""
+		
+		return str
+
+
 	def getMethodsCXX(self, type="header"):
 		i=1
 		str=""
@@ -311,12 +322,10 @@ class objectGiws:
 
 			private:
 			%s * %s;
-			jobject instance;
-			
-			jclass instanceClass; // cache class
-			
 
 			protected:
+			%s
+
 			%s
 
 			/**
@@ -369,7 +378,7 @@ class objectGiws:
                         %s
 			};
 
-			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
+			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
 
 	def generateCXXBody(self):
 		return """
