@@ -84,8 +84,8 @@ int main(){
 	cout << "The second int from Java : " << myInts[1]  <<endl;
 	cout << "The third int from Java : " << myInts[2]  <<endl;
 
-	char *myStrings[]={"tic","tac","rangers du risque"};
-	plop->setMyStrings(myStrings,3);
+	char *myStrings[]={"tic","tac","toc", "plop"};
+	plop->setMyStrings(myStrings,4);
 
 	bool arrayOfBool[]={true, false, true, true};
 	bool *boolReturned = plop->dealingWithBooleans(arrayOfBool, 4);
