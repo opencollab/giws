@@ -1,10 +1,10 @@
 giws (1.2.0)
 
-	* Management of inheritance in GIWS
+	* Management of inheritance in GIWS (Closes: #12)
 	  See /giws/examples/inherit for a usage example
 
     [ Bruno Jofret ]
-    * Manage Java Arrays returning null. Give NULL back to C++
+    * Manage Java Arrays returning null. Give NULL back to C++. (Closes: #134)
 
 	[ Calixte Denizet ]
 	* All the array creations were not checked.
