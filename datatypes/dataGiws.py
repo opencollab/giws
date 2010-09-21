@@ -233,7 +233,7 @@ class dataGiws(object):
                         str+=JNIFrameWork().getExceptionCheckProfile()
                         strCommon=""
 			if configGiws().getDisableReturnSize()==True:
-				strCommon+="int *lenRow;"
+				strCommon+="int *lenRow=(int*)malloc(sizeof(int));"
                         strCommon+="""
 			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
