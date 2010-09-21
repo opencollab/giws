@@ -253,7 +253,7 @@ class dataGiws(object):
 				"""%(javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray)
                         else:
 				if configGiws().getDisableReturnSize()==True:
-					str+="int *lenCol;"
+					str+="int *lenCol=(int*)malloc(sizeof(int));"
 				return str+strCommon+"""
 				%s ** myArray = new %s*[*lenRow];
 				for(int i=0; i<*lenRow; i++) {
