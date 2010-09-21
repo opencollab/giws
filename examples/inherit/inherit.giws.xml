@@ -40,6 +40,8 @@ For more information, see the file COPYING
 	<method name="fatherMethod" returnType="String" />
   </object>
 
+  <!-- Son inherits from his father -->
+
   <object name="Son" extends="Father">
 	<method name="sonMethod" returnType="String" />
   </object>

@@ -7,13 +7,3 @@ Defines where is the JDK
 
 Try it !
 # ./main
-
-NOTE:
-* This is NOT working
-inherit.cpp. & inherit.hxx. shows a better solution.
-This have been edited by hand and the changes haven't been merged into giws
-main code because, in random cases,
-sonSecond->fatherMethod() 
-is failing.
-
-

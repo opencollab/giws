@@ -1,3 +1,4 @@
+/* This is just a test case to show how it is working with a straight C++ code */
 #include <iostream>
 using namespace std;
 class Father {
