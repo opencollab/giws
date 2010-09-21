@@ -1,5 +1,13 @@
 giws (UNRELEASED)
 
+    * Manage Java Arrays returning null. Give NULL back to C++
+
+ -- Bruno JOFRET <bruno.jofret@scilab.org>  Tue, 21 Sep 2010 15:10:42 +0200
+
+	* All the array creation were not checked.
+
+ -- Calixte Denizet <calixte@contrib.scilab.org>  Sun, 12 Sep 2010 00:33:37 +0200
+
 	* Management of inheritance in GIWS
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Tue, 27 Apr 2010 10:12:37 +0200
@@ -9,11 +17,11 @@ giws (1.1.0)
 
 	* GIWS can now manage array of array. String[][] for example. (Closes: #5)
 	* Example4 added to show this new feature
-	* Using byte datatypes was not providing the appropriate typedef 
+	* Using byte datatypes was not providing the appropriate typedef
 	  (Closes: #6)
 	* Management of the char datatype (Closes: #7)
 	* Example3 updated: Shows how to retrieve the example text error
-	* By default, when dealing with array, an argument (int*) is added to 
+	* By default, when dealing with array, an argument (int*) is added to
 	  provide the size of the array. Option -r/--disable-return-size-array to
 	  go back to the previous behavior.
 
@@ -22,9 +30,9 @@ giws (1.1.0)
 giws (1.0.6)
 
 	* When using an array of bool, a static_cast was failing. Rollback to the
-	  classic cast. This bug has been introduced in the version 1.0.5 
+	  classic cast. This bug has been introduced in the version 1.0.5
 	  (Closes: #3)
-	* When a java method returns a String[], the length of the array is 
+	* When a java method returns a String[], the length of the array is
 	  lost in the generated cpp, then, we set arrayOfString[len]=NULL.
 	  (Closes: #4)
 
@@ -32,10 +40,10 @@ giws (1.0.6)
 
 giws (1.0.5)
 
-	* Classical cast changed for *_cast 
+	* Classical cast changed for *_cast
 	* The use of a static method returning an array wasn't calling the right
 	  method.
-	  It didn't seem to trigger any errors in the past but the latest 
+	  It didn't seem to trigger any errors in the past but the latest
 	  version of the JDK is now complaining.
 
 
@@ -55,7 +63,7 @@ giws (1.0.3)
 
 	* The use of a static method returning an int wasn't calling the right
 	  method.
-	  It didn't seem to trigger any errors in the past but the latest 
+	  It didn't seem to trigger any errors in the past but the latest
 	  version of the JDK is now complaining.
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Sun, 05 Jul 2009 20:49:03 +0200
@@ -64,13 +72,13 @@ giws (1.0.2)
 
 	[ Sylvestre Ledru ]
 	* Typos fixed
-	* synchronize & endSynchronize are also managed by option 
+	* synchronize & endSynchronize are also managed by option
 	  -e/--throws-exception-on-error
 
 	[ Matthieu Walter ]
 	* Better management of the argument
 	* Removed old unused code (__dict__...)
-	* show_help wasn't called when a wrong cmdline param was given 
+	* show_help wasn't called when a wrong cmdline param was given
 	  (uncatched exception was thrown instead)
 	* Description is now mandatory: no -f/--description-file prints help
 	* Fixed opts/args len checking to fit the real usage
@@ -81,8 +89,8 @@ giws (1.0.2)
 
 giws (1.0.1)
 	* Fixed a bug in the Exception check in a method call
-	In some cases (like a Java method returning a String), the check of 
-	Exception was done on the clean of the variable, not on the potential 
+	In some cases (like a Java method returning a String), the check of
+	Exception was done on the clean of the variable, not on the potential
 	exception raised by the method.
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 13 Oct 2008 17:25:33 +0100
@@ -113,7 +121,7 @@ giws (0.9.9.3)
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Aug 2008 16:00:52 +0100
 
 giws (0.9.9.2)
-    * C++ Exception can be triggered in case of error instead of an ugly 
+    * C++ Exception can be triggered in case of error instead of an ugly
       exit(EXIT_FAILURE)
 	  Use the options: -e/--throws-exception-on-error
 	* Update of copyright notices
@@ -151,7 +159,7 @@ giws (0.9.8)
 
 giws (0.9.7)
     * Cast boolean when used (closes #3)
-    * Warnings removed 
+    * Warnings removed
     * Examples extended to show boolean management
     * Compilation error with gcc-4.3
     * Search only once for all the class java.lang.String (closes #2)
@@ -177,7 +185,7 @@ giws (0.9.5)
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 22 Nov 2007 22:13:50 +0200
 
 giws (0.9.4)
-	* Manages array of String when it is used in input 
+	* Manages array of String when it is used in input
 	* Example 2 updated to show this change
 	* On Vincent Couvert request, #define added around the namespace/class declaration in order to avoid multiple declarations
 
@@ -202,7 +210,7 @@ giws (0.9.1)
 
 giws (0.9)
 	* License CECILL (GPL compatible) added (thanks to Oliver Mehani for the few advices)
-	* License information added in all files 	
+	* License information added in all files
 	* All the previous versions of GIWS are under the same license (CECILL)
 	* Readme files for the examples
 
@@ -225,7 +233,7 @@ giws (0.7)
 giws (0.6)
 	* Manages array of primitive type in return of a method (ex : int[] giveMeMyInts())
 	* factorisation of some code in getJavaTypeSyntax and getJavaShortType
-	* Use JNI_VERSION_1_4 instead of JNI_VERSION_1_6 in the examples 
+	* Use JNI_VERSION_1_4 instead of JNI_VERSION_1_6 in the examples
 	* TODO and README-DEV updated
 	* example2 updated with a return of primitive type
 
@@ -241,7 +249,7 @@ giws (0.4)
   * Bug when the input parameter was a String (thanks Jean-Baptiste Silvy)
   * Update of the example1
   * Better management of the Preprocessing
-  * Manages array of string (as parameter and return type) and all other 
+  * Manages array of string (as parameter and return type) and all other
 	datatypes as parameter (and soon return)
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 19 Aug 2007 10:20:15 +0200
@@ -276,8 +284,8 @@ giws (0.2)
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 19 Jul 2007 15:45:45 +0200
 
-	
-giws (0.1) 
+
+giws (0.1)
 
   * Initial release
 
