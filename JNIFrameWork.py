@@ -92,18 +92,19 @@ class JNIFrameWork:
 		return self.__JavaVMVariableType
 
 	def getMethodGetCurrentEnv(self,objectName):
-		error = """std::cerr << "Could not retrieve the current JVM." << std::endl;
-		exit(EXIT_FAILURE);
-		"""
+		if configGiws().getThrowsException():
+			error = """throw %s::JniException(getCurrentEnv());"""%(configGiws().getExceptionFileName())
+
+		else:
+			error = """std::cerr << "Could not retrieve the current JVM." << std::endl;
+			exit(EXIT_FAILURE);
+			"""
 		return """
 		JNIEnv * %s::getCurrentEnv() {
 		JNIEnv * curEnv = NULL;
-		try {
 		jint res=this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		if (res != JNI_OK) {
 		%s
-		}
-		}catch (const std::exception & e){
 		}
 		return curEnv;
 		}"""%(objectName, error)
