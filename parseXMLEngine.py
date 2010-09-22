@@ -123,10 +123,20 @@ class parseXMLEngine:
 		else:
 			Jmethod=methodGiws(method.properties.getContent(),myReturnData)
 		child = method.children
+		parametersName=[] # To check if the parameter is not already defined
 		while child is not None: # We browse the parameters of the method
 			if child.type == "element":
 				prop=child.properties
-				Jmethod.addParameter(self.__loadParameter(prop))
+				param=self.__loadParameter(prop)
+				try:
+					if parametersName.index(param.getName()) >= 0:
+						print ('%s is already defined as parameters'%param.getName())
+						sys.exit(-3)					
+				except ValueError: #Cannot find the parameter => not defined. Good!
+	   				parametersName.append(param.getName())
+
+				Jmethod.addParameter(param)
+
 			child = child.next
 		return Jmethod
 

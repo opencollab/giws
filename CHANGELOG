@@ -3,7 +3,12 @@ giws (1.2.0)
 	* Management of inheritance in GIWS (Closes: #12)
 	  See /giws/examples/inherit for a usage example
 
-	* Many clean u and various small improvements
+    * Avoid to have jobjectArray in the profile. Does not show the actual type.
+      (Closes: #143)
+
+    * Reject a method with two parameters with the same name (Closes: #144)
+
+	* Many clean up and various small improvements
 
     [ Bruno Jofret ]
     * Manage Java Arrays returning null. Give NULL back to C++. (Closes: #134)
