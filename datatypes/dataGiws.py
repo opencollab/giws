@@ -58,7 +58,7 @@ class dataGiws(object):
 		"""
 		if self.isArray() and not ForceNotArray:
                     if self.getDimensionArray() == 1:
-			return self.type+"Array"
+                        return self.type+"Array"
                     else:
                         return "jobjectArray"
 		else:
