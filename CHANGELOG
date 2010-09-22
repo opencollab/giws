@@ -3,15 +3,15 @@ giws (1.2.0)
 	* Management of inheritance in GIWS (Closes: #12)
 	  See /giws/examples/inherit for a usage example
 
-    * Avoid to have jobjectArray in the profile. Does not show the actual type.
-      (Closes: #143)
+	* Avoid to have jobjectArray in the profile. Does not show the actual type.
+	  (Closes: #143)
 
-    * Reject a method with two parameters with the same name (Closes: #144)
+	* Reject a method with two parameters with the same name (Closes: #144)
 
 	* Many clean up and various small improvements
 
-    [ Bruno Jofret ]
-    * Manage Java Arrays returning null. Give NULL back to C++. (Closes: #134)
+	[ Bruno Jofret ]
+	* Manage Java Arrays returning null. Give NULL back to C++. (Closes: #134)
 
 	[ Calixte Denizet ]
 	* All the array creations were not checked.
@@ -114,20 +114,20 @@ giws (1.0)
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 11 Sept 2008 16:05:33 +0100
 
 giws (0.9.9.4)
-    * native type for "int" changed to "int" from "long" (see
+	* native type for "int" changed to "int" from "long" (see
 	  http://java.sun.com/javase/6/docs/technotes/guides/jni/spec/types.html#wp428)
 
  -- Simon Lipp <simon.lipp@scilab.org>  Tue, 26 Aug 2008 15:16:03 +0100
 
 giws (0.9.9.3)
-    * A malloc replaced by new
+	* A malloc replaced by new
 	* More feedback in the exception
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Aug 2008 16:00:52 +0100
 
 giws (0.9.9.2)
-    * C++ Exception can be triggered in case of error instead of an ugly
-      exit(EXIT_FAILURE)
+	* C++ Exception can be triggered in case of error instead of an ugly
+	  exit(EXIT_FAILURE)
 	  Use the options: -e/--throws-exception-on-error
 	* Update of copyright notices
 	* some malloc replaced by new
@@ -137,7 +137,7 @@ giws (0.9.9.2)
 
 giws (0.9.9.1)
  [ Vincent Couvert <vincent.couvert@inria.fr> ]
-    * Bug fixed: a static method can now return String[] values
+	* Bug fixed: a static method can now return String[] values
 
  [ Sylvestre Ledru <sylvestre.ledru@inria.fr> ]
 	* Missing author (Matthieu Walter)
@@ -151,41 +151,41 @@ giws (0.9.9.1)
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 25 Feb 2008 14:50:01 +0100
 
 giws (0.9.9)
-    * Basic example added (same as the website)
+	* Basic example added (same as the website)
 	* Split generated files per object by default (-s/--split-per-object replaced by -p/--per-package) and examples updated
 	* Developer documentation
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Thu, 20 Dec 2007 17:56:15 +0100
 
 giws (0.9.8)
-    * when java.lang.String is loaded, store it as a global variable
-    * Do not try to load the default description file
-    * Produce the help when no option provided
+	* when java.lang.String is loaded, store it as a global variable
+	* Do not try to load the default description file
+	* Produce the help when no option provided
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 18 Dec 2007 14:50:02 +0100
 
 giws (0.9.7)
-    * Cast boolean when used (closes #3)
-    * Warnings removed
-    * Examples extended to show boolean management
-    * Compilation error with gcc-4.3
-    * Search only once for all the class java.lang.String (closes #2)
+	* Cast boolean when used (closes #3)
+	* Warnings removed
+	* Examples extended to show boolean management
+	* Compilation error with gcc-4.3
+	* Search only once for all the class java.lang.String (closes #2)
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 17 Dec 2007 11:07:08 +0100
 
 giws (0.9.6)
-    * Bug fix for String[] return value type
+	* Bug fix for String[] return value type
 
  -- Vincent Couvert <vincent.couvert@inria.fr>  Fri, 7 Dec 2008 08:38:50 +0200
 
 giws (0.9.5)
 
  [ Vincent Couvert <vincent.couvert@inria.fr> ]
-    * Manages static methods
+	* Manages static methods
 
  [ Sylvestre Ledru <sylvestre.ledru@inria.fr> ]
-    * datatypes/charDataGiws.py / datatypes/booleanDataGiws.py / datatypes/byteDataGiws.py have been factorized too
-    * cleaning of the code
-    * bug in getMethodId causes by the static methodes call stuff
-    * BUG list updated
+	* datatypes/charDataGiws.py / datatypes/booleanDataGiws.py / datatypes/byteDataGiws.py have been factorized too
+	* cleaning of the code
+	* bug in getMethodId causes by the static methodes call stuff
+	* BUG list updated
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 22 Nov 2007 22:13:50 +0200
 
