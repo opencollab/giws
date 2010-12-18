@@ -1,3 +1,10 @@
+giws (1.2.1) - UNRELEASED
+
+     * Examples compile out of the box under 64 bit CPU
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Sat, 18 Sep 2010 15:49:13 +0200
+
+
 giws (1.2.0)
 
 	* Management of inheritance in GIWS (Closes: #12)

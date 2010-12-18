@@ -12,7 +12,7 @@ endif
 CC = g++
 CFLAGS = -g
 INCLUDES = -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux 
-LIBS = -ljvm -L$(JAVA_HOME)/jre/lib/i386 -L$(JAVA_HOME)/jre/lib/i386/client/
+LIBS = -ljvm -L$(JAVA_HOME)/jre/lib/i386 -L$(JAVA_HOME)/jre/lib/amd64 -L$(JAVA_HOME)/jre/lib/i386/client/ -L$(JAVA_HOME)/jre/lib/amd64/client/
 
 #
 # Java compiler option
