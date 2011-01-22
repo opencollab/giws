@@ -1,6 +1,8 @@
-giws (1.2.1) - UNRELEASED
+giws (1.2.1)
 
      * Examples compile out of the box under 64 bit CPU
+
+     * When an exception occured, the memory was not cleaned up.
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Sat, 18 Sep 2010 15:49:13 +0200
 

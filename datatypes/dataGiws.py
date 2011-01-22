@@ -48,6 +48,7 @@ def abstractMethod(obj=None):
 class dataGiws(object):
 	__isArray=False
 	__dimensionArray=0
+	temporaryVariableName="myArray"
 	"""
 	Interface for the datatype mapping
 	"""

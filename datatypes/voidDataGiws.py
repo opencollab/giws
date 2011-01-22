@@ -41,6 +41,7 @@ class voidDataGiws(dataGiws):
 	nativeType="void"	
 	callMethod="CallVoidMethod"
 	callStaticMethod="CallStaticVoidMethod"
+	temporaryVariableName="myStringBuffer"
 
 	def getTypeSignature(self):
 		return "V"

@@ -170,18 +170,23 @@ class JNIFrameWork:
 		JNIEnv * curEnv = getCurrentEnv();
 		"""
 	
-	def getExceptionCheckProfile(self):
+	def getExceptionCheckProfile(self, methodReturn=""):
 		if configGiws().getThrowsException():
-			return """if (curEnv->ExceptionCheck()) {
-			throw %s::JniCallMethodException(curEnv);
+			str="""if (curEnv->ExceptionCheck()) {
+			"""
+                        if methodReturn != "":
+                                str+="""delete[] %s;
+                                """%(methodReturn)
+                        str+= """throw %s::JniCallMethodException(curEnv);
 			}"""%(configGiws().getExceptionFileName())
+                        return str
 		else:
 			return """if (curEnv->ExceptionCheck()) {
 			curEnv->ExceptionDescribe() ;
 			}
 			"""
 
-	def getMethodIdProfile(self,method):
+	def getMethodIdProfile(self, method):
 		params=""
 		for parameter in method.getParameters():
 			if parameter.getType().isArray(): # It is an array

@@ -43,7 +43,8 @@ class stringDataGiws(dataGiws):
 	nativeType="char *"
 	callMethod="CallObjectMethod"
 	callStaticMethod="CallStaticObjectMethod"
-	
+	temporaryVariableName="myStringBuffer"
+
 	def getTypeSignature(self):
 		return "Ljava/lang/String;"
 
@@ -167,6 +168,7 @@ class stringDataGiws(dataGiws):
 			strCommon+="""
 			%s lenRow = curEnv->GetArrayLength(res);
 			"""%(strDeclaration)
+                        self.temporaryVariableName="arrayOfString"
 			if self.getDimensionArray() == 1:
 				str+=strCommon+"""
 				char **arrayOfString;
@@ -211,11 +213,11 @@ class stringDataGiws(dataGiws):
 			return str+"""
 
 			const char *tempString = curEnv->GetStringUTFChars(res, 0);
-			char * myStringBuffer = new char[strlen(tempString) + 1];
-			strcpy(myStringBuffer, tempString);
+			char * %s = new char[strlen(tempString) + 1];
+			strcpy(%s, tempString);
 			curEnv->ReleaseStringUTFChars(res, tempString);
 			curEnv->DeleteLocalRef(res);
-			"""
+			"""%(self.temporaryVariableName, self.temporaryVariableName)
 
 	def getReturnSyntax(self):
 		if self.isArray():
@@ -225,6 +227,6 @@ class stringDataGiws(dataGiws):
 			"""
 		else:
 			return """
-			return myStringBuffer;
-			"""
+			return %s;
+			"""%(self.temporaryVariableName)
 	

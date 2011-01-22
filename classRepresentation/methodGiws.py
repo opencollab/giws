@@ -128,7 +128,12 @@ class methodGiws:
 		if self.getModifier()=="static":
 			JNIFrameWork().getDeleteStaticProfile()
 
-		str+=JNIFrameWork().getExceptionCheckProfile()
+                if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType and (self.getReturn().isArray() or isinstance(self.getReturn(),stringDataGiws)):
+                        # Check the exception with a delete to avoid memory leak
+                        str+=JNIFrameWork().getExceptionCheckProfile(self.getReturn().temporaryVariableName)
+                else:
+                        str+=JNIFrameWork().getExceptionCheckProfile()
+
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())
 
 		return str

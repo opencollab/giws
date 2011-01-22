@@ -40,7 +40,7 @@ class licenseWrapper:
 		return """/*
 
 Copyright 2007-2008 INRIA
-Copyright 2008-2010 DIGITEO
+Copyright 2008-2011 DIGITEO
 
 Author : Sylvestre Ledru & others
 
