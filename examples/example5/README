@@ -1,0 +1,19 @@
+Here is a example of the detach the current thread from the jvm.
+
+Defines where is the JDK
+# export JAVA_HOME=/path/to/java/
+
+Compile the java file
+# $JAVA_HOME/bin/javac example5/MyObject.java
+
+Generate the wrapper
+# ../../giws -f MyObject.giws.xml -p
+
+Where are the JVM native libraries ? (if not using another arch, please update the path)
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JAVA_HOME/jre/lib/i386:$JAVA_HOME/jre/lib/i386/client/
+
+Compile the wrapper and the sample program using it
+# g++ main.cpp example5.cpp -g -o myExample2  -ljvm -I$JAVA_HOME/include -I$JAVA_HOME/include/linux -L$JAVA_HOME/jre/lib/i386 -L$JAVA_HOME/jre/lib/i386/client/
+
+Try it !
+# ./myExample5
