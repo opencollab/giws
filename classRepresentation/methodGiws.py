@@ -45,15 +45,18 @@ class methodGiws:
 	__name=""
 	__returns=""
 	__modifier=""
+	__detachThread=""
 	__parameters=[]
 	
-	def __init__(self, name, returns, modifier=None):
+	def __init__(self, name, returns, detachThread, modifier=None):
 		self.__name=name
 		if isinstance(returns,dataGiws):
 			self.__returns=returns
 		else:
 			raise Exception("The type must be a dataGiws object")
 		self.__parameters=[]
+		if detachThread:
+			self.__detachThread="\njvm_->DetachCurrentThread();\n"
 		self.__modifier=modifier
 
 	def addParameter(self, parameter):
@@ -71,6 +74,9 @@ class methodGiws:
 
 	def getParameters(self):
 		return self.__parameters
+
+	def getDetachThread(self):
+		return self.__detachThread
 
 	def getParametersCXX(self):
 		""" Returns the parameters with their types """
@@ -105,8 +111,8 @@ class methodGiws:
 				str+="""		jclass stringArrayClass = curEnv->FindClass("java/lang/String");"""
 				arrayOfStringDeclared=True
 				
-			if paramType.specificPreProcessing(parameter)!=None:
-				str+=paramType.specificPreProcessing(parameter)
+			if paramType.specificPreProcessing(parameter,self.getDetachThread())!=None:
+				str+=paramType.specificPreProcessing(parameter,self.getDetachThread())
 
 		# Retrieve the call profile to the java object
 		str+=JNIFrameWork().getCallObjectMethodProfile(self)
@@ -114,7 +120,7 @@ class methodGiws:
 		# add specific post processing stuff
 		if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
 			# For this datatype, there is some stuff to do AFTER the method call
-			str+=self.getReturn().specificPostProcessing()
+			str+=self.getReturn().specificPostProcessing(self.getDetachThread())
 
 		# Delete the stringArrayClass object if used before
 		if arrayOfStringDeclared:
@@ -130,10 +136,11 @@ class methodGiws:
 
                 if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType and (self.getReturn().isArray() or isinstance(self.getReturn(),stringDataGiws)):
                         # Check the exception with a delete to avoid memory leak
-                        str+=JNIFrameWork().getExceptionCheckProfile(self.getReturn().temporaryVariableName)
+                        str+=JNIFrameWork().getExceptionCheckProfile(self.getDetachThread(), self.getReturn().temporaryVariableName)
                 else:
-                        str+=JNIFrameWork().getExceptionCheckProfile()
+                        str+=JNIFrameWork().getExceptionCheckProfile(self.getDetachThread())
 
+		str+=self.getDetachThread()
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())
 
 		return str

@@ -152,7 +152,7 @@ class dataGiws(object):
 		return self.__dimensionArray
 
 
-	def __getProfileCreationOfTheArray(self, varName):
+	def __getProfileCreationOfTheArray(self, varName, detachThread):
 		"""
 		When we deal with an array as input, we need to 'transform' it for
 		Java"""
@@ -164,19 +164,19 @@ class dataGiws(object):
 		if configGiws().getThrowsException():
 			errorMgnt="""
 			if (%s_ == NULL)
-			{
+			{%s
 			// check that allocation succeed
 			throw %s::JniBadAllocException(curEnv);
 			}
-			"""%(varName,configGiws().getExceptionFileName())
+			"""%(varName,detachThread,configGiws().getExceptionFileName())
                         errorMgntLocal="""
 			if (%sLocal == NULL)
-			{
+			{%s
 			// check that allocation succeed
 			curEnv->DeleteLocalRef(%s_);
 			throw %s::JniBadAllocException(curEnv);
 			}
-			"""%(varName, varName, configGiws().getExceptionFileName())
+			"""%(varName, detachThread, varName, configGiws().getExceptionFileName())
 		else:
 			errorMgnt=""
                         errorMgntLocal=""
@@ -203,11 +203,11 @@ class dataGiws(object):
 			}
 			"""%(varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, errorMgntLocal, shortType, varName, varName, javaType, varName, varName, varName, varName)
 
-	def specificPreProcessing(self, parameter):
+	def specificPreProcessing(self, parameter, detachThread):
 		""" Preprocessing before calling the java method
 		"""
 		if self.isArray():
-			return self.__getProfileCreationOfTheArray(parameter.getName())
+			return self.__getProfileCreationOfTheArray(parameter.getName(), detachThread)
 		else:
 			return None
 
@@ -219,7 +219,7 @@ class dataGiws(object):
 		"""%(parameter.getName())
 
 
-	def specificPostProcessing(self):
+	def specificPostProcessing(self, detachThread):
 		""" Preprocessing after calling the java method
 		"""
 
@@ -231,7 +231,7 @@ class dataGiws(object):
 		if self.isArray():
                         str="""if (res == NULL) { return NULL; }
                         """
-                        str+=JNIFrameWork().getExceptionCheckProfile()
+                        str+=JNIFrameWork().getExceptionCheckProfile(detachThread)
                         strCommon=""
                         strDeclaration=""
 			if configGiws().getDisableReturnSize()==True:

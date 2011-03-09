@@ -66,22 +66,22 @@ class stringDataGiws(dataGiws):
 		else:
 			return "char *"
 
-	def specificPreProcessing(self, parameter):
+	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
 		name=parameter.getName()
 		# Management of the error when not enought memory to create the string
 		if configGiws().getThrowsException():
-			errorMgntMem="""throw %s::JniBadAllocException(curEnv);"""%(configGiws().getExceptionFileName())
+			errorMgntMem="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
-			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;
-			exit(EXIT_FAILURE);"""
+			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);"""%(detachThread)
 
 		# Management of the error when not enought memory to create the string
 		if configGiws().getThrowsException():
-			errorMgntMemBis="""throw %s::JniBadAllocException(curEnv);"""%(configGiws().getExceptionFileName())
+			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
-			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;
-			exit(EXIT_FAILURE);"""
+			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);"""%(detachThread)
 
 		if self.isArray():
 			if self.getDimensionArray() == 1:
@@ -146,7 +146,7 @@ class stringDataGiws(dataGiws):
 			jstring %s = curEnv->NewStringUTF( %s );
 			"""%(name+"_",name)
 	
-	def specificPostProcessing(self):
+	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a string or an array of string """
 		# We are doing an exception check here JUST in this case because
 		# in methodGiws::__createMethodBody we usually do it at the end
@@ -155,7 +155,7 @@ class stringDataGiws(dataGiws):
 		# methods which override the "exception engine" which drive the JNI
 		# engine crazy.
 
-		str=JNIFrameWork().getExceptionCheckProfile()
+		str=JNIFrameWork().getExceptionCheckProfile(detachThread)
 
 		if self.isArray():
 			strCommon=""

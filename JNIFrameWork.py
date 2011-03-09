@@ -170,15 +170,15 @@ class JNIFrameWork:
 		JNIEnv * curEnv = getCurrentEnv();
 		"""
 	
-	def getExceptionCheckProfile(self, methodReturn=""):
+	def getExceptionCheckProfile(self, detachThread, methodReturn=""):
 		if configGiws().getThrowsException():
 			str="""if (curEnv->ExceptionCheck()) {
 			"""
                         if methodReturn != "":
                                 str+="""delete[] %s;
                                 """%(methodReturn)
-                        str+= """throw %s::JniCallMethodException(curEnv);
-			}"""%(configGiws().getExceptionFileName())
+                        str+= """%sthrow %s::JniCallMethodException(curEnv);
+			}"""%(detachThread,configGiws().getExceptionFileName())
                         return str
 		else:
 			return """if (curEnv->ExceptionCheck()) {
@@ -188,6 +188,7 @@ class JNIFrameWork:
 
 	def getMethodIdProfile(self, method):
 		params=""
+
 		for parameter in method.getParameters():
 			if parameter.getType().isArray(): # It is an array
 				params+="[" * parameter.getType().getDimensionArray()
@@ -213,11 +214,12 @@ class JNIFrameWork:
 
 		# Management of the error
 		if configGiws().getThrowsException():
-			errorMgnt="""throw %s::JniMethodNotFoundException(curEnv, "%s");"""%(configGiws().getExceptionFileName(),method.getName())
+			errorMgnt="""%sthrow %s::JniMethodNotFoundException(curEnv, "%s");"""%(method.getDetachThread(),configGiws().getExceptionFileName(),method.getName())
 		else:
 			errorMgnt="""std::cerr << "Could not access to the method " << "%s" << std::endl;
 			curEnv->ExceptionDescribe();
-			exit(EXIT_FAILURE);"""%(method.getName())
+			%s
+			exit(EXIT_FAILURE);"""%(method.getName(),method.getDetachThread())
 			
 		methodIdProfile="""
 		%s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
@@ -240,7 +242,7 @@ class JNIFrameWork:
 			if i==1:
 				params+="," # in order to manage call without param
 			params+=parameter.getName()
-			if parameter.getType().specificPreProcessing(parameter)!=None:
+			if parameter.getType().specificPreProcessing(parameter,method.getDetachThread())!=None:
 				params+="_" # There is a pre-processing, then, we add the _ 
 			if len(parametersTypes)!=i: 
 				params+=", "

@@ -111,17 +111,22 @@ class parseXMLEngine:
 		self.__ctxt.xpathFreeContext()
 
 	def __loadMethods(self, method):
-		# @TODO : check the order
-
-		returns=method.properties.next.getContent()
+		returns=method.prop("returnType")
 		myFactory=dataFactoryGiws()
 		myReturnData=myFactory.create(returns)
 
-		modifier=method.properties.next.next
+		modifier=method.prop("modifier")
+		detachThreadProp=method.prop("detachThread")
+		detachThread=False
+		if detachThreadProp!=None:
+			str=detachThreadProp.lower()
+			if str=="true":
+				detachThread=True
+
 		if modifier!=None:
-			Jmethod=methodGiws(method.properties.getContent(),myReturnData,modifier.getContent())
+			Jmethod=methodGiws(method.properties.getContent(),myReturnData,detachThread,modifier)
 		else:
-			Jmethod=methodGiws(method.properties.getContent(),myReturnData)
+			Jmethod=methodGiws(method.properties.getContent(),myReturnData,detachThread)
 		child = method.children
 		parametersName=[] # To check if the parameter is not already defined
 		while child is not None: # We browse the parameters of the method

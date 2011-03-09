@@ -56,7 +56,7 @@ class booleanDataGiws(dataGiws):
 	def getDescription(self):
 		return "unsigned 8 bits"
 	
-	def specificPreProcessing(self, parameter):
+	def specificPreProcessing(self, parameter, detachThread):
 		name=parameter.getName()
 		if self.isArray():
 			if self.getDimensionArray() == 1: 
@@ -79,10 +79,10 @@ class booleanDataGiws(dataGiws):
 			jboolean %s = (static_cast<bool>(%s) ? JNI_TRUE : JNI_FALSE);
 			"""%(name+"_",name)
 
-	def specificPostProcessing(self):
+	def specificPostProcessing(self, detachThread):
 		""" needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
 		if self.isArray():
-			str=JNIFrameWork().getExceptionCheckProfile()
+			str=JNIFrameWork().getExceptionCheckProfile(detachThread)
 			strCommon=""
 			if configGiws().getDisableReturnSize()==True:
 				strCommon+="int *lenRow;"

@@ -1,3 +1,9 @@
+giws (1.2.2)
+
+     [ Calixte Denizet ]
+     * Add the possibility to detach the current thread of the jvm:
+       <method ... detachThread="true"/>
+
 giws (1.2.1)
 
      * Examples compile out of the box under 64 bit CPU
