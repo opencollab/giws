@@ -1,6 +1,9 @@
 giws (1.2.2)
 
      [ Calixte Denizet ]
+     
+     * Bad path to libjvm on 64 bits OS.
+     
      * Add the possibility to detach the current thread of the jvm:
        <method ... detachThread="true"/>
 
