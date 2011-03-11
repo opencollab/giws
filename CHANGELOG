@@ -6,6 +6,9 @@ giws (1.2.2)
      
      * Add the possibility to detach the current thread of the jvm:
        <method ... detachThread="true"/>
+       Example 5 added to show this new feature.
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Fri, 11 Mar 2011 12:03:26 +0100
 
 giws (1.2.1)
 
