@@ -163,7 +163,8 @@ class JNIFrameWork:
 		""" 
 
 	def getDeleteStaticProfile(self):
-		return """curEnv->DeleteLocalRef(cls);"""
+		return """curEnv->DeleteLocalRef(cls);
+		"""
 	
 	def getObjectInstanceProfile(self):
 		return """

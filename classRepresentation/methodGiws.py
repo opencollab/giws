@@ -131,8 +131,13 @@ class methodGiws:
 			paramType=parameter.getType()
 			if paramType.isArray():
 				str+=paramType.specificPostDeleteMemory(parameter)
+                        else:
+                                if isinstance(paramType,stringDataGiws):
+                                        str+=paramType.specificPostDeleteMemory(parameter)
+
+
 		if self.getModifier()=="static":
-			JNIFrameWork().getDeleteStaticProfile()
+			str+=JNIFrameWork().getDeleteStaticProfile()
 
                 if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType and (self.getReturn().isArray() or isinstance(self.getReturn(),stringDataGiws)):
                         # Check the exception with a delete to avoid memory leak

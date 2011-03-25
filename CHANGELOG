@@ -1,3 +1,9 @@
+giws (1.2.4)
+
+     * Two potential memory leaks removed
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Fri, 25 Mar 2011 08:57:20 +0100
+
 giws (1.2.3)
 
      * Forgot to increment the version number of the generated code

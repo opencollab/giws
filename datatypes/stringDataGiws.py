@@ -66,6 +66,15 @@ class stringDataGiws(dataGiws):
 		else:
 			return "char *"
 
+        def __errorMemoryString(self, detachThread):
+		# Management of the error when not enought memory to create the string
+		if configGiws().getThrowsException():
+			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
+		else:
+			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);"""%(detachThread)
+                return errorMgntMemBis
+
 	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
 		name=parameter.getName()
@@ -76,12 +85,7 @@ class stringDataGiws(dataGiws):
 			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
 
-		# Management of the error when not enought memory to create the string
-		if configGiws().getThrowsException():
-			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
-		else:
-			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);"""%(detachThread)
+                errorMgntMemBis = self.__errorMemoryString(detachThread)
 
 		if self.isArray():
 			if self.getDimensionArray() == 1:
@@ -142,9 +146,15 @@ class stringDataGiws(dataGiws):
 		else:
 			# Need to store is for the post processing (delete)
 			self.parameterName=name
+                        tempName=name+"_"
 			return """
 			jstring %s = curEnv->NewStringUTF( %s );
-			"""%(name+"_",name)
+			if (%s == NULL)
+			{
+			%s
+			}
+
+			"""%(tempName,name,tempName,errorMgntMemBis)
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a string or an array of string """
