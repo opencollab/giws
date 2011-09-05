@@ -1,3 +1,11 @@
+giws (1.2.5)
+
+     * Fix a problem with two similar declarations with a different profile
+       (Closes: #517)
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Mon, 05 Sep 2011 17:36:52 +0200
+
+
 giws (1.2.4)
 
      * Two potential memory leaks removed
