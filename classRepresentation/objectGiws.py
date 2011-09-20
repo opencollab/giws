@@ -1,4 +1,3 @@
-
 #!/usr/bin/python -u
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
