@@ -149,12 +149,12 @@ class stringDataGiws(dataGiws):
                         tempName=name+"_"
 			return """
 			jstring %s = curEnv->NewStringUTF( %s );
-			if (%s == NULL)
+			if (%s != NULL && %s == NULL)
 			{
 			%s
 			}
 
-			"""%(tempName,name,tempName,errorMgntMemBis)
+			"""%(tempName,name,name,tempName,errorMgntMemBis)
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a string or an array of string """

@@ -2,6 +2,7 @@ giws (1.2.5)
 
      * Fix a problem with two similar declarations with a different profile
        (Closes: #517)
+     * Fix a bug when a string is declared but empty.
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Mon, 05 Sep 2011 17:36:52 +0200
 
