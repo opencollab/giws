@@ -24,7 +24,7 @@ JFLAGS =
 # GIWS options
 #
 GIWS = ../../giws
-GFLAGS = -p --throws-exception-on-error
+GFLAGS = -p --throws-exception-on-error -g
 
 #
 # GIWS PROJECT INFORMATIONS 

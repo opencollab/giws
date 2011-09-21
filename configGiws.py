@@ -37,10 +37,11 @@
 """ Configuration of the Env """
 
 class configGiws:
-	__version="1.2.5"
+	__version="1.3.0"
 	__descriptionFile=""
 	__splitPerObject=True
 	__throwsException=False
+	__generateExceptionClass=False
 	__disableReturnSize=False
 	__output="." # Should be changed elsewhere
 	__headerCPPExtension=".hxx"
@@ -64,6 +65,12 @@ class configGiws:
 
 	def getDisableReturnSize(self):
 		return configGiws.__disableReturnSize
+
+	def enableGenerateExceptionClass(self):
+		configGiws.__generateExceptionClass=True
+
+	def generateExceptionClass(self):
+		return configGiws.__generateExceptionClass
 
 	def setOutput(self, output):
 		self.__output=output

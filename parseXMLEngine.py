@@ -53,7 +53,7 @@ class parseXMLEngine:
 	
 	def __init__(self, descFile):
 		if os.path.isfile(descFile)!=True:
-			print ('Cound not find declaration file "%s"'%descFile)
+			print ('Could not find declaration file "%s"'%descFile)
 			sys.exit(-2)
 		try:
 			doc = libxml2.parseFile(descFile)

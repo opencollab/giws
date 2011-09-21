@@ -60,7 +60,7 @@ class giws:
 	load configuration from command line parameters
 	"""
 	def __parse_cmdline(self):
-		opts, args = getopt.getopt(self.argv[1:], "f:o:b:prehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","per-package","throws-exception-on-error","disable-return-size-array","help","version"])
+		opts, args = getopt.getopt(self.argv[1:], "f:o:b:gprehv", ["description-file=","output-dir=","header-extension-file=","body-extension-file=","generate-exception-class","per-package","throws-exception-on-error","disable-return-size-array","help","version"])
 
 		# we know at least one options is required (-f file...)
 		if len(opts)==0:
@@ -90,6 +90,9 @@ class giws:
 
 			elif option in ("-e","--throws-exception-on-error"):
 				self.config.setThrowsException(True)
+
+			elif option in ("-g","--generate-exception-class"):
+				self.config.enableGenerateExceptionClass()
 				
 			elif option in ("-r","--disable-return-size-array"):
 				self.config.setDisableReturnSize()
@@ -107,18 +110,20 @@ class giws:
 				self.show_help(0)
 
 		# check for some mandatory paramters
-		if not self.config.getDescriptionFile():
-			raise getopt.GetoptError, "you have to specify a description file"
+		if not self.config.getDescriptionFile() and not self.config.generateExceptionClass():
+			raise getopt.GetoptError, "You have to specify a description file"
 
-		templateObj=parseXMLEngine(self.config.getDescriptionFile())
+		if self.config.getDescriptionFile():
+			templateObj=parseXMLEngine(self.config.getDescriptionFile())
 
-		CXX=CXXFile(templateObj.getJpackage())
-		CXX.generateCXXHeader(self.config)
-		CXX.generateCXXBody(self.config)
+			CXX=CXXFile(templateObj.getJpackage())
+			CXX.generateCXXHeader(self.config)
+			CXX.generateCXXBody(self.config)
+			
 		# this will be changed ... should not be called on the package itself
 		#		.generateCXXHeader(self.config)
 		#		templateObj.getJpackage().generateCXXBody(self.config)
-		if self.config.getThrowsException() and not os.path.isfile(os.path.join(self.config.getOutput(), self.config.getExceptionFileName()+self.config.getCPPHeaderExtension())):
+		if self.config.generateExceptionClass():
 			CXXExcep=CXXException()
 			CXXExcep.generateCXXHeader(self.config)
 			CXXExcep.generateCXXBody(self.config)
@@ -132,6 +137,7 @@ class giws:
 		print "-o     --output-dir=dir           The directory where to export files"
 		print "-p     --per-package              Generates CXX/HXX files per package"
 		print "-e     --throws-exception-on-error       Throws a C++ exception instead of an exit(EXIT_FAILURE)"
+		print "-g     --generate-exception-class        Generate the exception class (disable by default)"
 		print "-r     --disable-return-size-array       Disable the return of the size of the array/arrays through int*"
 		print "--header-extension-file=ext       Specify the extension of the header file generated [Default : .hxx]"
 		print "--body-extension-file=ext         Specify the extension of the body file generated [Default : .cpp]"
@@ -142,7 +148,7 @@ class giws:
 
 	def show_version(self, exit_status=0):
 		print "GIWS %s"%self.config.getVersion()
-		print "Copyright (C) 2007-2010 INRIA / Digiteo / Scilab"
+		print "Copyright (C) 2007-2011 INRIA / Digiteo / Scilab"
 		print """This software is governed by the CeCILL license under French law and
 abiding by the rules of distribution of free software. You can use, 
 modify and/ or redistribute the software under the terms of the CeCILL
