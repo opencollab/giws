@@ -96,6 +96,8 @@ class CXXException:
 			* @param curEnv java environment where the exception occured.
 			*/
 			JniException(JNIEnv * curEnv) throw() ;
+			JniException() throw() : exception() { };
+
 			
 			virtual ~JniException(void) throw();
 			
@@ -528,7 +530,7 @@ class CXXException:
   * code fails (sur as NewDoubleArray or NewStringUTF).
   */
   
-  JniBadAllocException::JniBadAllocException(JNIEnv * curEnv) throw() : JniException(curEnv)
+  JniBadAllocException::JniBadAllocException(JNIEnv * curEnv) throw() : JniException()
   {
   std::string message = "Error no more memory.";
   setErrorMessage(message);
