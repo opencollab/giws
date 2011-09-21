@@ -3,6 +3,8 @@ giws (1.2.5)
      * Fix a problem with two similar declarations with a different profile
        (Closes: #517)
      * Fix a bug when a string is declared but empty.
+     * Add a whatStr() method (returns a C++ String). Deprecate what()
+       (Could lead to side effect: String could be deleted)
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Mon, 05 Sep 2011 17:36:52 +0200
 

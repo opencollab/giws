@@ -101,8 +101,14 @@ class CXXException:
 			
 			/**
 			* @return a description of the exception
+			* @deprecated This function could lead to side effect error. Please use whatStr
 			*/
 			virtual const char * what(void) const throw();
+
+			/**
+			* @return a description of the exception
+			*/
+			virtual std::string whatStr(void) const throw();
 			
 			/**
 			* @return Java description of the exception.
@@ -305,10 +311,19 @@ class CXXException:
 		
 		/**
 		* @return a description of the exception
+		* @deprecated This function could lead to side effect error. Please use whatStr
 		*/
 		const char * JniException::what(void) const throw()
 		{
 		return m_oErrorMessage.c_str();
+		}
+
+		/**
+		* @return a description of the exception
+		*/
+		std::string JniException::whatStr(void) const throw()
+		{
+		return m_oErrorMessage;
 		}
 
 		/**
@@ -362,23 +377,23 @@ class CXXException:
 			// retrieve information from the exception.
 			// get method id
 			jmethodID getLocalizedMessageId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
-                                               "getLocalizedMessage",
-                                               "()Ljava/lang/String;");
+											   "getLocalizedMessage",
+											   "()Ljava/lang/String;");
 
 			// call getLocalizedMessage
 			jstring description = (jstring) curEnv->CallObjectMethod(javaException, getLocalizedMessageId);
 
-    if (description == NULL)
-    {
-      return "";
-    }
+	if (description == NULL)
+	{
+	  return "";
+	}
 
-    std::string res = convertJavaString(curEnv, description);
+	std::string res = convertJavaString(curEnv, description);
 
-    // release java resources
-    curEnv->DeleteLocalRef(description);
+	// release java resources
+	curEnv->DeleteLocalRef(description);
 
-    return res;
+	return res;
   }
 
   /**
@@ -388,60 +403,60 @@ class CXXException:
   {
 
 
-    // return the result of the getStackTrace method
+	// return the result of the getStackTrace method
 
-    // retrieve information from the exception.
-    // get method id
-    // getStackTrace returns an array of StackTraceElement
-    jmethodID getStackTraceId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
-                                                    "getStackTrace",
-                                                    "()[Ljava/lang/StackTraceElement;");
+	// retrieve information from the exception.
+	// get method id
+	// getStackTrace returns an array of StackTraceElement
+	jmethodID getStackTraceId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
+													"getStackTrace",
+													"()[Ljava/lang/StackTraceElement;");
 
-    // call getStackTrace
-    jobjectArray stackTrace = (jobjectArray) curEnv->CallObjectMethod(javaException, getStackTraceId);
+	// call getStackTrace
+	jobjectArray stackTrace = (jobjectArray) curEnv->CallObjectMethod(javaException, getStackTraceId);
 
-    if (stackTrace == NULL)
-    {
-      return "";
-    }
+	if (stackTrace == NULL)
+	{
+	  return "";
+	}
 
-    // get length of the array
-    jsize stackTraceLength = curEnv->GetArrayLength(stackTrace);
-    std::string res = "";
+	// get length of the array
+	jsize stackTraceLength = curEnv->GetArrayLength(stackTrace);
+	std::string res = "";
 
-    // get toString methodId of StackTraceElement class
-    jclass stackTraceElementClass = curEnv->FindClass("java/lang/StackTraceElement");
-    jmethodID toStringId = curEnv->GetMethodID(stackTraceElementClass, "toString", "()Ljava/lang/String;");
+	// get toString methodId of StackTraceElement class
+	jclass stackTraceElementClass = curEnv->FindClass("java/lang/StackTraceElement");
+	jmethodID toStringId = curEnv->GetMethodID(stackTraceElementClass, "toString", "()Ljava/lang/String;");
 
-    for (jsize i = 0; i < stackTraceLength; i++)
-    {
-      // add the result of toString method of each element in the result
-      jobject curStackTraceElement = curEnv->GetObjectArrayElement(stackTrace, i);
+	for (jsize i = 0; i < stackTraceLength; i++)
+	{
+	  // add the result of toString method of each element in the result
+	  jobject curStackTraceElement = curEnv->GetObjectArrayElement(stackTrace, i);
 
-      // call to string on the object
-      jstring stackElementString = (jstring) curEnv->CallObjectMethod(curStackTraceElement, toStringId);
+	  // call to string on the object
+	  jstring stackElementString = (jstring) curEnv->CallObjectMethod(curStackTraceElement, toStringId);
 
-      if (stackElementString == NULL)
-      {
-        curEnv->DeleteLocalRef(stackTraceElementClass);
-        curEnv->DeleteLocalRef(stackTrace);
-        curEnv->DeleteLocalRef(curStackTraceElement);
-        return res;
-      }
+	  if (stackElementString == NULL)
+	  {
+		curEnv->DeleteLocalRef(stackTraceElementClass);
+		curEnv->DeleteLocalRef(stackTrace);
+		curEnv->DeleteLocalRef(curStackTraceElement);
+		return res;
+	  }
 
-      // add a line to res
-      res += " at " + convertJavaString(curEnv, stackElementString) + "\\n";
+	  // add a line to res
+	  res += " at " + convertJavaString(curEnv, stackElementString) + "\\n";
 
-      curEnv->DeleteLocalRef(curStackTraceElement);
-      curEnv->DeleteLocalRef(stackElementString);
-    }
+	  curEnv->DeleteLocalRef(curStackTraceElement);
+	  curEnv->DeleteLocalRef(stackElementString);
+	}
 
-    // release java resources
-    curEnv->DeleteLocalRef(stackTraceElementClass);
-    curEnv->DeleteLocalRef(stackTrace);
+	// release java resources
+	curEnv->DeleteLocalRef(stackTraceElementClass);
+	curEnv->DeleteLocalRef(stackTrace);
 
 
-    return res;
+	return res;
   }
 
   /**
@@ -450,32 +465,32 @@ class CXXException:
   std::string JniException::retrieveExceptionName(JNIEnv * curEnv)
   {
 
-    // then get its class
-    jclass exceptionClass = curEnv->GetObjectClass(javaException);
+	// then get its class
+	jclass exceptionClass = curEnv->GetObjectClass(javaException);
 
-    // get the Class class
-    // we could also use curEnv->FindClass("Class");
-    jclass classClass = curEnv->GetObjectClass(exceptionClass);
+	// get the Class class
+	// we could also use curEnv->FindClass("Class");
+	jclass classClass = curEnv->GetObjectClass(exceptionClass);
 
-    // get the getName method
-    jmethodID getNameId = curEnv->GetMethodID(classClass, "getName", "()Ljava/lang/String;");
+	// get the getName method
+	jmethodID getNameId = curEnv->GetMethodID(classClass, "getName", "()Ljava/lang/String;");
 
-    // call the getName function
-    jstring javaName = (jstring) curEnv->CallObjectMethod(exceptionClass, getNameId);
+	// call the getName function
+	jstring javaName = (jstring) curEnv->CallObjectMethod(exceptionClass, getNameId);
 
-    if (javaName == NULL)
-    {
-      return "";
-    }
+	if (javaName == NULL)
+	{
+	  return "";
+	}
 
-    std::string res = convertJavaString(curEnv, javaName);
+	std::string res = convertJavaString(curEnv, javaName);
 
-    // release java resources
-    curEnv->DeleteLocalRef(exceptionClass);
-    curEnv->DeleteLocalRef(classClass);
-    curEnv->DeleteLocalRef(javaName);
+	// release java resources
+	curEnv->DeleteLocalRef(exceptionClass);
+	curEnv->DeleteLocalRef(classClass);
+	curEnv->DeleteLocalRef(javaName);
 
-    return res;
+	return res;
   }
 
   /**
@@ -485,9 +500,9 @@ class CXXException:
    */
   void JniException::closeException(JNIEnv * curEnv)
   {
-    // remove the exception from the environment
-    // Beware, the exception is no longer reachable
-    curEnv->ExceptionClear();
+	// remove the exception from the environment
+	// Beware, the exception is no longer reachable
+	curEnv->ExceptionClear();
   }
 
   /**
@@ -495,16 +510,16 @@ class CXXException:
    */
   std::string JniException::convertJavaString(JNIEnv * curEnv, jstring javaString)
   {
-    // get a pointer on a C string
-    const char * tempString = curEnv->GetStringUTFChars(javaString, 0);
+	// get a pointer on a C string
+	const char * tempString = curEnv->GetStringUTFChars(javaString, 0);
 
-    // convert the C string into a C++ string
-    std::string res(tempString);
+	// convert the C string into a C++ string
+	std::string res(tempString);
 
-    // release pointer
-    curEnv->ReleaseStringUTFChars(javaString, tempString);
+	// release pointer
+	curEnv->ReleaseStringUTFChars(javaString, tempString);
 
-    return res;
+	return res;
   }
 
 

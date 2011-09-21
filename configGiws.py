@@ -37,7 +37,7 @@
 """ Configuration of the Env """
 
 class configGiws:
-	__version="1.2.4"
+	__version="1.2.5"
 	__descriptionFile=""
 	__splitPerObject=True
 	__throwsException=False

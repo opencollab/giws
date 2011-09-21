@@ -70,7 +70,7 @@ class objectGiws:
 		str=""
 		stringClassSet=False
 		for method in self.__methods:
-			str+="""%s=NULL; 
+			str+="""%s=NULL;
 			"""%method.getUniqueNameOfTheMethod()
 
 			for param in  method.getParameters():
