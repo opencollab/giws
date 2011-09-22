@@ -319,10 +319,11 @@ class objectGiws:
 		
         def generateCXXHeader(self, packageName):
                 JNIObjectName=packageName+"/"+self.getName()
+                
 		if self.getExtendedClass()==None:
-			classProfile="""class %s {""" % (self.getName())
+			classProfile="""class GIWSEXPORT %s {""" % (self.getName())
 		else:
-			classProfile="""class %s : public %s {
+			classProfile="""class GIWSEXPORT %s : public %s {
 			""" % (self.getName(), self.getExtendedClass().getName())
 		return """%s
 

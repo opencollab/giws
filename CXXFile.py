@@ -101,7 +101,8 @@ class CXXFile:
 			defineHeader=self.package.getNameForCXX()
 		str="""%s
 		%s
-		%s""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(), JNIFrameWork().getHeader(defineHeader))
+		%s
+		%s""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(), JNIFrameWork().getHeader(defineHeader), JNIFrameWork().getDLLExportSyntax())
 		if self.__isUsingInheritanceFeature()==True:
 		      str+=JNIFrameWork().getHeaderInheritance()
 		return str+"""

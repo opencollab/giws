@@ -53,9 +53,11 @@ class CXXException:
 		return """%s
 		%s
 		%s#include <exception>
-		
+
+		%s
+
 		namespace %s {
-		""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(),JNIFrameWork().getHeader(defineHeader),config.getExceptionFileName())
+		""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(),JNIFrameWork().getHeader(defineHeader),JNIFrameWork().getDLLExportSyntax(),config.getExceptionFileName())
 
 
 	# Build the whole code of the C++ Exception header
@@ -65,10 +67,11 @@ class CXXException:
 		#endif
 		"""
 		strHeader="""
+
 		/**
 		* Parent class for exceptions which may occure in JNI code.
 		*/
-		class JniException : public std::exception
+		class GIWSEXPORT JniException : public std::exception
 		{
 			
 			/** Error message to display */
@@ -170,7 +173,7 @@ class CXXException:
 			* Exception that should be thrown when allocation of Java resources from C++
 			* code fails (sur as NewDoubleArray or NewStringUTF).
 			*/
-			class JniBadAllocException : public JniException
+			class GIWSEXPORT JniBadAllocException : public JniException
 			{
 			public:
 
@@ -184,7 +187,7 @@ class CXXException:
 			* If possible, user should try to avoid this sitution because of the loss
 			* of information.
 			*/
-			class JniCallMethodException : public JniException
+			class GIWSEXPORT JniCallMethodException : public JniException
 			{
 			public:
 			
@@ -199,7 +202,7 @@ class CXXException:
 			/**
 				* Exception that should be thrown when Jni code could not find a Java class
 				*/
-			class JniClassNotFoundException : public JniException
+			class GIWSEXPORT JniClassNotFoundException : public JniException
 			{
 			public:
 
@@ -215,7 +218,7 @@ class CXXException:
 			/**
 			* Exception that should be thrown when Jni code could not find a Java method
 			*/
-			class JniMethodNotFoundException : public JniException
+			class GIWSEXPORT JniMethodNotFoundException : public JniException
 			{
 			public:
 					
@@ -233,7 +236,7 @@ class CXXException:
 			* If possible, user should try to avoid this sitution because of the loss
 			* of information.
 			*/
-			class JniObjectCreationException : public JniException
+			class GIWSEXPORT JniObjectCreationException : public JniException
 			{
 			public:
 			
@@ -250,7 +253,7 @@ class CXXException:
 			* Exception that should be thrown when a call to the Java monitor
 			* failed
 			*/
-			class JniMonitorException : public JniException
+			class GIWSEXPORT JniMonitorException : public JniException
 			{
 			public:
 			

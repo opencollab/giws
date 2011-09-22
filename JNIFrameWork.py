@@ -271,3 +271,17 @@ class JNIFrameWork:
 		return returnType.getReturnSyntax()
 		
 
+        def getDLLExportSyntax(self):
+                return """
+		#ifndef GIWSEXPORT
+		# if defined(_MSC_VER) || defined(__WIN32__) || defined(__CYGWIN__)
+		#   if defined(STATIC_LINKED)
+		#     define GIWSEXPORT
+		#   else
+		#     define GIWSEXPORT __declspec(dllexport)
+		#   endif
+		# else
+		#     define GIWSEXPORT
+		# endif
+		#endif
+		"""
