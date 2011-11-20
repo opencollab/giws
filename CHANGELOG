@@ -1,3 +1,9 @@
+giws (1.3.1)
+
+     * Export GIWS symbols also under Linux
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Sun, 20 Nov 2011 20:40:35 +0100
+
 giws (1.3.0)
 
      * New option -g introduced to generate on demand GiwsException.cpp
@@ -12,7 +18,6 @@ giws (1.3.0)
      * Export GIWS symbols on Windows (Closes: #405)
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Mon, 05 Sep 2011 17:36:52 +0200
-
 
 giws (1.2.4)
 
