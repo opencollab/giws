@@ -44,6 +44,7 @@ from datatypes.floatDataGiws import floatDataGiws
 from datatypes.shortDataGiws import shortDataGiws
 from datatypes.stringDataGiws import stringDataGiws
 from datatypes.voidDataGiws import voidDataGiws
+from datatypes.byteBufferDataGiws import byteBufferDataGiws
 import datatypes
 import new
 
@@ -52,42 +53,43 @@ class dataFactoryGiws:
 	  def __init__(self):
 
 		  self.dict = {
-			  "int":    intDataGiws,
+			  "int":     intDataGiws,
 			  "char":    charDataGiws,
-			  "long":   longDataGiws,
-			  "double": doubleDataGiws,
-              "boolean": booleanDataGiws,
-              "byte": byteDataGiws,
-              "float": floatDataGiws,
-              "short": shortDataGiws,
-			  "String": stringDataGiws,
-			  "void": voidDataGiws
+			  "long":    longDataGiws,
+			  "double":  doubleDataGiws,
+			  "boolean": booleanDataGiws,
+			  "byte":    byteDataGiws,
+			  "float":   floatDataGiws,
+			  "short":   shortDataGiws,
+			  "String":  stringDataGiws,
+			  "void":    voidDataGiws,
+                          "ByteBuffer": byteBufferDataGiws
 			  }
 
 	  def create(self, dataTypeToCreate):
-            """ Create an GIWS datatype
-            it can be int, char, long, double, boolean, byte, float, short,
-            String and void
-            if there is a trailing [], this object will consider it as an
-            array of this data
+			""" Create an GIWS datatype
+			it can be int, char, long, double, boolean, byte, float, short,
+			String and void
+			if there is a trailing [], this object will consider it as an
+			array of this data
 
-            """
-            isArray=False
-            arrayDimension=0 # Scalar
-            if dataTypeToCreate.endswith("[]"): # It is an array
-                  isArray=True
-                  arrayDimension=dataTypeToCreate.count("[]")
-                  # Trim to load the right object
-                  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-(arrayDimension*2)]
+			"""
+			isArray=False
+			arrayDimension=0 # Scalar
+			if dataTypeToCreate.endswith("[]"): # It is an array
+				  isArray=True
+				  arrayDimension=dataTypeToCreate.count("[]")
+				  # Trim to load the right object
+				  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-(arrayDimension*2)]
 
-                  
-            if dataTypeToCreate not in self.dict:
-                  raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
-            
-            myType=self.dict[dataTypeToCreate]()
-            myType.setIsArray(isArray)
-            myType.setDimensionArray(arrayDimension)
-            return myType
+				  
+			if dataTypeToCreate not in self.dict:
+				  raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
+			
+			myType=self.dict[dataTypeToCreate]()
+			myType.setIsArray(isArray)
+			myType.setDimensionArray(arrayDimension)
+			return myType
 
 if __name__ == '__main__':
 	myFactory=dataFactoryGiws()
