@@ -37,9 +37,8 @@ For more information, see the file COPYING
 
 <package name="bytebuffer">
   <object name="ButeBufferSync">
-<!--	<method name="getIntFromArrayOfSizeThree" returnType="int">
-		<param type="ByteBuffer" name="plop" />
-	</method>-->
-	<method name="returnMyVariableAsByteBuffer" returnType="ByteBuffer" />
+        <method name="bar" returnType="void" modifier="static">
+            <parameter name="data" type="DoubleBuffer"/>
+        </method>
   </object>
 </package>

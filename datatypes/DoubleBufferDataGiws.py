@@ -1,7 +1,7 @@
 #!/usr/bin/python -u
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
-# Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
+# Sylvestre LEDRU - <sylvestre.ledru@scilab.org> <sylvestre@ledru.info>
 # 
 # This software is a computer program whose purpose is to generate C++ wrapper 
 # for Java objects/methods.
@@ -38,7 +38,7 @@ from dataGiws import dataGiws
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
-class byteBufferDataGiws(dataGiws):
+class DoubleBufferDataGiws(dataGiws):
 
 	nativeType="char *"
 	callMethod="CallObjectMethod"
@@ -46,7 +46,7 @@ class byteBufferDataGiws(dataGiws):
 	temporaryVariableName="myByteBufferBuffer"
 
 	def getTypeSignature(self):
-		return "Ljava/lang/ByteBuffer;"
+		return "Ljava/nio/DoubleBuffer;"
 
 	def getJavaTypeSyntax(self):
 		if self.isArray():
@@ -67,22 +67,22 @@ class byteBufferDataGiws(dataGiws):
 			return "char *"
 
         def __errorMemoryByteBuffer(self, detachThread):
-		# Management of the error when not enought memory to create the byteBuffer
+		# Management of the error when not enought memory to create the DoubleBuffer
 		if configGiws().getThrowsException():
 			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
-			errorMgntMemBis="""std::cerr << "Could not convert C byteBuffer to Java UTF byteBuffer, memory full." << std::endl;%s
+			errorMgntMemBis="""std::cerr << "Could not convert C DoubleBuffer to Java UTF DoubleBuffer, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
                 return errorMgntMemBis
 
 	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
 		name=parameter.getName()
-		# Management of the error when not enought memory to create the byteBuffer
+		# Management of the error when not enought memory to create the DoubleBuffer
 		if configGiws().getThrowsException():
 			errorMgntMem="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
-			errorMgntMem="""std::cerr << "Could not allocate Java byteBuffer array, memory full." << std::endl;%s
+			errorMgntMem="""std::cerr << "Could not allocate Java DoubleBuffer array, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
 
                 errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
@@ -103,20 +103,20 @@ class byteBufferDataGiws(dataGiws):
 			self.parameterName=name
                         tempName=name+"_"
 			return """
-			jbyteBuffer %s = curEnv->NewByteBufferUTF( %s );
-			if (%s != NULL && %s == NULL)
-			{
-			%s
-			}
+            jobject buffer = curEnv->NewDirectByteBuffer((void*)data, (jlong)dataSize * sizeof(double));
+if (!buffer)
+{
+    throw GiwsException::JniBadAllocException(curEnv);
+}"""
 
-			"""%(tempName,name,name,tempName,errorMgntMemBis)
+#			"""%(tempName,name,name,tempName,errorMgntMemBis)
 	
 	def specificPostProcessing(self, detachThread):
-		""" Called when we are returning a byteBuffer or an array of byteBuffer """
+		""" Called when we are returning a DoubleBuffer or an array of DoubleBuffer """
 		# We are doing an exception check here JUST in this case because
 		# in methodGiws::__createMethodBody we usually do it at the end
 		# of the method just after deleting the variable
-		# but when dealing with byteBuffer, in this method, we are calling some
+		# but when dealing with DoubleBuffer, in this method, we are calling some
 		# methods which override the "exception engine" which drive the JNI
 		# engine crazy.
 
@@ -139,7 +139,7 @@ class byteBufferDataGiws(dataGiws):
 				char **arrayOfByteBuffer;
 				arrayOfByteBuffer = new char *[%slenRow];
 				for (jsize i = 0; i < %slenRow; i++){
-				jbyteBuffer resByteBuffer = reinterpret_cast<jbyteBuffer>(curEnv->GetObjectArrayElement(res, i));
+				jDoubleBuffer resByteBuffer = reinterpret_cast<jDoubleBuffer>(curEnv->GetObjectArrayElement(res, i));
 				const char *tempByteBuffer = curEnv->GetByteBufferUTFChars(resByteBuffer, 0);
 				arrayOfByteBuffer[i] = new char[strlen(tempByteBuffer) + 1];
 	
@@ -160,7 +160,7 @@ class byteBufferDataGiws(dataGiws):
 				%slenCol = curEnv->GetArrayLength(resByteBufferLine);
 				arrayOfByteBuffer[i]=new char*[%slenCol];
 				for (jsize j = 0; j < %slenCol; j++){
-				jbyteBuffer resByteBuffer = reinterpret_cast<jbyteBuffer>(curEnv->GetObjectArrayElement(resByteBufferLine, j));
+				jDoubleBuffer resByteBuffer = reinterpret_cast<jDoubleBuffer>(curEnv->GetObjectArrayElement(resByteBufferLine, j));
 				const char *tempByteBuffer = curEnv->GetByteBufferUTFChars(resByteBuffer, 0);
 				arrayOfByteBuffer[i][j] = new char[strlen(tempByteBuffer) + 1];
 				strcpy(arrayOfByteBuffer[i][j], tempByteBuffer);
