@@ -1,0 +1,8 @@
+maj le profil de la fonction genere
+void ByteBufferSync::bar (JavaVM * jvm_, char * data){
+=> 
+void MyObj::bar (JavaVM * jvm_, double* data, int dataSize){
+
+
+Comparaison bytebuffer.cpp & ReferenceCalixte.cpp
+
