@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include <jni.h>
-#include "MyObj.hxx"
+#include "bytebuffer.hxx"
 #include "GiwsException.hxx"
 
 JavaVM* create_vm() {
@@ -23,12 +23,13 @@ JavaVM* create_vm() {
 	return jvm;
 }
 
-using namespace foo;
+using namespace bytebuffer;
+
 using namespace std;
 
 int main(){
   	JavaVM* jvm = create_vm();
-	MyObj *plop = new MyObj(jvm);
+	ByteBufferSync *plop = new ByteBufferSync(jvm);
     double arr[2]={2.2, 42};
     plop->bar(jvm, arr, 2);
     return 0;
