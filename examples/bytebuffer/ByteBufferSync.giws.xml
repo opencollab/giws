@@ -36,7 +36,7 @@ For more information, see the file COPYING
 -->
 
 <package name="bytebuffer">
-  <object name="ButeBufferSync">
+  <object name="ByteBufferSync">
         <method name="bar" returnType="void" modifier="static">
             <parameter name="data" type="DoubleBuffer"/>
         </method>

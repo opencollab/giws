@@ -179,14 +179,46 @@ if (nativeOrderID == NULL) {
 curEnv->ExceptionDescribe();
 }
 
+
+printf("AZ\n");
+
 //                         curEnv->CallStaticVoidMethod(cls, voidbarjobjectjava_lang_ByteBufferID ,data_
-jobject nativeOrder = curEnv->CallStaticObjectMethod(ByteOrderClass, nativeOrderID);//, buffer););
+jobject nativeOrder = curEnv->CallStaticObjectMethod(ByteOrderClass, nativeOrderID, buffer);
                         curEnv->DeleteLocalRef(cls);
 if (curEnv->ExceptionCheck()) {
 throw GiwsException::JniCallMethodException(curEnv);
 }
+
+jclass bbCls = curEnv->FindClass("java/nio/ByteBuffer");
+if (bbCls == NULL) {
+curEnv->ExceptionDescribe();
 }
 
+jmethodID orderID = curEnv->GetMethodID(bbCls, "order", "(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;");
+if (orderID == NULL) {
+curEnv->ExceptionDescribe();
+
+}
+
+buffer = curEnv->CallObjectMethod(buffer, orderID, nativeOrder);
+
+jmethodID asdbID = curEnv->GetMethodID(bbCls, "asDoubleBuffer", "()Ljava/nio/DoubleBuffer;");
+if (asdbID == NULL) {
+curEnv->ExceptionDescribe();
+
+}
+
+jobject dbuffer = curEnv->CallObjectMethod(buffer, asdbID);
+
+
+if (dbuffer == NULL)
+{
+// check that allocation succeed
+throw GiwsException::JniBadAllocException(curEnv);
+}
+
+curEnv->CallStaticVoidMethod(cls, voidbarjobjectjava_lang_ByteBufferID, dbuffer);
+    }
 
 }
 
