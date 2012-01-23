@@ -149,7 +149,7 @@ static void bar(JavaVM * jvm_, double * data, int dataSize);
                         
                 static const std::string className()
                 {
-                return "bytebuffer/ByteBufferSync";
+                return "bytebuffer/MyObj";
                 }
                 
 };

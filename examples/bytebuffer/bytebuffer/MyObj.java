@@ -6,7 +6,9 @@ public class MyObj {
 		System.out.println("Constructor");
 	}
 
-    static public void bar(java.nio.DoubleBuffer aze) {
+    static public void bar(java.nio.ByteBuffer aze) {
+        System.out.println("Into bar(java.nio.DoubleBuffer)");
+        System.out.println("Aze : "+ aze);
 
     }
 
