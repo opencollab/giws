@@ -87,13 +87,13 @@ class DoubleBufferDataGiws(dataGiws):
 
 		return """
 
-            jobject buffer = curEnv->NewDirectByteBuffer((void*)data, (jlong)dataSize * sizeof(double));
+            jobject buffer = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(double));
 if (!buffer)
 {
     throw GiwsException::JniBadAllocException(curEnv);
 }
 
-
+// TODO
 // tu peux mettre en cache ByteOrderClass, nativeOrderID, bbCls et asdbID
 // Les modifs ont essentiellement lieu ici
 jclass ByteOrderClass = curEnv->FindClass("java/nio/ByteOrder");
@@ -131,15 +131,15 @@ curEnv->ExceptionDescribe();
 
 }
 
-jobject data_ = curEnv->CallObjectMethod(buffer, asdbID);
+jobject %s_ = curEnv->CallObjectMethod(buffer, asdbID);
 
 
-if (data_ == NULL)
+if (%s_ == NULL)
 {
 // check that allocation succeed
 throw GiwsException::JniBadAllocException(curEnv);
 }
-"""
+"""%(name, name, name, name)
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a DoubleBuffer or an array of DoubleBuffer """
