@@ -1,8 +1,8 @@
 package bytebuffer;
 
-public class MyObj {
+public class ByteBufferSync {
 	
-	public MyObj(){
+	public ByteBufferSync(){
 		System.out.println("Constructor");
 	}
 
@@ -47,7 +47,7 @@ public class MyObj {
 
 
 	public static void main(String []args){
-		MyObj plop = new MyObj();
+		ByteBufferSync plop = new ByteBufferSync();
 		plop.getMyString();
 	}
 }
