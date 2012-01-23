@@ -191,14 +191,14 @@ class JNIFrameWork:
 		params=""
 
 		for parameter in method.getParameters():
-			if parameter.getType().isArray(): # It is an array
+			if parameter.getType().isArray() and not parameter.getType().isByteBufferBased(): # It is an array
 				params+="[" * parameter.getType().getDimensionArray()
 			params+=parameter.getType().getTypeSignature()
 
 		methodIdName=method.getUniqueNameOfTheMethod()
 		
 		signatureReturn=method.getReturn().getTypeSignature()
-		if method.getReturn().isArray(): # Returns an array ... 
+		if method.getReturn().isArray() and not method.getReturn().isByteBufferBased(): # Returns an array ... 
 			signatureReturn="["* method.getReturn().getDimensionArray() + signatureReturn
 		
                 if method.getModifier()=="static":

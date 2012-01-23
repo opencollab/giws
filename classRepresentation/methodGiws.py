@@ -87,6 +87,7 @@ class methodGiws:
                             str+=", "    
                 else:
                         str=""
+
 		for parameter in self.__parameters:
 			str=str+parameter.generateCXXHeader()
 			if len(self.__parameters)!=i: 

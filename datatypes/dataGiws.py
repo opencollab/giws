@@ -53,6 +53,9 @@ class dataGiws(object):
 	Interface for the datatype mapping
 	"""
 
+	def isByteBufferBased(self):
+		return False
+
 	def getJavaTypeSyntax(self, ForceNotArray=False):
 		""" Returns the Java type syntax of a data with the Array type
 		when applies

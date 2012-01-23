@@ -45,14 +45,14 @@ class DoubleBufferDataGiws(dataGiws):
 	callStaticMethod="CallStaticObjectMethod"
 	temporaryVariableName="myByteBufferBuffer"
 
+	def isByteBufferBased(self):
+		return True
+
 	def getTypeSignature(self):
-		return "Ljava/nio/DoubleBuffer;"
+		return "Ljava/nio/ByteBuffer;"
 
 	def getJavaTypeSyntax(self):
-		if self.isArray():
-			return "jobjectArray"
-		else:			
-			return "jobject"
+		return "jobject"
 
 	def getRealJavaType(self):
 		return "java.lang.ByteBuffer"
@@ -61,19 +61,16 @@ class DoubleBufferDataGiws(dataGiws):
 		return "Java ByteBuffer"
 
 	def getNativeType(self):
-		if self.isArray():
-			return "char *" + "*" * self.getDimensionArray()
-		else:
-			return "char *"
+		return "double *"
 
-        def __errorMemoryByteBuffer(self, detachThread):
+	def __errorMemoryByteBuffer(self, detachThread):
 		# Management of the error when not enought memory to create the DoubleBuffer
 		if configGiws().getThrowsException():
 			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
 			errorMgntMemBis="""std::cerr << "Could not convert C DoubleBuffer to Java UTF DoubleBuffer, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
-                return errorMgntMemBis
+		return errorMgntMemBis
 
 	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
@@ -85,31 +82,64 @@ class DoubleBufferDataGiws(dataGiws):
 			errorMgntMem="""std::cerr << "Could not allocate Java DoubleBuffer array, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);"""%(detachThread)
 
-                errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
-
-		if self.isArray():
-			if self.getDimensionArray() == 1:
-				return """			
-
-				}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
-			else:
-				return """
+			errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
 
 
-				}"""%(name,name,name,errorMgntMem,name,name,name,name,name,errorMgntMemBis,name,name,name,name)
+		return """
 
-		else:
-			# Need to store is for the post processing (delete)
-			self.parameterName=name
-                        tempName=name+"_"
-			return """
             jobject buffer = curEnv->NewDirectByteBuffer((void*)data, (jlong)dataSize * sizeof(double));
 if (!buffer)
 {
     throw GiwsException::JniBadAllocException(curEnv);
-}"""
+}
 
-#			"""%(tempName,name,name,tempName,errorMgntMemBis)
+
+// tu peux mettre en cache ByteOrderClass, nativeOrderID, bbCls et asdbID
+// Les modifs ont essentiellement lieu ici
+jclass ByteOrderClass = curEnv->FindClass("java/nio/ByteOrder");
+if (ByteOrderClass == NULL) {
+curEnv->ExceptionDescribe();
+}
+// public static ByteOrder nativeOrder()
+jmethodID nativeOrderID = curEnv->GetStaticMethodID(ByteOrderClass, "nativeOrder", "()Ljava/nio/ByteOrder;");
+if (nativeOrderID == NULL) {
+curEnv->ExceptionDescribe();
+}
+
+jobject nativeOrder = curEnv->CallStaticObjectMethod(ByteOrderClass, nativeOrderID, buffer);
+//                        curEnv->DeleteLocalRef(cls);
+if (curEnv->ExceptionCheck()) {
+throw GiwsException::JniCallMethodException(curEnv);
+}
+
+jclass bbCls = curEnv->FindClass("java/nio/ByteBuffer");
+if (bbCls == NULL) {
+curEnv->ExceptionDescribe();
+}
+
+jmethodID orderID = curEnv->GetMethodID(bbCls, "order", "(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;");
+if (orderID == NULL) {
+curEnv->ExceptionDescribe();
+
+}
+
+buffer = curEnv->CallObjectMethod(buffer, orderID, nativeOrder);
+
+jmethodID asdbID = curEnv->GetMethodID(bbCls, "asDoubleBuffer", "()Ljava/nio/DoubleBuffer;");
+if (asdbID == NULL) {
+curEnv->ExceptionDescribe();
+
+}
+
+jobject data_ = curEnv->CallObjectMethod(buffer, asdbID);
+
+
+if (data_ == NULL)
+{
+// check that allocation succeed
+throw GiwsException::JniBadAllocException(curEnv);
+}
+"""
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a DoubleBuffer or an array of DoubleBuffer """
@@ -133,7 +163,7 @@ if (!buffer)
 			strCommon+="""
 			%s lenRow = curEnv->GetArrayLength(res);
 			"""%(strDeclaration)
-                        self.temporaryVariableName="arrayOfByteBuffer"
+			self.temporaryVariableName="arrayOfByteBuffer"
 			if self.getDimensionArray() == 1:
 				str+=strCommon+"""
 				char **arrayOfByteBuffer;

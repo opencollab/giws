@@ -82,11 +82,18 @@ class dataFactoryGiws:
 				  # Trim to load the right object
 				  dataTypeToCreate=dataTypeToCreate[0:len(dataTypeToCreate)-(arrayDimension*2)]
 
-				  
+			
 			if dataTypeToCreate not in self.dict:
 				  raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
 			
 			myType=self.dict[dataTypeToCreate]()
+			
+
+			if myType.isByteBufferBased():
+				  arrayDimension=1
+				  # It is a byte buffer type
+				  isArray=True
+			
 			myType.setIsArray(isArray)
 			myType.setDimensionArray(arrayDimension)
 			return myType
