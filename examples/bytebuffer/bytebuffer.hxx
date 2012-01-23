@@ -82,7 +82,7 @@ private:
 JavaVM * jvm;
 
 protected:
-jmethodID voidbarjobjectjava_lang_ByteBufferID; // cache method id
+jmethodID voidbarjobject_java_lang_ByteBufferID; // cache method id
 
 
 

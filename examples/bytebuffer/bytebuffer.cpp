@@ -106,7 +106,7 @@ throw GiwsException::JniObjectCreationException(curEnv, this->className());
 curEnv->DeleteLocalRef(localInstance);
 
                 /* Methods ID set to NULL */
-voidbarjobjectjava_lang_ByteBufferID=NULL;
+voidbarjobject_java_lang_ByteBufferID=NULL;
 
 
 }
@@ -129,7 +129,7 @@ throw GiwsException::JniObjectCreationException(curEnv, this->className());
 throw GiwsException::JniObjectCreationException(curEnv, this->className());
         }
         /* Methods ID set to NULL */
-        voidbarjobjectjava_lang_ByteBufferID=NULL;
+        voidbarjobject_java_lang_ByteBufferID=NULL;
 
 
 }
@@ -155,8 +155,8 @@ JNIEnv * curEnv = NULL;
 jvm_->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 jclass cls = curEnv->FindClass( className().c_str() );
 
-jmethodID voidbarjobjectjava_lang_ByteBufferID = curEnv->GetStaticMethodID(cls, "bar", "(Ljava/nio/ByteBuffer;)V" ) ;
-if (voidbarjobjectjava_lang_ByteBufferID == NULL) {
+jmethodID voidbarjobject_java_lang_ByteBufferID = curEnv->GetStaticMethodID(cls, "bar", "(Ljava/nio/ByteBuffer;)V" ) ;
+if (voidbarjobject_java_lang_ByteBufferID == NULL) {
 throw GiwsException::JniMethodNotFoundException(curEnv, "bar");
 }
 
@@ -181,7 +181,7 @@ curEnv->ExceptionDescribe();
 
 
 
-//                         curEnv->CallStaticVoidMethod(cls, voidbarjobjectjava_lang_ByteBufferID ,data_
+//                         curEnv->CallStaticVoidMethod(cls, voidbarjobject_java_lang_ByteBufferID ,data_
 jobject nativeOrder = curEnv->CallStaticObjectMethod(ByteOrderClass, nativeOrderID, buffer);
 //                        curEnv->DeleteLocalRef(cls);
 if (curEnv->ExceptionCheck()) {
@@ -216,7 +216,7 @@ if (dbuffer == NULL)
 throw GiwsException::JniBadAllocException(curEnv);
 }
 
-curEnv->CallStaticVoidMethod(cls, voidbarjobjectjava_lang_ByteBufferID, dbuffer);
+curEnv->CallStaticVoidMethod(cls, voidbarjobject_java_lang_ByteBufferID, dbuffer);
 curEnv->DeleteLocalRef(cls);
 
 if (curEnv->ExceptionCheck()) {
