@@ -49,6 +49,7 @@ class giws:
 	templateObj = None
 	def __init__(self, argv=sys.argv):
 		self.argv = argv
+                self.config.setFullCommandLine(argv[1:])
 
 		try:
 			self.__parse_cmdline()
@@ -148,7 +149,7 @@ class giws:
 
 	def show_version(self, exit_status=0):
 		print "GIWS %s"%self.config.getVersion()
-		print "Copyright (C) 2007-2011 INRIA / Digiteo / Scilab"
+		print "Copyright (C) 2007-2012 INRIA / Digiteo / Scilab Enterprises"
 		print """This software is governed by the CeCILL license under French law and
 abiding by the rules of distribution of free software. You can use, 
 modify and/ or redistribute the software under the terms of the CeCILL

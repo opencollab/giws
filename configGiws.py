@@ -37,7 +37,7 @@
 """ Configuration of the Env """
 
 class configGiws:
-	__version="1.3.0"
+	__version="1.4.0"
 	__descriptionFile=""
 	__splitPerObject=True
 	__throwsException=False
@@ -101,3 +101,9 @@ class configGiws:
 	
 	def getVersion(self):
 		return self.__version
+
+	def getFullCommandLine(self):
+		return self.__fullCommandLine
+
+	def setFullCommandLine(self, cmd):
+		self.__fullCommandLine = cmd
