@@ -63,7 +63,7 @@ using namespace std;
 int main(){
 	JavaVM* jvm = create_vm();
 
-	MyObject::doSomething(jvm, "Hello World !!");
+	MyObject::doSomething(jvm, (char*)"Hello World !!");
 
 	return 0;	
 }

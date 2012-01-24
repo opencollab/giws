@@ -101,11 +101,11 @@ int main(){
 
 	char ***sendToJava = new char **[2];
 	sendToJava[0] = new char *[2];
-	sendToJava[0][0]="string1";
-	sendToJava[0][1]="string2";
+	sendToJava[0][0]=(char*)"string1";
+	sendToJava[0][1]=(char*)"string2";
 	sendToJava[1] = new char *[2];
-	sendToJava[1][0]="string3";
-	sendToJava[1][1]="Final string";
+	sendToJava[1][0]=(char*)"string3";
+	sendToJava[1][1]=(char*)"Final string";
 	plop->displayMatrixOfString(sendToJava,2,2);
 
 	return 0;	
