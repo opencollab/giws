@@ -81,12 +81,19 @@ class methodGiws:
 	def getParametersCXX(self):
 		""" Returns the parameters with their types """
 		i=1
-                if self.getModifier()=="static":
-                        str="JavaVM * jvm_"
-                        if len(self.__parameters)!=0:
-                            str+=", "    
-                else:
-                        str=""
+		if self.getModifier()=="static":
+			str="JavaVM * jvm_"
+			if len(self.__parameters)!=0:
+				str+=", "	
+			else:
+				# In the case where there is no input argument
+				# but return an array of int (or an other type)
+				# needed to lenRow
+				if self.getReturn().isArray():
+					str+=", "
+
+		else:
+			str=""
 
 		for parameter in self.__parameters:
 			str=str+parameter.generateCXXHeader()
@@ -132,19 +139,19 @@ class methodGiws:
 			paramType=parameter.getType()
 			if paramType.isArray():
 				str+=paramType.specificPostDeleteMemory(parameter)
-                        else:
-                                if isinstance(paramType,stringDataGiws):
-                                        str+=paramType.specificPostDeleteMemory(parameter)
+			else:
+				if isinstance(paramType,stringDataGiws):
+					str+=paramType.specificPostDeleteMemory(parameter)
 
 
 		if self.getModifier()=="static":
 			str+=JNIFrameWork().getDeleteStaticProfile()
 
-                if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType and (self.getReturn().isArray() or isinstance(self.getReturn(),stringDataGiws)):
-                        # Check the exception with a delete to avoid memory leak
-                        str+=JNIFrameWork().getExceptionCheckProfile(self.getDetachThread(), self.getReturn().temporaryVariableName)
-                else:
-                        str+=JNIFrameWork().getExceptionCheckProfile(self.getDetachThread())
+			if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType and (self.getReturn().isArray() or isinstance(self.getReturn(),stringDataGiws)):
+				# Check the exception with a delete to avoid memory leak
+				str+=JNIFrameWork().getExceptionCheckProfile(self.getDetachThread(), self.getReturn().temporaryVariableName)
+			else:
+				str+=JNIFrameWork().getExceptionCheckProfile(self.getDetachThread())
 
 		str+=self.getDetachThread()
 		str+=JNIFrameWork().getReturnProfile(self.getReturn())
@@ -166,9 +173,9 @@ class methodGiws:
 	def generateCXXHeader(self):
 		""" Generates the profile of the method ... for the header """
 
-                if self.getModifier()=="static":
-                        static="static "
-                else:
+		if self.getModifier()=="static":
+			static="static "
+		else:
                         static=""
 		
 		ret=""
