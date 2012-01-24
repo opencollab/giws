@@ -41,6 +41,7 @@ class licenseWrapper:
 
 Copyright 2007-2008 INRIA
 Copyright 2008-2011 DIGITEO
+Copyright 2011-2012 Scilab Enterprises
 
 Author : Sylvestre Ledru & others
 
