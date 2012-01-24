@@ -1,0 +1,7 @@
+
+<package name="org.foo">
+    <object name="Bar">
+        <method name="myfun" returnType="int[]" modifier="static"/>
+    </object>
+</package>
+
