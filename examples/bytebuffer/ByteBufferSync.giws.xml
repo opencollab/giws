@@ -40,5 +40,6 @@ For more information, see the file COPYING
         <method name="bar" returnType="void" modifier="static">
             <parameter name="data" type="DoubleBuffer"/>
         </method>
+	<method name="myfun" returnType="DoubleBuffer" modifier="static" />
   </object>
 </package>

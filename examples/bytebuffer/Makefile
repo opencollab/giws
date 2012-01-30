@@ -62,7 +62,7 @@ $(OBJECT_NAME).class: $(OBJECT_NAME).java
 
 
 # build output binary
-$(BINARY): $(GIWS_OUT_FILES)
+$(BINARY): $(GIWS_OUT_FILES) $(GIWS_CPP_FILE)
 	$(CC) $(GIWS_CPP_FILE) $(GIWS_OUT_FILES) $(CFLAGS) $(LIBS) $(INCLUDES) -o $(BINARY)
 	@if test $(MAKELEVEL) -eq 0; then \
 		echo "==========================================================================="; \
