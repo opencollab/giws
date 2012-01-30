@@ -50,5 +50,12 @@ public class ByteBufferSync {
 		ByteBufferSync plop = new ByteBufferSync();
 		plop.getMyString();
 	}
+
+    public static java.nio.DoubleBuffer myfun() {
+	java.nio.DoubleBuffer buf = java.nio.ByteBuffer.allocateDirect(2 * 8).order(java.nio.ByteOrder.nativeOrder()).asDoubleBuffer();
+	buf.put(new double[]{3.14159, 2.71828});
+	
+	return buf;
+    }
 }
 
