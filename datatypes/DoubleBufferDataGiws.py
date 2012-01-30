@@ -49,13 +49,13 @@ class DoubleBufferDataGiws(dataGiws):
 		return True
 
 	def getTypeSignature(self):
-		return "Ljava/nio/ByteBuffer;"
+		return "Ljava/nio/DoubleBuffer;"
 
 	def getJavaTypeSyntax(self):
 		return "jobject"
 
 	def getRealJavaType(self):
-		return "java.lang.ByteBuffer"
+		return "java.lang.DoubleBuffer"
 
 	def getDescription(self):
 		return "Java ByteBuffer"
@@ -161,23 +161,20 @@ throw GiwsException::JniBadAllocException(curEnv);
 				# The size of the array is returned as output argument of the function 
 				strDeclaration="*"
 			strCommon+="""
-			%s lenRow = curEnv->GetArrayLength(res);
+			%s lenRow = curEnv->GetDirectBufferCapacity(res);
 			"""%(strDeclaration)
-			self.temporaryVariableName="arrayOfByteBuffer"
+			self.temporaryVariableName="byteBufferRes"
 			if self.getDimensionArray() == 1:
 				str+=strCommon+"""
-				char **arrayOfByteBuffer;
-				arrayOfByteBuffer = new char *[%slenRow];
-				for (jsize i = 0; i < %slenRow; i++){
-				jDoubleBuffer resByteBuffer = reinterpret_cast<jDoubleBuffer>(curEnv->GetObjectArrayElement(res, i));
-				const char *tempByteBuffer = curEnv->GetByteBufferUTFChars(resByteBuffer, 0);
-				arrayOfByteBuffer[i] = new char[strlen(tempByteBuffer) + 1];
-	
-				strcpy(arrayOfByteBuffer[i], tempByteBuffer);
-				curEnv->ReleaseByteBufferUTFChars(resByteBuffer, tempByteBuffer);
-				curEnv->DeleteLocalRef(resByteBuffer);
-				}
-				"""%(strDeclaration, strDeclaration)
+        *lenRow = curEnv->GetDirectBufferCapacity(res);
+        double *%s = static_cast<double *>(curEnv->GetDirectBufferAddress(res));
+
+        curEnv->DeleteLocalRef(res);
+        curEnv->DeleteLocalRef(cls);
+        if (curEnv->ExceptionCheck()) {
+            curEnv->ExceptionDescribe() ;
+        }
+				"""%(self.temporaryVariableName)
 				return str
 			else:
 				if configGiws().getDisableReturnSize()==True:
@@ -218,8 +215,8 @@ throw GiwsException::JniBadAllocException(curEnv);
 		if self.isArray():
 			return """
 			curEnv->DeleteLocalRef(res);
-			return arrayOfByteBuffer;
-			"""
+			return %s;
+			"""%(self.temporaryVariableName)
 		else:
 			return """
 			return %s;
