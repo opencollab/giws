@@ -1,6 +1,13 @@
 giws (1.4.0)
 
-     * Bytebuffer management (TODO add more info)
+     * Management of the Java buffer classes:
+        - ByteBuffer
+        - CharBuffer
+        - DoubleBuffer
+        - FloatBuffer
+        - IntBuffer
+        - LongBuffer
+        - ShortBuffer
      * Fix a bug when no parameter but was returning an array
      * Comments contain now the command line used to generated the file
 
