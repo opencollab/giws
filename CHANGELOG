@@ -9,6 +9,7 @@ giws (1.4.0)
         - LongBuffer
         - ShortBuffer
      * Fix a bug when no parameter but was returning an array
+     * Update the byte declaration under Windows (Closes: #639)
      * Comments contain now the command line used to generated the file
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Sun, 20 Nov 2011 20:40:35 +0100
