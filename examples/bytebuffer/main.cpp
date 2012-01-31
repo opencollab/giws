@@ -36,5 +36,7 @@ int main(){
     int size = 0;
     double * ret = plop->myfun(jvm, &size);
     printf("C/C++ display: size=%d, ret[0]=%f, ret[1]=%f\n",size,ret[0],ret[1]);
+    long long * retL = plop->myfunLong(jvm, &size);
+    cout << "C/C++ display: size=" << size << "  retL[0]=" << retL[0] << " retL[1]="  << retL[1] << " retL[2]=" << retL[2] << endl;
     return 0;
 }

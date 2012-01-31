@@ -38,20 +38,19 @@ from dataBufferGiws import dataBufferGiws
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
-class DoubleBufferDataGiws(dataBufferGiws):
+class LongBufferDataGiws(dataBufferGiws):
 
 	def getTypeSignature(self):
-		return "Ljava/nio/DoubleBuffer;"
+		return "Ljava/nio/LongBuffer;"
+
+	def getJavaTypeSyntax(self):
+		return "jobject"
 
 	def getRealJavaType(self):
-		return "java.lang.DoubleBuffer"
+		return "java.lang.LongBuffer"
 
 	def getDescription(self):
-		return "Java DoubleBuffer"
+		return "Java LongBuffer"
 
 	def getNativeType(self):
-		return "double *"
-
-	def getJavaBufferType(self):
-		return "DoubleBuffer"
-    
+		return "long long *"

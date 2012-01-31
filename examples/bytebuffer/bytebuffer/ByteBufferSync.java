@@ -17,5 +17,12 @@ public class ByteBufferSync {
         buf.put(new double[]{3.14159, 2.71828});
         return buf;
     }
+
+    public static java.nio.LongBuffer myfunLong() {
+        java.nio.LongBuffer buf = java.nio.ByteBuffer.allocateDirect(3 * 8).order(java.nio.ByteOrder.nativeOrder()).asLongBuffer();
+        long[] array = new long[] {42, 6545555, 787867};
+        buf.put(array);
+        return buf;
+    }
 }
 

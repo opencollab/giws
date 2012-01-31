@@ -45,6 +45,13 @@ from datatypes.shortDataGiws import shortDataGiws
 from datatypes.stringDataGiws import stringDataGiws
 from datatypes.voidDataGiws import voidDataGiws
 from datatypes.DoubleBufferDataGiws import DoubleBufferDataGiws
+from datatypes.LongBufferDataGiws import LongBufferDataGiws
+from datatypes.ByteBufferDataGiws import ByteBufferDataGiws
+from datatypes.CharBufferDataGiws import CharBufferDataGiws
+from datatypes.DoubleBufferDataGiws import DoubleBufferDataGiws
+from datatypes.FloatBufferDataGiws import FloatBufferDataGiws
+from datatypes.IntBufferDataGiws import IntBufferDataGiws
+from datatypes.ShortBufferDataGiws import ShortBufferDataGiws
 import datatypes
 import new
 
@@ -63,7 +70,14 @@ class dataFactoryGiws:
 			  "short":   shortDataGiws,
 			  "String":  stringDataGiws,
 			  "void":    voidDataGiws,
-              "DoubleBuffer": DoubleBufferDataGiws
+			  "DoubleBuffer": DoubleBufferDataGiws,
+			  "ByteBuffer": ByteBufferDataGiws,
+			  "CharBuffer": CharBufferDataGiws,
+			  "DoubleBuffer": DoubleBufferDataGiws,
+			  "FloatBuffer": FloatBufferDataGiws,
+			  "IntBuffer": IntBufferDataGiws,
+			  "LongBuffer": LongBufferDataGiws,
+			  "ShortBuffer": ShortBufferDataGiws
 			  }
 
 	  def create(self, dataTypeToCreate):
