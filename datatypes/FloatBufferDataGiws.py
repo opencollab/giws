@@ -54,3 +54,6 @@ class FloatBufferDataGiws(dataBufferGiws):
 
 	def getNativeType(self):
 		return "float *"
+
+	def getJavaBufferType(self):
+		return "FloatBuffer"

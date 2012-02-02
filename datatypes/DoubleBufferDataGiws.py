@@ -54,4 +54,4 @@ class DoubleBufferDataGiws(dataBufferGiws):
 
 	def getJavaBufferType(self):
 		return "DoubleBuffer"
-    
+

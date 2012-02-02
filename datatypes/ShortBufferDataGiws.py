@@ -54,3 +54,6 @@ class ShortBufferDataGiws(dataBufferGiws):
 
 	def getNativeType(self):
 		return "short *"
+
+	def getJavaBufferType(self):
+		return "ShortBuffer"

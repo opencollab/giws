@@ -54,3 +54,6 @@ class LongBufferDataGiws(dataBufferGiws):
 
 	def getNativeType(self):
 		return "long long *"
+
+	def getJavaBufferType(self):
+		return "LongBuffer"
