@@ -37,8 +37,8 @@ class dataBufferGiws(dataGiws):
 
 		return """
 
-            jobject buffer = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(double));
-if (!buffer)
+            jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(double));
+if (!buffer%s)
 {
     throw GiwsException::JniBadAllocException(curEnv);
 }
@@ -56,7 +56,7 @@ if (nativeOrderID == NULL) {
 curEnv->ExceptionDescribe();
 }
 
-jobject nativeOrder = curEnv->CallStaticObjectMethod(ByteOrderClass, nativeOrderID, buffer);
+jobject nativeOrder = curEnv->CallStaticObjectMethod(ByteOrderClass, nativeOrderID, buffer%s);
 //                        curEnv->DeleteLocalRef(cls);
 if (curEnv->ExceptionCheck()) {
 throw GiwsException::JniCallMethodException(curEnv);
@@ -73,7 +73,7 @@ curEnv->ExceptionDescribe();
 
 }
 
-buffer = curEnv->CallObjectMethod(buffer, orderID, nativeOrder);
+buffer%s = curEnv->CallObjectMethod(buffer%s, orderID, nativeOrder);
 
 jmethodID asdbID = curEnv->GetMethodID(bbCls, "as%s", "()%s");
 if (asdbID == NULL) {
@@ -81,7 +81,7 @@ curEnv->ExceptionDescribe();
 
 }
 
-jobject %s_ = curEnv->CallObjectMethod(buffer, asdbID);
+jobject %s_ = curEnv->CallObjectMethod(buffer%s, asdbID);
 
 
 if (%s_ == NULL)
@@ -89,7 +89,7 @@ if (%s_ == NULL)
 // check that allocation succeed
 throw GiwsException::JniBadAllocException(curEnv);
 }
-"""%(name, name, self.getJavaBufferType(), self.getTypeSignature(), name, name)
+"""%(name, name, name, name, name, name, name, self.getJavaBufferType(), self.getTypeSignature(), name, name, name)
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a XXXXXBuffer or an array of XXXBuffer TODO """
