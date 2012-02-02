@@ -14,3 +14,11 @@ for (jsize i = 0; i < len; i++){
 }
 return myArray;
 There is probably a much better way to do it
+
+*
+Add the management of:
+<method name="myfun2" returnType="ByteBuffer[]" modifier="static" />
+
+        <method name="bar" returnType="void" modifier="static">
+            <parameter name="data" type="DoubleBuffer[]"/>
+        </method>
