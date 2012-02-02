@@ -89,7 +89,7 @@ class methodGiws:
 				# In the case where there is no input argument
 				# but return an array of int (or an other type)
 				# needed to lenRow
-				if self.getReturn().isArray():
+				if self.getReturn().isArray() and configGiws().getDisableReturnSize()!=True:
 					str+=", "
 
 		else:

@@ -1,0 +1,7 @@
+
+<package name="org.plop">
+<object name="Plop">
+<method name="foo" returnType="int[]" modifier="static" />
+</object>
+</package>
+
