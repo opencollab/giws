@@ -99,9 +99,8 @@ class dataFactoryGiws:
 			
 			if dataTypeToCreate not in self.dict:
 				  raise Exception("Don't know how to manage the data type %s",dataTypeToCreate)
-			
+
 			myType=self.dict[dataTypeToCreate]()
-			
 
 			if myType.isByteBufferBased():
 				  arrayDimension=1
@@ -115,5 +114,7 @@ class dataFactoryGiws:
 if __name__ == '__main__':
 	myFactory=dataFactoryGiws()
 	myData=myFactory.create("int")
+	myData=myFactory.create("IntBuffer")
+        print myFactory.isByteBufferBased()
 	myData2=myFactory.create("doesnt-exist")
 	print myData.getDescription()

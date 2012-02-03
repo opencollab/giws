@@ -143,6 +143,7 @@ class objectGiws:
 		jmethodID constructObject = NULL ;
 		jobject localInstance ;
 		jclass localClass ;
+
 		const std::string construct="<init>";
 		const std::string param="()V";
 		jvm=jvm_;
@@ -302,7 +303,6 @@ class objectGiws:
 		
 		return str
 
-
 	def getMethodsCXX(self, type="header"):
 		i=1
 		str=""
@@ -333,6 +333,9 @@ class objectGiws:
 			protected:
 			%s
 
+			%s
+                       
+			// Caching (if any)
 			%s
 
 			/**
@@ -385,10 +388,12 @@ class objectGiws:
                         %s
 			};
 
-			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
+			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
 
 	def generateCXXBody(self):
 		return """
+                // Static declarations (if any)
+                %s
 		// Returns the current env
 		%s
 		// Destructor
@@ -400,7 +405,7 @@ class objectGiws:
 		%s
 		// Method(s)
 		%s
-			""" % (JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName(),stringClassSet=self.__stringClassSet), self.getConstructorBodyCXX(), JNIFrameWork().getSynchronizeMethod(self.getName()) , JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))
+			""" % (self.getStaticVariableDeclaration(), JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName(),stringClassSet=self.__stringClassSet), self.getConstructorBodyCXX(), JNIFrameWork().getSynchronizeMethod(self.getName()) , JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))
 
         def getClassNameProfile(self, JNIObjectName):
                 return """
@@ -409,3 +414,42 @@ class objectGiws:
                 return "%s";
                 }
                 """ % (JNIObjectName)
+
+        def needCaching(self):
+
+                for method in self.__methods:
+                        for param in  method.getParameters():
+                                if param.getType().isByteBufferBased() == True:
+                                        return True
+
+                return False
+
+
+        def getStaticVariableDeclaration(self):
+
+                str=""
+                if self.needCaching():
+                        str="""
+                // Cache of the bytebuffer stuff
+                jclass ByteBufferSync::ByteOrderClass = NULL;
+                jmethodID ByteBufferSync::nativeOrderID = NULL;
+                jobject ByteBufferSync::nativeOrder = NULL;
+                jmethodID ByteBufferSync::orderID = NULL;
+                jclass ByteBufferSync::bbCls = NULL;
+                jmethodID ByteBufferSync::asdbID = NULL;"""
+
+                return str
+
+        def getCacheBuffer(self):
+                str=""
+                if self.needCaching():
+                        str="""
+                // Cache of the bytebuffer stuff
+                static jclass ByteOrderClass;
+                static jmethodID nativeOrderID;
+                static jobject nativeOrder;
+                static jmethodID orderID;
+                static jclass bbCls;
+                static jmethodID asdbID;
+                """
+                return str

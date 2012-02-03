@@ -31,8 +31,9 @@ int main(){
   	JavaVM* jvm = create_vm();
 	ByteBufferSync *plop = new ByteBufferSync(jvm);
     double arr[2]={2.2, 42};
-    plop->bar(jvm, arr, 2);
-    
+    long long arrL[2]={2.2, 42};
+    plop->bar(jvm, arr, 2, arrL, 2);
+
     int size = 0;
     double * ret = plop->myfun(jvm, &size);
     printf("C/C++ display: size=%d, ret[0]=%f, ret[1]=%f\n",size,ret[0],ret[1]);

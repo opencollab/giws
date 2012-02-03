@@ -50,7 +50,7 @@ class methodGiws:
 	
 	def __init__(self, name, returns, detachThread, modifier=None):
 		self.__name=name
-		if isinstance(returns,dataGiws):
+		if isinstance(returns,dataGiws) or isinstance(returns,dataBufferGiws):
 			self.__returns=returns
 		else:
 			raise Exception("The type must be a dataGiws object")
@@ -163,7 +163,7 @@ class methodGiws:
 		for parameter in self.getParameters(): #Creates a unique string of all the profiles
 			paramStr+=parameter.getType().getJavaTypeSyntax() + "_"*parameter.getType().getDimensionArray()
 			paramStr+=parameter.getType().getRealJavaType().replace(".","_")
-			if parameter.isArray(): # Avoid to have jobjectArray in the profile. Does not show the actual type. Fixes bug #143
+			if parameter.getType().isArray(): # Avoid to have jobjectArray in the profile. Does not show the actual type. Fixes bug #143
 			  paramStr+=parameter.getType().getRealJavaType().replace(".","_")
 		str="""%s%s%sID"""%(self.getReturn().getJavaTypeSyntax() + "_" * self.getReturn().getDimensionArray(), self.getName(), paramStr)
 		

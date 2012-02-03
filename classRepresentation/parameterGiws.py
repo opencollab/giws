@@ -35,23 +35,18 @@
 # For more information, see the file COPYING
 
 from datatypes.dataGiws import dataGiws
+from datatypes.dataBufferGiws import dataBufferGiws
 from datatypes.dataFactoryGiws import dataFactoryGiws
 
-class parameterGiws(dataGiws):
+class parameterGiws():
 	__name=""
 	__type=""
 
 	def __init__(self, name, type):
-
 		myDataFactory=dataFactoryGiws()
 		self.__type=myDataFactory.create(type)
 		self.__name=name
 		
-#		if isinstance(type,dataGiws):
-#			self.__type=type
-#		else:
-#		raise Exception("The type must be a dataGiws object")
-
 	def getName(self):
 		return self.__name
 

@@ -22,3 +22,7 @@ Add the management of:
         <method name="bar" returnType="void" modifier="static">
             <parameter name="data" type="DoubleBuffer[]"/>
         </method>
+
+* in scinotes.cpp, this should be catched
+jmethodID voidscinotesjstringjava_lang_StringID = curEnv->GetStaticMethodID(cls, "scinotes", "(Ljava/lang/String;)V" ) ;
+
