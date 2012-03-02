@@ -11,6 +11,7 @@ giws (2.0.0)
         - IntBuffer
         - LongBuffer
         - ShortBuffer
+        See examples/bytebuffer/ for examples.
      * Fix a bug when no parameter but was returning an array
      * Update the byte declaration under Windows (Closes: #639)
      * Comments contain now the command line used to generated the file
