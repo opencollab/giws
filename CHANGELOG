@@ -1,5 +1,8 @@
-giws (1.4.0)
+giws (2.0.0)
 
+     * This is a major change in the GIWS version number because some C++ codes
+       might be broken by the introduction of the const keyword in some method
+       profiles
      * Management of the Java buffer classes:
         - ByteBuffer
         - CharBuffer
@@ -11,6 +14,8 @@ giws (1.4.0)
      * Fix a bug when no parameter but was returning an array
      * Update the byte declaration under Windows (Closes: #639)
      * Comments contain now the command line used to generated the file
+     * Add a const in the method profile when dealing with pointers
+       (Closes: #675)
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab.org>  Sun, 20 Nov 2011 20:40:35 +0100
 
