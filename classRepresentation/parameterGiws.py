@@ -58,7 +58,11 @@ class parameterGiws():
 	
 	def generateCXXHeader(self):
 		""" Generate the profil of the parameter """
-		str="""%s %s""" % (self.getType().getNativeType(), self.getName())
+		if self.getType().isArray():
+			constType="const " # Pointer => we add a const
+		else:
+			constType=""
+		str="""%s%s %s""" % (constType, self.getType().getNativeType(), self.getName())
 		if self.getType().isArray():
 			if self.getType().getDimensionArray() == 1:
 				str+=", int %sSize"%self.getName()
