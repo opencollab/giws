@@ -39,6 +39,8 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 class ShortBufferDataGiws(dataBufferGiws):
+	__isArray=True
+	nativeType="short"
 
 	def getTypeSignature(self):
 		return "Ljava/nio/ShortBuffer;"
@@ -52,8 +54,6 @@ class ShortBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java ShortBuffer"
 
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		return "short *"
-
 	def getJavaBufferType(self):
 		return "ShortBuffer"
+

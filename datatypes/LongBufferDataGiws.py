@@ -39,6 +39,8 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 class LongBufferDataGiws(dataBufferGiws):
+	__isArray=True
+	nativeType="long long"
 
 	def getTypeSignature(self):
 		return "Ljava/nio/LongBuffer;"
@@ -52,8 +54,6 @@ class LongBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java LongBuffer"
 
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		return "long long *"
-
 	def getJavaBufferType(self):
 		return "LongBuffer"
+
