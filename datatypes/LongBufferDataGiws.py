@@ -52,7 +52,7 @@ class LongBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java LongBuffer"
 
-	def getNativeType(self):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		return "long long *"
 
 	def getJavaBufferType(self):

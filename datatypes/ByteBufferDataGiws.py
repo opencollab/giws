@@ -52,7 +52,7 @@ class ByteBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java ByteBuffer"
 
-	def getNativeType(self):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		return "byte *"
 
 	def getJavaBufferType(self):

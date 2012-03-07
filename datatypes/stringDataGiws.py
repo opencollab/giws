@@ -60,11 +60,19 @@ class stringDataGiws(dataGiws):
 	def getDescription(self):
 		return "Java String"
 
-	def getNativeType(self):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		if self.isArray():
-			return "char *" + "*" * self.getDimensionArray()
+			if UseConst:
+				pointer = " const*"
+			else:
+				pointer = "*"
+			return ("char" + pointer) + pointer * self.getDimensionArray()
 		else:
-			return "char *"
+			if UseConst:
+				pointer = " const*"
+			else:
+				pointer = "*"
+			return "char " + pointer
 
         def __errorMemoryString(self, detachThread):
 		# Management of the error when not enought memory to create the string

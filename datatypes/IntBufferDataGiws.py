@@ -52,7 +52,7 @@ class IntBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java IntBuffer"
 
-	def getNativeType(self):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		return "int *"
 
 	def getJavaBufferType(self):

@@ -84,7 +84,7 @@ int main(){
 	cout << "The second int from Java : " << myInts[1]  <<endl;
 	cout << "The third int from Java : " << myInts[2]  <<endl;
 
-	const char *myStrings[]={(char*)"tic", (char*)"tac", (char*)"toc", (char*)"plop"};
+	char *myStrings[]={(char*)"tic", (char*)"tac", (char*)"toc", (char*)"plop"};
 	plop->setMyStrings(myStrings,4);
 
 	bool arrayOfBool[]={true, false, true, true};

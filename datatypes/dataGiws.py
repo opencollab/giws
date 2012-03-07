@@ -84,17 +84,23 @@ class dataGiws(object):
 		return self.getJavaShortType(forceNotArray=True)
 
 
-	def getNativeType(self, ForceNotArray=False):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		""" Returns the native type (C/C++)
 		"""
 		if self.isArray() and not ForceNotArray:
-			return self.nativeType + "*" * self.__dimensionArray
+			if UseConst:
+				pointer = " const*"
+			else:
+				pointer = "*"
+			return self.nativeType + pointer * self.__dimensionArray
 		else:
 			return self.nativeType
 
 	def getNativeTypeForceNotArray(self):
 		return self.getNativeType(ForceNotArray=True)
 
+	def getNativeTypeWithConst(self):
+		return self.getNativeType(UseConst=True)
 
 	def getTypeSignature(self):
 		""" Returns the java type signature

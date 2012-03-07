@@ -52,7 +52,7 @@ class CharBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java CharBuffer"
 
-	def getNativeType(self):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		return "char *"
 
 	def getJavaBufferType(self):

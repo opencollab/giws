@@ -71,7 +71,7 @@ int main(){
 		myArrayOfLong[i][1]=3*(i+1);
 	}
 
-	plop->doNothingPleaseButDisplay((const int**)myArrayOfLong,sizeArray,sizeArrayCol);
+	plop->doNothingPleaseButDisplay(myArrayOfLong,sizeArray,sizeArrayCol);
 	int lenRow, lenCol;
 	char *** myString=plop->getMatrixString(&lenRow, &lenCol);
 	cout << "Going to get a String[" << lenRow << "][" << lenCol << "]" << endl;
@@ -106,7 +106,7 @@ int main(){
 	sendToJava[1] = new char *[2];
 	sendToJava[1][0]=(char*)"string3";
 	sendToJava[1][1]=(char*)"Final string";
-	plop->displayMatrixOfString((const char ***)sendToJava,2,2);
+	plop->displayMatrixOfString(sendToJava,2,2);
 
 	return 0;	
 }

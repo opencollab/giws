@@ -49,7 +49,7 @@ class DoubleBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java DoubleBuffer"
 
-	def getNativeType(self):
+	def getNativeType(self, ForceNotArray=False, UseConst=False):
 		return "double *"
 
 	def getJavaBufferType(self):
