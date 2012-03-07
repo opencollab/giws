@@ -39,6 +39,8 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 class CharBufferDataGiws(dataBufferGiws):
+	__isArray=True
+	nativeType="char"
 
 	def getTypeSignature(self):
 		return "Ljava/nio/CharBuffer;"
@@ -52,8 +54,6 @@ class CharBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java CharBuffer"
 
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		return "char *"
-
 	def getJavaBufferType(self):
 		return "CharBuffer"
+

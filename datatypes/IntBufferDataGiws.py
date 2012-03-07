@@ -39,6 +39,8 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 class IntBufferDataGiws(dataBufferGiws):
+	__isArray=True
+	nativeType="int"
 
 	def getTypeSignature(self):
 		return "Ljava/nio/IntBuffer;"
@@ -52,8 +54,6 @@ class IntBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java IntBuffer"
 
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		return "int *"
-
 	def getJavaBufferType(self):
 		return "IntBuffer"
+

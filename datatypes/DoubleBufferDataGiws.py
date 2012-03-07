@@ -39,6 +39,8 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 class DoubleBufferDataGiws(dataBufferGiws):
+	__isArray=True
+	nativeType="double"
 
 	def getTypeSignature(self):
 		return "Ljava/nio/DoubleBuffer;"
@@ -48,9 +50,6 @@ class DoubleBufferDataGiws(dataBufferGiws):
 
 	def getDescription(self):
 		return "Java DoubleBuffer"
-
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		return "double *"
 
 	def getJavaBufferType(self):
 		return "DoubleBuffer"

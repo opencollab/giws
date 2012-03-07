@@ -39,6 +39,8 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 class ByteBufferDataGiws(dataBufferGiws):
+	__isArray=True
+	nativeType="byte"
 
 	def getTypeSignature(self):
 		return "Ljava/nio/ByteBuffer;"
@@ -52,8 +54,6 @@ class ByteBufferDataGiws(dataBufferGiws):
 	def getDescription(self):
 		return "Java ByteBuffer"
 
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		return "byte *"
-
 	def getJavaBufferType(self):
 		return "ByteBuffer"
+
