@@ -1,8 +1,5 @@
 giws (2.0.0)
 
-     * This is a major change in the GIWS version number because some C++ codes
-       might be broken by the introduction of the const keyword in some method
-       profiles
      * Management of the Java buffer classes:
         - ByteBuffer
         - CharBuffer
