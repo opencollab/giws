@@ -1,2 +1,9 @@
 *.pyc
 *~
+
+# remove examples generated files
+/examples/*/*.cpp
+/examples/*/*.hxx
+/examples/*/*/*.class
+examples/*/main
+

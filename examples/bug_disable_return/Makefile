@@ -31,7 +31,7 @@ GFLAGS = -r
 #
 PACKAGE_NAME = Plop
 OBJECT_NAME  = plop
-BINARY       = myExample
+BINARY       = main
 
 GIWS_CPP_FILE  = main.cpp
 GIWS_DESC_FILE = $(OBJECT_NAME).giws.xml

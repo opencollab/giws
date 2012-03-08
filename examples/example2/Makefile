@@ -31,7 +31,7 @@ GFLAGS = -p --disable-return-size-array
 #
 PACKAGE_NAME = example2
 OBJECT_NAME  = MyObjectWithArray
-BINARY       = myExample2
+BINARY       = main
 
 GIWS_CPP_FILE  = main.cpp
 GIWS_DESC_FILE = $(OBJECT_NAME).giws.xml

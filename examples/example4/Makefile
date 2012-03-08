@@ -31,7 +31,7 @@ GFLAGS = -p
 #
 PACKAGE_NAME = example4
 OBJECT_NAME  = MyObjectWithArray
-BINARY       = myExample4
+BINARY       = main
 
 GIWS_CPP_FILE  = main.cpp
 GIWS_DESC_FILE = $(OBJECT_NAME).giws.xml
