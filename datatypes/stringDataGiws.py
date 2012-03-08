@@ -72,7 +72,7 @@ class stringDataGiws(dataGiws):
 				pointer = " const*"
 			else:
 				pointer = "*"
-			return "char " + pointer
+			return "char" + pointer
 
         def __errorMemoryString(self, detachThread):
 		# Management of the error when not enought memory to create the string
