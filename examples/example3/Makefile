@@ -31,7 +31,7 @@ GFLAGS = -p --throws-exception-on-error -g
 #
 PACKAGE_NAME = example3
 OBJECT_NAME  = MyObjectWhichReturnsExceptions
-BINARY       = myExample3
+BINARY       = main
 
 GIWS_CPP_FILE  = main.cpp
 GIWS_DESC_FILE = $(OBJECT_NAME).giws.xml

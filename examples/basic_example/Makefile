@@ -31,7 +31,7 @@ GFLAGS = -p
 #
 PACKAGE_NAME = basic_example
 OBJECT_NAME  = MyComplexClass
-BINARY       = myExample
+BINARY       = main
 
 GIWS_CPP_FILE  = main.cpp
 GIWS_DESC_FILE = $(OBJECT_NAME).giws.xml

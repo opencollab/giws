@@ -31,7 +31,7 @@ GFLAGS = -p
 #
 PACKAGE_NAME = example5
 OBJECT_NAME  = MyObject
-BINARY       = myExample5
+BINARY       = main
 
 GIWS_CPP_FILE  = main.cpp
 GIWS_DESC_FILE = $(OBJECT_NAME).giws.xml
