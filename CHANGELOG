@@ -1,3 +1,10 @@
+giws (2.0.1)
+
+     * Remove the copyright and authors from generated code
+     * Update the setup.py configuration
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  TODO
+
 giws (2.0.0)
 
      * Management of the Java buffer classes:
