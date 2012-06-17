@@ -70,7 +70,7 @@ class dataBufferGiws(dataGiws):
 			errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
 
 
-		return """
+		str = """
 
             jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(%s));
 if (!buffer%s)
@@ -111,9 +111,12 @@ if (orderID == NULL) {
 curEnv->ExceptionDescribe();
 }
 }
-
 buffer%s = curEnv->CallObjectMethod(buffer%s, orderID, nativeOrder);
 
+"""%(name, name, name, self.nativeType, name, name, name, name)
+                if self.getJavaBufferType() == "ByteBuffer":
+                        return str
+		str=str+"""
 if (asdbID%s == NULL) {
  asdbID%s = curEnv->GetMethodID(bbCls, "as%s", "()%s");
 if (asdbID%s == NULL) {
@@ -129,7 +132,8 @@ if (%s_ == NULL)
 // check that allocation succeed
 throw GiwsException::JniBadAllocException(curEnv);
 }
-"""%(name, name, name, self.nativeType, name, name, name, name, self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name)
+"""%(self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name)
+		return str
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a XXXXXBuffer or an array of XXXBuffer TODO """
