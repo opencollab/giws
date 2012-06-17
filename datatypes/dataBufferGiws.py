@@ -79,7 +79,7 @@ if (!buffer%s)
 }
 
 if (ByteOrderClass == NULL) {
-ByteOrderClass = curEnv->FindClass("java/nio/ByteOrder");
+ByteOrderClass = static_cast<jclass>(curEnv->NewGlobalRef(curEnv->FindClass("java/nio/ByteOrder")));
 if (ByteOrderClass == NULL) {
 curEnv->ExceptionDescribe();
 }
@@ -101,7 +101,7 @@ throw GiwsException::JniCallMethodException(curEnv);
 
 
 if (bbCls == NULL) {
-bbCls = curEnv->FindClass("java/nio/ByteBuffer");
+bbCls = static_cast<jclass>(curEnv->NewGlobalRef(curEnv->FindClass("java/nio/ByteBuffer")));
 if (bbCls == NULL) {
 curEnv->ExceptionDescribe();
 }
