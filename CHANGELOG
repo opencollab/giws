@@ -3,6 +3,7 @@ giws (2.0.1)
      * Remove the copyright and authors from generated code
      * Update the setup.py configuration
      * Use a cache by *buffer type
+     * To compute the size of a bytebuffer from C, use sizeof(byte)
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  TODO
 
