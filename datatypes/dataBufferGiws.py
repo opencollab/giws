@@ -79,13 +79,13 @@ if (!buffer%s)
 }
 
 if (ByteOrderClass == NULL) {
-// TODO
-// tu peux mettre en cache ByteOrderClass, nativeOrderID, bbCls et asdbID
-// Les modifs ont essentiellement lieu ici
 ByteOrderClass = curEnv->FindClass("java/nio/ByteOrder");
 if (ByteOrderClass == NULL) {
 curEnv->ExceptionDescribe();
 }
+}
+
+if (nativeOrderID == NULL) {
 // public static ByteOrder nativeOrder()
 nativeOrderID = curEnv->GetStaticMethodID(ByteOrderClass, "nativeOrder", "()Ljava/nio/ByteOrder;");
 if (nativeOrderID == NULL) {
@@ -105,7 +105,9 @@ bbCls = curEnv->FindClass("java/nio/ByteBuffer");
 if (bbCls == NULL) {
 curEnv->ExceptionDescribe();
 }
+}
 
+if (orderID == NULL) {
 orderID = curEnv->GetMethodID(bbCls, "order", "(Ljava/nio/ByteOrder;)Ljava/nio/ByteBuffer;");
 if (orderID == NULL) {
 curEnv->ExceptionDescribe();
