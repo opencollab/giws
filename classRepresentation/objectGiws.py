@@ -436,7 +436,13 @@ class objectGiws:
                 jobject ByteBufferSync::nativeOrder = NULL;
                 jmethodID ByteBufferSync::orderID = NULL;
                 jclass ByteBufferSync::bbCls = NULL;
-                jmethodID ByteBufferSync::asdbID = NULL;"""
+                jmethodID ByteBufferSync::asdbIDByteBuffer = NULL;
+                jmethodID ByteBufferSync::asdbIDCharBuffer = NULL;
+                jmethodID ByteBufferSync::asdbIDDoubleBuffer = NULL;
+                jmethodID ByteBufferSync::asdbIDFloatBuffer = NULL;
+                jmethodID ByteBufferSync::asdbIDIntBuffer = NULL;
+                jmethodID ByteBufferSync::asdbIDLongBuffer = NULL;
+                jmethodID ByteBufferSync::asdbIDShortBuffer = NULL;"""
 
                 return str
 
@@ -450,6 +456,12 @@ class objectGiws:
                 static jobject nativeOrder;
                 static jmethodID orderID;
                 static jclass bbCls;
-                static jmethodID asdbID;
+                static jmethodID asdbIDByteBuffer;
+                static jmethodID asdbIDCharBuffer;
+                static jmethodID asdbIDDoubleBuffer;
+                static jmethodID asdbIDFloatBuffer;
+                static jmethodID asdbIDIntBuffer;
+                static jmethodID asdbIDLongBuffer;
+                static jmethodID asdbIDShortBuffer;
                 """
                 return str

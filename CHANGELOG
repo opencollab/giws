@@ -2,6 +2,7 @@ giws (2.0.1)
 
      * Remove the copyright and authors from generated code
      * Update the setup.py configuration
+     * Use a cache by *buffer type
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  TODO
 

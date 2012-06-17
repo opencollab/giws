@@ -114,14 +114,14 @@ curEnv->ExceptionDescribe();
 
 buffer%s = curEnv->CallObjectMethod(buffer%s, orderID, nativeOrder);
 
-if (asdbID == NULL) {
- asdbID = curEnv->GetMethodID(bbCls, "as%s", "()%s");
-if (asdbID == NULL) {
+if (asdbID%s == NULL) {
+ asdbID%s = curEnv->GetMethodID(bbCls, "as%s", "()%s");
+if (asdbID%s == NULL) {
 curEnv->ExceptionDescribe();
 }
 }
 
-jobject %s_ = curEnv->CallObjectMethod(buffer%s, asdbID);
+jobject %s_ = curEnv->CallObjectMethod(buffer%s, asdbID%s);
 
 
 if (%s_ == NULL)
@@ -129,7 +129,7 @@ if (%s_ == NULL)
 // check that allocation succeed
 throw GiwsException::JniBadAllocException(curEnv);
 }
-"""%(name, name, name, name, name, name, name, self.getJavaBufferType(), self.getTypeSignature(), name, name, name)
+"""%(name, name, name, name, name, name, name, self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name)
 	
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a XXXXXBuffer or an array of XXXBuffer TODO """
