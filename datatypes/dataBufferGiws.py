@@ -72,7 +72,7 @@ class dataBufferGiws(dataGiws):
 
 		return """
 
-            jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(byte
+            jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(byte));
 if (!buffer%s)
 {
     throw GiwsException::JniBadAllocException(curEnv);
