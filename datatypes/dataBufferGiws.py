@@ -115,6 +115,7 @@ buffer%s = curEnv->CallObjectMethod(buffer%s, orderID, nativeOrder);
 
 """%(name, name, name, self.nativeType, name, name, name, name)
                 if self.getJavaBufferType() == "ByteBuffer":
+                        str=str+""" jobject %s_ = buffer%s; """ % (name, name)
                         return str
 		str=str+"""
 if (asdbID%s == NULL) {
@@ -125,7 +126,6 @@ curEnv->ExceptionDescribe();
 }
 
 jobject %s_ = curEnv->CallObjectMethod(buffer%s, asdbID%s);
-
 
 if (%s_ == NULL)
 {
