@@ -431,19 +431,18 @@ class objectGiws:
                 if self.needCaching():
                         str="""
                 // Cache of the bytebuffer stuff
-                jclass ByteBufferSync::ByteOrderClass = NULL;
-                jmethodID ByteBufferSync::nativeOrderID = NULL;
-                jobject ByteBufferSync::nativeOrder = NULL;
-                jmethodID ByteBufferSync::orderID = NULL;
-                jclass ByteBufferSync::bbCls = NULL;
-                jmethodID ByteBufferSync::asdbIDByteBuffer = NULL;
-                jmethodID ByteBufferSync::asdbIDCharBuffer = NULL;
-                jmethodID ByteBufferSync::asdbIDDoubleBuffer = NULL;
-                jmethodID ByteBufferSync::asdbIDFloatBuffer = NULL;
-                jmethodID ByteBufferSync::asdbIDIntBuffer = NULL;
-                jmethodID ByteBufferSync::asdbIDLongBuffer = NULL;
-                jmethodID ByteBufferSync::asdbIDShortBuffer = NULL;"""
-
+                jclass %s::ByteOrderClass = NULL;
+                jmethodID %s::nativeOrderID = NULL;
+                jobject %s::nativeOrder = NULL;
+                jmethodID %s::orderID = NULL;
+                jclass %s::bbCls = NULL;
+                jmethodID %s::asdbIDByteBuffer = NULL;
+                jmethodID %s::asdbIDCharBuffer = NULL;
+                jmethodID %s::asdbIDDoubleBuffer = NULL;
+                jmethodID %s::asdbIDFloatBuffer = NULL;
+                jmethodID %s::asdbIDIntBuffer = NULL;
+                jmethodID %s::asdbIDLongBuffer = NULL;
+                jmethodID %s::asdbIDShortBuffer = NULL;""" %  ( self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName() )
                 return str
 
         def getCacheBuffer(self):

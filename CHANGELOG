@@ -4,6 +4,7 @@ giws (2.0.1)
      * Update the setup.py configuration
      * Use a cache by *buffer type
      * To compute the size of a bytebuffer from C, use sizeof(byte)
+     * Use the class name of the member
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  TODO
 
