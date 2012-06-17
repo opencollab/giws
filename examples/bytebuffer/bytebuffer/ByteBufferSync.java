@@ -6,10 +6,11 @@ public class ByteBufferSync {
 		System.out.println("Constructor");
 	}
 
-    static public void bar(java.nio.DoubleBuffer aze, java.nio.LongBuffer bze) {
+    static public void bar(java.nio.DoubleBuffer aze, java.nio.LongBuffer bze, java.nio.ByteBuffer cze) {
         System.out.println("Into bar(java.nio.DoubleBuffer, java.nio.LongBuffer)");
         System.out.println("The input argument: "+ aze);
         System.out.println("The second input argument: "+ bze);
+        System.out.println("The third input argument: "+ cze);
 
     }
 

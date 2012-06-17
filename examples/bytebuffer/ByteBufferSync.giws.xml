@@ -40,6 +40,7 @@ For more information, see the file COPYING
         <method name="bar" returnType="void" modifier="static">
             <parameter name="data" type="DoubleBuffer"/>
             <parameter name="data2" type="LongBuffer"/>
+            <parameter name="data3" type="ByteBuffer"/>
         </method>
 	<method name="myfun" returnType="DoubleBuffer" modifier="static" />
 <method name="myfunLong" returnType="LongBuffer" modifier="static" />
