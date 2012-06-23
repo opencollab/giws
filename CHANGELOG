@@ -6,6 +6,7 @@ giws (2.0.1)
      * To compute the size of a bytebuffer from C, use sizeof(byte)
      * Use the class name of the member
      * When a method returned a NULL String, it could lead to errors
+       (Closes: #766
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  Sun, 17 Jun 2012 19:14:10 +0200
 
