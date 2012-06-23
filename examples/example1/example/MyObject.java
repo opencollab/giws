@@ -45,6 +45,10 @@ public class MyObject{
 	public String getMyString(){
 		return "I do love Scilab";
 	}
+
+	public String getMyStringNull(){
+		return null;
+	}
 	
 	public void doNothingPleaseButDisplay(int a){
 		System.out.println("I did display some very interesting things like the int : "+a);

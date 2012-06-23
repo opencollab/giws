@@ -175,6 +175,8 @@ class stringDataGiws(dataGiws):
 
 		str=JNIFrameWork().getExceptionCheckProfile(detachThread)
 
+                str=str+"if (res != NULL) { "
+
 		if self.isArray():
 			strCommon=""
 			strDeclaration=""
@@ -223,12 +225,13 @@ class stringDataGiws(dataGiws):
 				curEnv->DeleteLocalRef(resStringLine);
 				 }
 				"""%(strDeclaration, strDeclaration, strDeclaration, strDeclaration, strDeclaration)
+
 				return str
 
 		else:
 			if hasattr(self,"parameterName"):
 				str+="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")
-			return str+"""
+			str=str+"""
 
 			const char *tempString = curEnv->GetStringUTFChars(res, 0);
 			char * %s = new char[strlen(tempString) + 1];
@@ -237,14 +240,22 @@ class stringDataGiws(dataGiws):
 			curEnv->DeleteLocalRef(res);
 			"""%(self.temporaryVariableName, self.temporaryVariableName)
 
+                        return str
+
+
 	def getReturnSyntax(self):
+                str=""
 		if self.isArray():
-			return """
+			str = str + """
 			curEnv->DeleteLocalRef(res);
 			return arrayOfString;
 			"""
 		else:
-			return """
+			str = str + """
 			return %s;
 			"""%(self.temporaryVariableName)
-	
+                str = str + """ } else { 
+				curEnv->DeleteLocalRef(res);
+				return NULL;
+				}"""
+                return str

@@ -5,6 +5,7 @@ giws (2.0.1)
      * Use a cache by *buffer type
      * To compute the size of a bytebuffer from C, use sizeof(byte)
      * Use the class name of the member
+     * When a method returned a NULL String, it could lead to errors
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  Sun, 17 Jun 2012 19:14:10 +0200
 

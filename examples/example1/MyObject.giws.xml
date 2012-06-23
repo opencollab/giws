@@ -39,6 +39,8 @@ For more information, see the file COPYING
   <object name="MyObject">
 	<method name="getMyString" returnType="String">
 	</method>
+	<method name="getMyStringNull" returnType="String">
+	</method>
 	<method name="doNothingPleaseButDisplay" returnType="void">
 	  <param type="int" name="plop" />
 	</method>
