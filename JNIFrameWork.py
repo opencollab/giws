@@ -62,10 +62,10 @@ class JNIFrameWork:
 			"""%(configGiws().getExceptionFileName()+configGiws().getCPPHeaderExtension())
 		# Byte support
 		strHeader+="""
-        #if !defined(byte) | !defined(_MSC_VER) /* Defined anyway with Visual */
-                typedef signed char byte;
+        #if defined(_MSC_VER) /* Defined anyway with Visual */
+            #include <Windows.h>
         #else
-                #pragma message("Byte has been redefined elsewhere. Some problems can happen")
+            typedef signed char byte;
         #endif
 		"""
 		return strHeader
