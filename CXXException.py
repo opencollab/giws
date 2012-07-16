@@ -80,7 +80,7 @@ class CXXException:
 			/** Java description of the exception*/
 			std::string m_oJavaMessage;
 			
-			/** Java stackTrace when the exception occured */
+			/** Java stackTrace when the exception occurred */
 			std::string m_oJavaStackTrace;
 			
 			/** Name of the exception (ie class name).*/
@@ -96,7 +96,7 @@ class CXXException:
 			/**
 			* Each subclass of JniExcpetion should call the super constructor
 			* and the setErrorMessage function to set the message.
-			* @param curEnv java environment where the exception occured.
+			* @param curEnv java environment where the exception occurred.
 			*/
 			JniException(JNIEnv * curEnv) throw() ;
 			JniException() throw() : exception() { };
@@ -121,7 +121,7 @@ class CXXException:
 			std::string getJavaDescription(void) const throw();
 			
 			/**
-			* @return Java stack trace where the exception occured.
+			* @return Java stack trace where the exception occurred.
 			*/
 			std::string getJavaStackTrace(void) const throw();
 			
@@ -148,7 +148,7 @@ class CXXException:
 			*/
 			std::string retrieveExceptionMessage(JNIEnv * curEnv);
 			/**
-			* @return full stack trace when the exception occured.
+			* @return full stack trace when the exception occurred.
 			*/
 			std::string retrieveStackTrace(JNIEnv * curEnv);
 			
@@ -192,7 +192,7 @@ class CXXException:
 			public:
 			
 			  /**
-			   * @param curEnv java envirnonment where the exception occured.
+			   * @param curEnv java envirnonment where the exception occurred.
 			   */
 			  JniCallMethodException(JNIEnv * curEnv) throw();
 
@@ -241,7 +241,7 @@ class CXXException:
 			public:
 			
 			/**
-			* @param curEnv java envirnonment where the exception occured.
+			* @param curEnv java envirnonment where the exception occurred.
 			*/
 			JniObjectCreationException(JNIEnv * curEnv, const std::string & className) throw();
 			virtual ~JniObjectCreationException(void) throw();
@@ -258,7 +258,7 @@ class CXXException:
 			public:
 			
 			/**
-			* @param curEnv java envirnonment where the exception occured.
+			* @param curEnv java envirnonment where the exception occurred.
 			*/
 			JniMonitorException(JNIEnv * curEnv, const std::string & className) throw();
 			virtual ~JniMonitorException(void) throw();
@@ -291,7 +291,7 @@ class CXXException:
 		/**
 		* Each subclass of JniExcpetion should call the super constructor
 		* and the setErrorMessage function to set the message.
-		* @param curEnv java envirnonment where the exception occured.
+		* @param curEnv java envirnonment where the exception occurred.
 		*/
 		JniException::JniException(JNIEnv * curEnv) throw() : exception()
 		{
@@ -340,7 +340,7 @@ class CXXException:
 		}
 	
 		/**
-		* @return Java stack trace where the exception occured.
+		* @return Java stack trace where the exception occurred.
 		*/
 		std::string JniException::getJavaStackTrace(void) const throw()
 		{
@@ -402,7 +402,7 @@ class CXXException:
   }
 
   /**
-   * @return full stack trace when the exception occured.
+   * @return full stack trace when the exception occurred.
    */
   std::string JniException::retrieveStackTrace(JNIEnv * curEnv)
   {
@@ -550,7 +550,7 @@ class CXXException:
   */
   
   /**
-  * @param curEnv java environment where the exception occured.
+  * @param curEnv java environment where the exception occurred.
   */
   JniCallMethodException::JniCallMethodException(JNIEnv * curEnv) throw() : JniException(curEnv)
   {
@@ -584,7 +584,7 @@ class CXXException:
 			  JniMethodNotFoundException::~JniMethodNotFoundException(void) throw() {}
 			  
 			  /**
-			   * @param curEnv java envirnonment where the exception occured.
+			   * @param curEnv java envirnonment where the exception occurred.
 			   */
 			  JniObjectCreationException::JniObjectCreationException(JNIEnv * curEnv, const std::string & className) throw() : JniException(curEnv)
 			  {
@@ -595,7 +595,7 @@ class CXXException:
 			  JniObjectCreationException::~JniObjectCreationException(void) throw() {}
 
 			  /**
-			   * @param curEnv java envirnonment where the exception occured.
+			   * @param curEnv java envirnonment where the exception occurred.
 			   */
 			  JniMonitorException::JniMonitorException(JNIEnv * curEnv, const std::string & className) throw() : JniException(curEnv)
 			  {
