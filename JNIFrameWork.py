@@ -154,10 +154,22 @@ class JNIFrameWork:
 	
         # For static methods, we can not call getCurrentEnv() because it is not static
 	def getStaticProfile(self):
-		return """
+		static = """
 		JNIEnv * curEnv = NULL;
 		jvm_->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		jclass cls = curEnv->FindClass( className().c_str() );
+		if ( cls == NULL) {
+		"""
+		
+		# Management of the error
+		if configGiws().getThrowsException():
+			errorMgnt = """throw %s::JniCallMethodException(curEnv);""" % (configGiws().getExceptionFileName())
+		else:
+			errorMgnt = """std::cerr << "Could not access to the class " << className() << std::endl;
+			exit(EXIT_FAILURE);"""
+		
+		return static + errorMgnt + """
+		}
 		""" 
 
 	def getDeleteStaticProfile(self):
