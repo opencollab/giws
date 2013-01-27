@@ -1,3 +1,9 @@
+giws (2.0.2)
+
+     * Remove some empty lines and spaces at end of the line
+
+ -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  Sun, 27 Jan 2013 09:53:10 +0100
+
 giws (2.0.1)
 
      * Remove the copyright and authors from generated code

@@ -47,10 +47,10 @@ class configGiws:
 	__headerCPPExtension=".hxx"
 	__bodyCPPExtension=".cpp"
 	__exceptionFileName="GiwsException"
-	
+
 	def setDescriptionFile(self, desc):
 		self.__descriptionFile=desc
-		
+
 	def getDescriptionFile(self):
 		return self.__descriptionFile
 
@@ -74,19 +74,19 @@ class configGiws:
 
 	def setOutput(self, output):
 		self.__output=output
-		
+
 	def getOutput(self):
 		return self.__output
 
 	def setCPPHeaderExtension(self, ext):
 		self.__headerCPPExtension=ext
-		
+
 	def getCPPHeaderExtension(self):
 		return self.__headerCPPExtension
 
 	def setCPPBodyExtension(self, ext):
 		self.__bodyCPPExtension=ext
-		
+
 	def getCPPBodyExtension(self):
 		return self.__bodyCPPExtension
 
@@ -98,7 +98,7 @@ class configGiws:
 
 	def getThrowsException(self):
 		return configGiws.__throwsException
-	
+
 	def getVersion(self):
 		return self.__version
 

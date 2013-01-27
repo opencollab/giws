@@ -73,16 +73,16 @@ class CXXException:
 		*/
 		class GIWSEXPORT JniException : public std::exception
 		{
-			
+
 			/** Error message to display */
 			std::string m_oErrorMessage;
-			
+
 			/** Java description of the exception*/
 			std::string m_oJavaMessage;
-			
+
 			/** Java stackTrace when the exception occurred */
 			std::string m_oJavaStackTrace;
-			
+
 			/** Name of the exception (ie class name).*/
 			std::string m_oJavaExceptionName;
 
@@ -90,9 +90,9 @@ class CXXException:
 			complains about 'WARNING in native method: JNI call made with
 			exception pending' */
 			jthrowable javaException;
-			
+
 			public:
-			
+
 			/**
 			* Each subclass of JniExcpetion should call the super constructor
 			* and the setErrorMessage function to set the message.
@@ -101,9 +101,9 @@ class CXXException:
 			JniException(JNIEnv * curEnv) throw() ;
 			JniException() throw() : exception() { };
 
-			
+
 			virtual ~JniException(void) throw();
-			
+
 			/**
 			* @return a description of the exception
 			* @deprecated This function could lead to side effect error. Please use whatStr
@@ -114,29 +114,29 @@ class CXXException:
 			* @return a description of the exception
 			*/
 			virtual std::string whatStr(void) const throw();
-			
+
 			/**
 			* @return Java description of the exception.
 			*/
 			std::string getJavaDescription(void) const throw();
-			
+
 			/**
 			* @return Java stack trace where the exception occurred.
 			*/
 			std::string getJavaStackTrace(void) const throw();
-			
+
 			/**
 			* Get the name of the exception (ie its class name).
 			*/
 			std::string getJavaExceptionName(void) const throw();
-			
+
 			protected:
-			
+
 			/**
 			* Set the error message that the exception should print.
 			*/
 			void setErrorMessage(const std::string & errorMessage);
-			
+
 			/**
 			* Get the message that the exception will print.
 			*/
@@ -151,7 +151,7 @@ class CXXException:
 			* @return full stack trace when the exception occurred.
 			*/
 			std::string retrieveStackTrace(JNIEnv * curEnv);
-			
+
 			/**
 			* @return string containing the name of the exception (ie its class name).
 			*/
@@ -162,13 +162,13 @@ class CXXException:
 			* Remove the exception from the environment.
 			*/
 			void closeException(JNIEnv * curEnv);
-			
+
 			/**
 			* Convert a Java string (jstring) into a C++ string
 			*/
-			std::string convertJavaString(JNIEnv * curEnv, jstring javaString);		
+			std::string convertJavaString(JNIEnv * curEnv, jstring javaString);
 			};
-		
+
 			/**
 			* Exception that should be thrown when allocation of Java resources from C++
 			* code fails (sur as NewDoubleArray or NewStringUTF).
@@ -190,7 +190,7 @@ class CXXException:
 			class GIWSEXPORT JniCallMethodException : public JniException
 			{
 			public:
-			
+
 			  /**
 			   * @param curEnv java envirnonment where the exception occurred.
 			   */
@@ -210,26 +210,26 @@ class CXXException:
 			* @param className name of the class which haven't been found
 			*/
 			JniClassNotFoundException(JNIEnv * curEnv, const std::string & className) throw();
-			
+
 			virtual ~JniClassNotFoundException(void) throw();
-			
+
 			};
-			
+
 			/**
 			* Exception that should be thrown when Jni code could not find a Java method
 			*/
 			class GIWSEXPORT JniMethodNotFoundException : public JniException
 			{
 			public:
-					
+
 			/**
 			* @param className name of the method which haven't been found
 			*/
 			JniMethodNotFoundException(JNIEnv * curEnv, const std::string & methodName) throw();
 			virtual ~JniMethodNotFoundException(void) throw();
-			
+
 			};
-			
+
 			/**
 			* Exception that should be thrown when a call to a Java method
 			* using Jni throw an exception.
@@ -239,16 +239,16 @@ class CXXException:
 			class GIWSEXPORT JniObjectCreationException : public JniException
 			{
 			public:
-			
+
 			/**
 			* @param curEnv java envirnonment where the exception occurred.
 			*/
 			JniObjectCreationException(JNIEnv * curEnv, const std::string & className) throw();
 			virtual ~JniObjectCreationException(void) throw();
-			
+
 			};
 
-						
+
 			/**
 			* Exception that should be thrown when a call to the Java monitor
 			* failed
@@ -256,13 +256,13 @@ class CXXException:
 			class GIWSEXPORT JniMonitorException : public JniException
 			{
 			public:
-			
+
 			/**
 			* @param curEnv java envirnonment where the exception occurred.
 			*/
 			JniMonitorException(JNIEnv * curEnv, const std::string & className) throw();
 			virtual ~JniMonitorException(void) throw();
-			
+
 			};
 		"""
 
@@ -281,13 +281,13 @@ class CXXException:
 		%s
 		namespace %s {
 		"""%(self.getDescriptionHeader(config), licenseWrapper().getLicense(),"""#include "%s" """%(config.getExceptionFileName()+config.getCPPHeaderExtension()), config.getExceptionFileName())
-		
+
 		strCommonEnd="""
 		}
 		"""
-		
+
 		strBody="""
-		
+
 		/**
 		* Each subclass of JniExcpetion should call the super constructor
 		* and the setErrorMessage function to set the message.
@@ -313,7 +313,7 @@ class CXXException:
 		{
 		m_oErrorMessage.clear();
 		}
-		
+
 		/**
 		* @return a description of the exception
 		* @deprecated This function could lead to side effect error. Please use whatStr
@@ -338,7 +338,7 @@ class CXXException:
 		{
 		return m_oJavaMessage;
 		}
-	
+
 		/**
 		* @return Java stack trace where the exception occurred.
 		*/
@@ -346,7 +346,7 @@ class CXXException:
 		{
 			return m_oJavaStackTrace;
 			}
-		
+
 		/**
 		* Get the name of the exception (ie its class name).
 		*/
@@ -354,8 +354,8 @@ class CXXException:
 		{
 			return m_oJavaExceptionName;
 			}
-		
-		
+
+
 		/**
 		* Set the error message that the exception should print.
 		*/
@@ -363,7 +363,7 @@ class CXXException:
 		{
 			m_oErrorMessage = errorMessage;
 			}
-		
+
 		/**
 			* Get the message that the exception will print.
 		*/
@@ -532,13 +532,13 @@ class CXXException:
   * Exception that should be thrown when allocation of Java resources from C++
   * code fails (sur as NewDoubleArray or NewStringUTF).
   */
-  
+
   JniBadAllocException::JniBadAllocException(JNIEnv * curEnv) throw() : JniException()
   {
   std::string message = "Error no more memory.";
   setErrorMessage(message);
   }
-  
+
   JniBadAllocException::~JniBadAllocException(void) throw() {}
 
 
@@ -548,7 +548,7 @@ class CXXException:
   * If possible, user should try to avoid this sitution because of the loss
   * of information.
   */
-  
+
   /**
   * @param curEnv java environment where the exception occurred.
   */
@@ -559,7 +559,7 @@ class CXXException:
   errorMessage += what();
   setErrorMessage(errorMessage);
   }
-  
+
   JniCallMethodException::~JniCallMethodException(void) throw() {}
   /**
   * @param className name of the class which haven't been found
@@ -582,7 +582,7 @@ class CXXException:
 			  }
 
 			  JniMethodNotFoundException::~JniMethodNotFoundException(void) throw() {}
-			  
+
 			  /**
 			   * @param curEnv java envirnonment where the exception occurred.
 			   */
@@ -611,7 +611,7 @@ class CXXException:
 		%s
 		%s
 		""" % (strCommon, strBody, strCommonEnd)
-		
+
 		fileName=config.getExceptionFileName()+config.getCPPBodyExtension()
 		outputWriter().writeIntoFile(config.getOutput(),fileName, str)
 		print "%s generated ..."%fileName

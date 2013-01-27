@@ -41,7 +41,7 @@ class JNIFrameWork:
 	"""
 	This class provides the JNI code
 	"""
-	
+
 	__JavaVMVariable="jvm"
 	__JavaVMVariableType="JavaVM"
 
@@ -85,7 +85,7 @@ class JNIFrameWork:
 
 	def getJavaVMVariable(self):
 		return self.__JavaVMVariable
-	
+
 	def getJavaVMVariableType(self):
 		return self.__JavaVMVariableType
 
@@ -107,13 +107,12 @@ class JNIFrameWork:
 		return curEnv;
 		}"""%(objectName, error)
 
-	
+
 	def getObjectDestuctor(self,objectName,stringClassSet=False):
 		myStr="""
 		%s::~%s() {
 		JNIEnv * curEnv = NULL;
 		this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
-		
 		curEnv->DeleteGlobalRef(this->instance);
 		curEnv->DeleteGlobalRef(this->instanceClass);
 		"""%(objectName, objectName)
@@ -151,7 +150,7 @@ class JNIFrameWork:
 		return myStr + """
 		}
 		}"""
-	
+
         # For static methods, we can not call getCurrentEnv() because it is not static
 	def getStaticProfile(self):
 		static = """
@@ -160,27 +159,27 @@ class JNIFrameWork:
 		jclass cls = curEnv->FindClass( className().c_str() );
 		if ( cls == NULL) {
 		"""
-		
+
 		# Management of the error
 		if configGiws().getThrowsException():
 			errorMgnt = """throw %s::JniCallMethodException(curEnv);""" % (configGiws().getExceptionFileName())
 		else:
 			errorMgnt = """std::cerr << "Could not access to the class " << className() << std::endl;
 			exit(EXIT_FAILURE);"""
-		
+
 		return static + errorMgnt + """
 		}
-		""" 
+		"""
 
 	def getDeleteStaticProfile(self):
 		return """curEnv->DeleteLocalRef(cls);
 		"""
-	
+
 	def getObjectInstanceProfile(self):
 		return """
 		JNIEnv * curEnv = getCurrentEnv();
 		"""
-	
+
 	def getExceptionCheckProfile(self, detachThread, methodReturn=""):
 		if configGiws().getThrowsException():
 			str="""if (curEnv->ExceptionCheck()) {
@@ -206,11 +205,11 @@ class JNIFrameWork:
 			params+=parameter.getType().getTypeSignature()
 
 		methodIdName=method.getUniqueNameOfTheMethod()
-		
+
 		signatureReturn=method.getReturn().getTypeSignature()
-		if method.getReturn().isArray() and not method.getReturn().isByteBufferBased(): # Returns an array ... 
+		if method.getReturn().isArray() and not method.getReturn().isByteBufferBased(): # Returns an array ...
 			signatureReturn="["* method.getReturn().getDimensionArray() + signatureReturn
-		
+
                 if method.getModifier()=="static":
                         getMethod = "GetStaticMethodID"
                         firstParam = "cls"
@@ -231,7 +230,7 @@ class JNIFrameWork:
 			curEnv->ExceptionDescribe();
 			%s
 			exit(EXIT_FAILURE);"""%(method.getName(),method.getDetachThread())
-			
+
 		methodIdProfile="""
 		%s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
 		if (%s == NULL) {
@@ -248,19 +247,18 @@ class JNIFrameWork:
 		returnType=method.getReturn()
 		i=1
 		params=""
-		
+
 		for parameter in parametersTypes:
 			if i==1:
 				params+="," # in order to manage call without param
 			params+=parameter.getName()
 			if parameter.getType().specificPreProcessing(parameter,method.getDetachThread())!=None:
-				params+="_" # There is a pre-processing, then, we add the _ 
-			if len(parametersTypes)!=i: 
+				params+="_" # There is a pre-processing, then, we add the _
+			if len(parametersTypes)!=i:
 				params+=", "
 			i=i+1
-			
-			
-		if returnType.getNativeType()=="void": # Dealing with a void ... 
+
+		if returnType.getNativeType()=="void": # Dealing with a void ...
 			returns=""
 			returnsEnd=""
 		else:
@@ -276,10 +274,11 @@ class JNIFrameWork:
                         return """
                         %s curEnv->%s( this->instance, %s %s)%s;
                         """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
-		
+
+
 	def getReturnProfile(self, returnType):
 		return returnType.getReturnSyntax()
-		
+
 
         def getDLLExportSyntax(self):
                 return """
