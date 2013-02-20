@@ -27,7 +27,7 @@ GIWS = ../../giws
 GFLAGS = -p
 
 #
-# GIWS PROJECT INFORMATIONS 
+# GIWS PROJECT INFORMATION 
 #
 PACKAGE_NAME = example4
 OBJECT_NAME  = MyObjectWithArray

@@ -28,7 +28,7 @@ GIWS = ../../giws
 GFLAGS = -p
 
 #
-# GIWS PROJECT INFORMATIONS 
+# GIWS PROJECT INFORMATION 
 #
 PACKAGE_NAME = inherit
 OBJECT_NAME  = inherit

@@ -27,7 +27,7 @@ GIWS = ../../giws
 GFLAGS = -p --disable-return-size-array
 
 #
-# GIWS PROJECT INFORMATIONS 
+# GIWS PROJECT INFORMATION 
 #
 PACKAGE_NAME = example2
 OBJECT_NAME  = MyObjectWithArray

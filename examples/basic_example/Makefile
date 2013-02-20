@@ -27,7 +27,7 @@ GIWS = ../../giws
 GFLAGS = -p
 
 #
-# GIWS PROJECT INFORMATIONS 
+# GIWS PROJECT INFORMATION 
 #
 PACKAGE_NAME = basic_example
 OBJECT_NAME  = MyComplexClass

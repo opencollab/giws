@@ -142,7 +142,7 @@ class giws:
 		print "-r     --disable-return-size-array       Disable the return of the size of the array/arrays through int*"
 		print "--header-extension-file=ext       Specify the extension of the header file generated [Default : .hxx]"
 		print "--body-extension-file=ext         Specify the extension of the body file generated [Default : .cpp]"
-		print "-v     --version                  Display the version informations"
+		print "-v     --version                  Display the version information"
 		print "-h     --help                     Display the help"
 		
 		sys.exit(exit_status)

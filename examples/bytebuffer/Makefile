@@ -27,7 +27,7 @@ GIWS = ../../giws
 GFLAGS = -p --throws-exception-on-error -g
 
 #
-# GIWS PROJECT INFORMATIONS 
+# GIWS PROJECT INFORMATION 
 #
 PACKAGE_NAME = bytebuffer
 OBJECT_NAME  = ByteBufferSync
