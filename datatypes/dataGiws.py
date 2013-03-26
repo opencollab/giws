@@ -269,7 +269,7 @@ class dataGiws(object):
 
                         else:
 				if configGiws().getDisableReturnSize()==True:
-					str+="int lenCol"
+					str+="int lenCol;"
 				str+=strCommon+"""
 				%s ** myArray = new %s*[%s lenRow];
 				for(int i=0; i<%s lenRow; i++) {

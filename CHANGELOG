@@ -1,6 +1,7 @@
 giws (2.0.2)
 
      * Remove some empty lines and spaces at end of the line
+     * Fix a problem when returning a matrice from a Java function.
 
  -- Sylvestre Ledru <sylvestre.ledru@scilab-enterprises.com>  Sun, 27 Jan 2013 09:53:10 +0100
 
