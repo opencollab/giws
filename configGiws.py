@@ -1,4 +1,4 @@
-#!/usr/bin/python -u 
+B1;3202;0c#!/usr/bin/python -u 
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
@@ -37,7 +37,7 @@
 """ Configuration of the Env """
 
 class configGiws:
-	__version="2.0.1"
+	__version="2.0.2"
 	__descriptionFile=""
 	__splitPerObject=True
 	__throwsException=False
