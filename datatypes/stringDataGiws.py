@@ -117,7 +117,7 @@ class stringDataGiws(dataGiws):
 			
 				curEnv->SetObjectArrayElement( %s_, i, TempString);
 			
-				// avoid keeping reference on to many strings
+				// avoid keeping reference on too many strings
 				curEnv->DeleteLocalRef(TempString);
 				}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
 			else:
@@ -143,7 +143,7 @@ class stringDataGiws(dataGiws):
 
 				curEnv->SetObjectArrayElement( %sLocal, j, TempString);
 
-				// avoid keeping reference on to many strings
+				// avoid keeping reference on too many strings
 				curEnv->DeleteLocalRef(TempString);
 				}
 				curEnv->SetObjectArrayElement(%s_, i, %sLocal);
