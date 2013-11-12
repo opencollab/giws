@@ -386,9 +386,15 @@ class objectGiws:
                         * @return class name to use for static methods
                         */
                         %s
+
+                        /**
+                        * Get class to use for static methods
+                        * @return class to use for static methods
+                        */
+                        %s
 			};
 
-			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName)) 
+			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName), self.getInitClassProfile()) 
 
 	def generateCXXBody(self):
 		return """
@@ -414,6 +420,25 @@ class objectGiws:
                 return "%s";
                 }
                 """ % (JNIObjectName)
+
+        def getInitClassProfile(self):
+                return """
+                static jclass initClass(JNIEnv * curEnv)
+                {
+                    static jclass cls = 0;
+
+                    if (cls == 0)
+                    {
+                        jclass _cls = curEnv->FindClass(className().c_str());
+                        if (_cls)
+                        {
+                            cls = static_cast<jclass>(curEnv->NewGlobalRef(_cls));
+                        }
+                    }
+
+                    return cls;
+                 }
+                """
 
         def needCaching(self):
 

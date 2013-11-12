@@ -1,4 +1,9 @@
+giws (2.0.3)
+     [ Calixte Denizet ]
+     * Put jmethoID in a static variable.
+
 giws (2.0.2)
+
 
      * Remove some empty lines and spaces at end of the line
      * Fix a problem when returning a matrix from a Java function.

@@ -156,7 +156,7 @@ class JNIFrameWork:
 		static = """
 		JNIEnv * curEnv = NULL;
 		jvm_->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
-		jclass cls = curEnv->FindClass( className().c_str() );
+		jclass cls = initClass(curEnv);
 		if ( cls == NULL) {
 		"""
 
@@ -172,8 +172,7 @@ class JNIFrameWork:
 		"""
 
 	def getDeleteStaticProfile(self):
-		return """curEnv->DeleteLocalRef(cls);
-		"""
+		return ""
 
 	def getObjectInstanceProfile(self):
 		return """
@@ -217,7 +216,7 @@ class JNIFrameWork:
                         getMethod = "GetMethodID"
                         firstParam = "this->instanceClass"
 		if method.getModifier()=="static":
-			methodCall="jmethodID"
+			methodCall="static jmethodID"
 		else:
 			methodCall="""if (%s==NULL) { /* Use the cache */
 			"""%methodIdName
