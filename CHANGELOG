@@ -1,3 +1,10 @@
+giws (2.0.3)
+
+     [ Clément David ]
+     * Get ride of the libxml2 dependency
+
+ -- Sylvestre Ledru <sylvestre@debian.org>  Tue, 03 Jun 2014 17:25:37 +0200
+
 giws (2.0.2)
 
      [ Calixte Denizet ]
