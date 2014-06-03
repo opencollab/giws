@@ -35,8 +35,9 @@
 # For more information, see the file COPYING
 
 import sys, pprint
-import libxml2
 import os.path
+
+import xml.etree.ElementTree as ET
 
 from classRepresentation.packageGiws import packageGiws
 from classRepresentation.objectGiws import objectGiws
@@ -45,10 +46,8 @@ from classRepresentation.parameterGiws import parameterGiws
 from classRepresentation.returnDataGiws import returnDataGiws
 from datatypes.dataFactoryGiws import dataFactoryGiws
 
-libxml2.debugMemory(1)
-
 class parseXMLEngine:
-	__ctxt=None
+	__root=None
 	Jpackage=None
 
 	def __init__(self, descFile):
@@ -56,103 +55,87 @@ class parseXMLEngine:
 			print ('Could not find declaration file "%s"'%descFile)
 			sys.exit(-2)
 		try:
-			doc = libxml2.parseFile(descFile)
-		except libxml2.parserError:
+			doc = ET.parse(descFile)
+		except ET.ParseError:
 			print ('Error while parsing XML file "%s"'%descFile)
 			sys.exit(-3)
-		self.__ctxt = doc.xpathNewContext()
+		self.__root = doc.getroot();
 		self.__loadPackage()
-		doc.freeDoc()
 
 	def getJpackage(self):
 		return self.Jpackage
 
 	def __loadPackage(self):
-		objectNode = self.__ctxt.xpathEval("//package")
-		propPackage=objectNode[0].properties
-		while propPackage is not None:
-			if propPackage.name=="name":
-				packageName=propPackage.getContent()
-				propPackage = propPackage.next
+		if self.__root.tag != "package":
+			print ('Could not find declaration file "%s"'%descFile)
+			sys.exit(-2)
+		
+		packageName=self.__root.attrib["name"]
 		self.Jpackage=packageGiws(packageName)
 		self.__loadObject()
-#		self.__ctxt.xpathFreeContext()
 
 	def __loadObject(self):
-		objectsNode = self.__ctxt.xpathEval("//package/object")
+		objectsNode = self.__root.findall("object")
 		for objectNode in objectsNode:
 			extendsObject=None
-			propObj=objectNode.properties
 			# look for the name of the object
-			while propObj is not None:
-				if propObj.name=="name":
-					objectName=propObj.getContent()
-				if propObj.name=="extends":
-					extends=propObj.getContent()
-					# Retrieve the father (inheritance)
-					extendsObject=self.Jpackage.getObject(extends)
-					if extendsObject==None:
-						print ('Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".'%(extends, extends, objectName))
-						sys.exit(-4)
-				propObj = propObj.next
+			objectName=objectNode.attrib["name"]
+			
+			if "extends" in objectNode.attrib:
+				extends=objectNode.attrib["extends"]
+				# Retrieve the father (inheritance)
+				extendsObject=self.Jpackage.getObject(extends)
+				if extendsObject==None:
+					print ('Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".'%(extends, extends, objectName))
+					sys.exit(-4)
 
 			# creates the object
 			newObject=objectGiws(objectName,extendsObject)
 
 			# Load the methods
-			methods=objectNode.children
-			while methods is not None:
-				if methods.type == "element":
-					newObject.addMethod(self.__loadMethods(methods))
-				methods = methods.next
+			for child in objectNode:
+				if child.tag == "method":
+					newObject.addMethod(self.__loadMethods(child))
 
 			# Add to the package the object found
 			self.Jpackage.addObject(newObject)
-		self.__ctxt.xpathFreeContext()
 
 	def __loadMethods(self, method):
-		returns=method.prop("returnType")
+		methodName=method.attrib["name"]
+		returns=method.attrib["returnType"]
+		
 		myFactory=dataFactoryGiws()
 		myReturnData=myFactory.create(returns)
 
-		modifier=method.prop("modifier")
-		detachThreadProp=method.prop("detachThread")
 		detachThread=False
-		if detachThreadProp!=None:
-			str=detachThreadProp.lower()
+		if "detachThread" in method.attrib:
+			str=method.attrib["detachThread"].lower()
 			if str=="true":
 				detachThread=True
 
-		if modifier!=None:
-			Jmethod=methodGiws(method.properties.getContent(),myReturnData,detachThread,modifier)
+		if "modifier" in method.attrib:
+			modifier=method.attrib["modifier"]
+			Jmethod=methodGiws(methodName,myReturnData,detachThread,modifier)
 		else:
-			Jmethod=methodGiws(method.properties.getContent(),myReturnData,detachThread)
-		child = method.children
+			Jmethod=methodGiws(methodName,myReturnData,detachThread)
+		
 		parametersName=[] # To check if the parameter is not already defined
-		while child is not None: # We browse the parameters of the method
-			if child.type == "element":
-				prop=child.properties
-				param=self.__loadParameter(prop)
-				try:
-					if parametersName.index(param.getName()) >= 0:
-						print ('%s is already defined as parameters'%param.getName())
-						sys.exit(-3)
-				except ValueError: #Cannot find the parameter => not defined. Good!
-	   				parametersName.append(param.getName())
+		for param in method.iter('parameter'):  # We browse the parameters of the method
+			param=self.__loadParameter(param.attrib)
+			try:
+				if parametersName.index(param.getName()) >= 0:
+					print ('%s is already defined as parameters'%param.getName())
+					sys.exit(-3)
+			except ValueError: #Cannot find the parameter => not defined. Good!
+   				parametersName.append(param.getName())
 
-				Jmethod.addParameter(param)
-
-			child = child.next
+			Jmethod.addParameter(param)
 		return Jmethod
 
 
-	def __loadParameter(self,prop):
-		while prop is not None:
-			if prop.name=="type":
-				type=prop.getContent()
-			if prop.name=="name":
-				name=prop.getContent()
-			prop = prop.next
+	def __loadParameter(self,param):
+		type=param["type"]
+		name=param["name"]
 		return parameterGiws(name,type)
 
 

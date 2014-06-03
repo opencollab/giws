@@ -57,7 +57,5 @@ Displays the help
 === Dependencies ===
 
 Obviously, as GIWS has been written in Python, it needs the Python interpretor
-to work.
+to work. And that's it !
 
-For the XML parsing :
-python-libxml2
