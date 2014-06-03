@@ -77,12 +77,14 @@ class parseXMLEngine:
 	def __loadObject(self):
 		objectsNode = self.__root.findall("object")
 		for objectNode in objectsNode:
-			extendsObject=None
 			# look for the name of the object
 			objectName=objectNode.attrib["name"]
 			
+			# look for the hierarchy of the object
+			extendsObject=None			
 			if "extends" in objectNode.attrib:
 				extends=objectNode.attrib["extends"]
+				
 				# Retrieve the father (inheritance)
 				extendsObject=self.Jpackage.getObject(extends)
 				if extendsObject==None:
@@ -93,9 +95,8 @@ class parseXMLEngine:
 			newObject=objectGiws(objectName,extendsObject)
 
 			# Load the methods
-			for child in objectNode:
-				if child.tag == "method":
-					newObject.addMethod(self.__loadMethods(child))
+			for child in objectNode.iter("method"):
+				newObject.addMethod(self.__loadMethods(child))
 
 			# Add to the package the object found
 			self.Jpackage.addObject(newObject)
@@ -120,7 +121,7 @@ class parseXMLEngine:
 			Jmethod=methodGiws(methodName,myReturnData,detachThread)
 		
 		parametersName=[] # To check if the parameter is not already defined
-		for param in method.iter('parameter'):  # We browse the parameters of the method
+		for param in method:  # We browse the parameters of the method
 			param=self.__loadParameter(param.attrib)
 			try:
 				if parametersName.index(param.getName()) >= 0:
