@@ -69,7 +69,7 @@ class parseXMLEngine:
 		if self.__root.tag != "package":
 			print ('Could not find declaration file "%s"'%descFile)
 			sys.exit(-2)
-		
+
 		packageName=self.__root.attrib["name"]
 		self.Jpackage=packageGiws(packageName)
 		self.__loadObject()
@@ -79,12 +79,12 @@ class parseXMLEngine:
 		for objectNode in objectsNode:
 			# look for the name of the object
 			objectName=objectNode.attrib["name"]
-			
+
 			# look for the hierarchy of the object
-			extendsObject=None			
+			extendsObject=None
 			if "extends" in objectNode.attrib:
 				extends=objectNode.attrib["extends"]
-				
+
 				# Retrieve the father (inheritance)
 				extendsObject=self.Jpackage.getObject(extends)
 				if extendsObject==None:
@@ -104,7 +104,7 @@ class parseXMLEngine:
 	def __loadMethods(self, method):
 		methodName=method.attrib["name"]
 		returns=method.attrib["returnType"]
-		
+
 		myFactory=dataFactoryGiws()
 		myReturnData=myFactory.create(returns)
 
@@ -119,7 +119,7 @@ class parseXMLEngine:
 			Jmethod=methodGiws(methodName,myReturnData,detachThread,modifier)
 		else:
 			Jmethod=methodGiws(methodName,myReturnData,detachThread)
-		
+
 		parametersName=[] # To check if the parameter is not already defined
 		for param in method:  # We browse the parameters of the method
 			param=self.__loadParameter(param.attrib)

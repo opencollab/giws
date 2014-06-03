@@ -620,4 +620,3 @@ class CXXException:
 		fileName=config.getExceptionFileName()+config.getCPPBodyExtension()
 		outputWriter().writeIntoFile(config.getOutput(),fileName, str)
 		print "%s generated ..."%fileName
-
