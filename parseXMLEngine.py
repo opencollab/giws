@@ -67,7 +67,7 @@ class parseXMLEngine:
 
 	def __loadPackage(self):
 		if self.__root.tag != "package":
-			print ('Could not find declaration file "%s"'%descFile)
+			print ('"Package" is expected as root tag')
 			sys.exit(-2)
 
 		packageName=self.__root.attrib["name"]

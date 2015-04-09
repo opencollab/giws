@@ -2,22 +2,22 @@
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
-# 
-# This software is a computer program whose purpose is to generate C++ wrapper 
+#
+# This software is a computer program whose purpose is to generate C++ wrapper
 # for Java objects/methods.
-# 
+#
 # This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info". 
-# 
+# "http://www.cecill.info".
+#
 # As a counterpart to the access to the source code and  rights to copy,
 # modify and redistribute granted by the license, users are provided only
 # with a limited warranty  and the software's author,  the holder of the
 # economic rights,  and the successive licensors  have only  limited
-# liability. 
-# 
+# liability.
+#
 # In this respect, the user's attention is drawn to the risks associated
 # with loading,  using,  modifying and/or developing or reproducing the
 # software by the user in light of its specific status of free software,
@@ -25,13 +25,13 @@
 # therefore means  that it is reserved for developers  and  experienced
 # professionals having in-depth computer knowledge. Users are therefore
 # encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or 
-# data to be ensured and,  more generally, to use and operate it in the 
-# same conditions as regards security. 
-# 
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
-# 
+#
 # For more information, see the file COPYING
 
 from dataGiws import dataGiws
@@ -51,7 +51,7 @@ class stringDataGiws(dataGiws):
 	def getJavaTypeSyntax(self):
 		if self.isArray():
 			return "jobjectArray"
-		else:			
+		else:
 			return "jstring"
 
 	def getRealJavaType(self):
@@ -97,8 +97,8 @@ class stringDataGiws(dataGiws):
 
 		if self.isArray():
 			if self.getDimensionArray() == 1:
-				return """			
-			
+				return """
+
 				// create java array of strings.
 				jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
 				if (%s_ == NULL)
@@ -114,9 +114,9 @@ class stringDataGiws(dataGiws):
 				{
 				%s
 				}
-			
+
 				curEnv->SetObjectArrayElement( %s_, i, TempString);
-			
+
 				// avoid keeping reference on too many strings
 				curEnv->DeleteLocalRef(TempString);
 				}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
@@ -135,7 +135,7 @@ class stringDataGiws(dataGiws):
 				// convert each char * to java strings and fill the java array.
 				for ( int j = 0; j < %sSizeCol; j++) {
 				jstring TempString = curEnv->NewStringUTF( %s[i][j] );
-				
+
 				if (TempString == NULL)
 				{
 				%s
@@ -163,7 +163,7 @@ class stringDataGiws(dataGiws):
 			}
 
 			"""%(tempName,name,name,tempName,errorMgntMemBis)
-	
+
 	def specificPostProcessing(self, detachThread):
 		""" Called when we are returning a string or an array of string """
 		# We are doing an exception check here JUST in this case because
@@ -183,7 +183,7 @@ class stringDataGiws(dataGiws):
 			if configGiws().getDisableReturnSize()==True:
 				strCommon+="int lenRow;"
 			else:
-				# The size of the array is returned as output argument of the function 
+				# The size of the array is returned as output argument of the function
 				strDeclaration="*"
 			strCommon+="""
 			%s lenRow = curEnv->GetArrayLength(res);
@@ -197,7 +197,7 @@ class stringDataGiws(dataGiws):
 				jstring resString = reinterpret_cast<jstring>(curEnv->GetObjectArrayElement(res, i));
 				const char *tempString = curEnv->GetStringUTFChars(resString, 0);
 				arrayOfString[i] = new char[strlen(tempString) + 1];
-	
+
 				strcpy(arrayOfString[i], tempString);
 				curEnv->ReleaseStringUTFChars(resString, tempString);
 				curEnv->DeleteLocalRef(resString);
@@ -254,7 +254,7 @@ class stringDataGiws(dataGiws):
 			str = str + """
 			return %s;
 			"""%(self.temporaryVariableName)
-                str = str + """ } else { 
+                str = str + """ } else {
 				curEnv->DeleteLocalRef(res);
 				return NULL;
 				}"""

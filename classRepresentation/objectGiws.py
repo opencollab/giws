@@ -2,22 +2,22 @@
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
-# 
-# This software is a computer program whose purpose is to generate C++ wrapper 
+#
+# This software is a computer program whose purpose is to generate C++ wrapper
 # for Java objects/methods.
-# 
+#
 # This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software.  You can  use, 
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
-# "http://www.cecill.info". 
-# 
+# "http://www.cecill.info".
+#
 # As a counterpart to the access to the source code and  rights to copy,
 # modify and redistribute granted by the license, users are provided only
 # with a limited warranty  and the software's author,  the holder of the
 # economic rights,  and the successive licensors  have only  limited
-# liability. 
-# 
+# liability.
+#
 # In this respect, the user's attention is drawn to the risks associated
 # with loading,  using,  modifying and/or developing or reproducing the
 # software by the user in light of its specific status of free software,
@@ -25,13 +25,13 @@
 # therefore means  that it is reserved for developers  and  experienced
 # professionals having in-depth computer knowledge. Users are therefore
 # encouraged to load and test the software's suitability as regards their
-# requirements in conditions enabling the security of their systems and/or 
-# data to be ensured and,  more generally, to use and operate it in the 
-# same conditions as regards security. 
-# 
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+#
 # The fact that you are presently reading this means that you have had
 # knowledge of the CeCILL license and that you accept its terms.
-# 
+#
 # For more information, see the file COPYING
 
 from methodGiws import methodGiws
@@ -54,7 +54,7 @@ class objectGiws:
 		self.__name=name
 		self.__methods=[]
 		self.__extends=extends
-		
+
 	def addMethod(self, method):
 		if isinstance(method,methodGiws):
 			self.__methods.append(method)
@@ -88,7 +88,7 @@ class objectGiws:
 			str+=self.getExtendedClass().__getDeclarationOfCachingMethodID()
 
 		return str
-	
+
 	def __getConstructorWhichInstanciateTheNewObject(self):
 		""" """
 
@@ -131,7 +131,7 @@ class objectGiws:
 			errorMgntRef="""std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
 			curEnv->ExceptionDescribe();
 			exit(EXIT_FAILURE);"""
-			
+
 		### Init the list of the cache of methodID
 		strMethodID=self.__getDeclarationOfCachingMethodID()
 		constructorProfile="""%s::%s"""%(self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
@@ -149,32 +149,32 @@ class objectGiws:
 		jvm=jvm_;
 
 		JNIEnv * curEnv = getCurrentEnv();
-		
+
 		localClass = curEnv->FindClass( this->className().c_str() ) ;
 		if (localClass == NULL) {
 		%s
 		}
-		
+
 		this->instanceClass = static_cast<jclass>(curEnv->NewGlobalRef(localClass));
-		
+
 		/* localClass is not needed anymore */
 		curEnv->DeleteLocalRef(localClass);
-		
+
 		if (this->instanceClass == NULL) {
 		%s
 		}
-		
+
 
 		constructObject = curEnv->GetMethodID( this->instanceClass, construct.c_str() , param.c_str() ) ;
 		if(constructObject == NULL){
 		%s
 		}
-		
+
 		localInstance = curEnv->NewObject( this->instanceClass, constructObject ) ;
 		if(localInstance == NULL){
 		%s
 		}
-		 
+
 		this->instance = curEnv->NewGlobalRef(localInstance) ;
 		if(this->instance == NULL){
 		%s
@@ -184,15 +184,15 @@ class objectGiws:
 
                 /* Methods ID set to NULL */
 		%s
-		
+
 		}
 		"""%(constructorProfile, errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, strMethodID)
 
-		
+
 	def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
 		### Init the list of the cache of methodID
 		strMethodID=self.__getDeclarationOfCachingMethodID()
-		
+
 		# Management of the error when the instance class could not be created a global ref
 		if configGiws().getThrowsException():
 			errorMgntRef="""throw %s::JniObjectCreationException(curEnv, this->className());"""%(configGiws().getExceptionFileName())
@@ -222,7 +222,7 @@ class objectGiws:
 		jclass localClass = curEnv->GetObjectClass(JObj);
         this->instanceClass = static_cast<jclass>(curEnv->NewGlobalRef(localClass));
         curEnv->DeleteLocalRef(localClass);
-		
+
         if (this->instanceClass == NULL) {
 		%s
         }
@@ -236,12 +236,12 @@ class objectGiws:
 
 }
 		"""%(constructorProfile, errorMgntRef, errorMgntNewRef, strMethodID)
-	
+
 	# Returns the class the current one is extending
 	# Returns None if not existing
 	def getExtendedClass(self):
 		return self.__extends
-		
+
 	def getConstructorBodyCXX(self):
 		str=self.__getConstructorWhichInstanciateTheNewObject()
 		str+=self.__getConstructorWhichUsesAnAlreadyExistingJObject()
@@ -255,10 +255,10 @@ class objectGiws:
 
   	def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
 	  return """%s(%s * %s_, jobject JObj)"""% (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
-  
+
 	def getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(self):
 		return """%s;"""%self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject()
-  
+
 	def getConstructorWhichInstanciateTheNewObjectHeaderCXX(self):
 		return """%s;"""%self.__getConstructorProfileWhichInstanciateTheNewObject()
 
@@ -267,15 +267,15 @@ class objectGiws:
 		if self.getExtendedClass()==None:
 			# It is a potential master class, add the fake constructor
 			str+="""
-			/** 
+			/**
 			* This is a fake constructor to avoid the constructor
-			* chaining when dealing with extended giws classes 
+			* chaining when dealing with extended giws classes
 			*/
 			#ifdef FAKEGIWSDATATYPE
 			%s(fakeGiwsDataType::fakeGiwsDataType /* unused */) {}
 			#endif
 			"""%(self.getName())
-			
+
 		return str
 
 	def getMethodsProfileForMethodIdCache(self):
@@ -292,7 +292,7 @@ class objectGiws:
 					stringClassSet=True
 					self.__stringClassSet=True
 		return str
-	
+
 	def getProtectedFields(self):
 		str=""
 		if self.getExtendedClass()==None:
@@ -300,7 +300,7 @@ class objectGiws:
 			jobject instance;
 			jclass instanceClass; // cache class
 			"""
-		
+
 		return str
 
 	def getMethodsCXX(self, type="header"):
@@ -316,10 +316,10 @@ class objectGiws:
 				"""
 			i=i+1
 		return str
-		
+
         def generateCXXHeader(self, packageName):
                 JNIObjectName=packageName+"/"+self.getName()
-                
+
 		if self.getExtendedClass()==None:
 			classProfile="""class GIWSEXPORT %s {""" % (self.getName())
 		else:
@@ -334,7 +334,7 @@ class objectGiws:
 			%s
 
 			%s
-                       
+
 			// Caching (if any)
 			%s
 
@@ -371,7 +371,7 @@ class objectGiws:
 			* Equivalent of creating a "synchronized(obj)" scope in Java.
 			*/
 			void synchronize();
-			
+
 			/**
 			* Exit monitor associated with the object.
 			* Equivalent of ending a "synchronized(obj)" scope.
@@ -380,7 +380,7 @@ class objectGiws:
 
 			// Methods
 			%s
-			
+
                         /**
                         * Get class name to use for static methods
                         * @return class name to use for static methods
@@ -394,7 +394,7 @@ class objectGiws:
                         %s
 			};
 
-			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName), self.getInitClassProfile()) 
+			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName), self.getInitClassProfile())
 
 	def generateCXXBody(self):
 		return """
