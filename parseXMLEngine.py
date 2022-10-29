@@ -35,7 +35,6 @@
 # For more information, see the file COPYING
 
 import sys
-import pprint
 import os.path
 
 import xml.etree.ElementTree as ET
@@ -44,7 +43,6 @@ from classRepresentation.packageGiws import packageGiws
 from classRepresentation.objectGiws import objectGiws
 from classRepresentation.methodGiws import methodGiws
 from classRepresentation.parameterGiws import parameterGiws
-from classRepresentation.returnDataGiws import returnDataGiws
 from datatypes.dataFactoryGiws import dataFactoryGiws
 
 
@@ -53,7 +51,7 @@ class parseXMLEngine:
     Jpackage = None
 
     def __init__(self, descFile):
-        if os.path.isfile(descFile) != True:
+        if not os.path.isfile(descFile):
             print(('Could not find declaration file "%s"' % descFile))
             sys.exit(-2)
         try:
@@ -89,7 +87,7 @@ class parseXMLEngine:
 
                 # Retrieve the father (inheritance)
                 extendsObject = self.Jpackage.getObject(extends)
-                if extendsObject == None:
+                if extendsObject is None:
                     print(
                         (
                             'Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".'
@@ -123,7 +121,8 @@ class parseXMLEngine:
 
         if "modifier" in method.attrib:
             modifier = method.attrib["modifier"]
-            Jmethod = methodGiws(methodName, myReturnData, detachThread, modifier)
+            Jmethod = methodGiws(
+                methodName, myReturnData, detachThread, modifier)
         else:
             Jmethod = methodGiws(methodName, myReturnData, detachThread)
 
@@ -132,7 +131,8 @@ class parseXMLEngine:
             param = self.__loadParameter(param.attrib)
             try:
                 if parametersName.index(param.getName()) >= 0:
-                    print(("%s is already defined as parameters" % param.getName()))
+                    print(
+                        ("%s is already defined as parameters" % param.getName()))
                     sys.exit(-3)
             except ValueError:  # Cannot find the parameter => not defined. Good!
                 parametersName.append(param.getName())

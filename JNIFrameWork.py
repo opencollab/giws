@@ -34,7 +34,6 @@
 #
 # For more information, see the file COPYING
 
-from types import MethodType
 from configGiws import configGiws
 
 
@@ -49,14 +48,14 @@ class JNIFrameWork:
 
     def getHeader(self, namespaceName):
         strHeader = """
-		#ifndef __%s__
-		#define __%s__
-		#include <iostream>
-		#include <string>
-		#include <string.h>
-		#include <stdlib.h>
-		#include <jni.h>
-		""" % (
+                #ifndef __%s__
+                #define __%s__
+                #include <iostream>
+                #include <string>
+                #include <string.h>
+                #include <stdlib.h>
+                #include <jni.h>
+                """ % (
             namespaceName.upper(),
             namespaceName.upper(),
         )
@@ -66,8 +65,8 @@ class JNIFrameWork:
             and not namespaceName == configGiws().getExceptionFileName()
         ):
             strHeader += """
-			#include "%s"
-			""" % (
+                        #include "%s"
+                        """ % (
                 configGiws().getExceptionFileName()
                 + configGiws().getCPPHeaderExtension()
             )
@@ -78,20 +77,20 @@ class JNIFrameWork:
         #else
             typedef signed char byte;
         #endif
-		"""
+                """
         return strHeader
 
     # For the extends (inheritance) support
     def getHeaderInheritance(self):
         strHeader = """
-		#ifndef FAKEGIWSDATATYPE
-		#define FAKEGIWSDATATYPE
-		namespace fakeGiwsDataType {
-		struct fakeGiwsDataType {
-		};
-		}
-		#endif
-		"""
+                #ifndef FAKEGIWSDATATYPE
+                #define FAKEGIWSDATATYPE
+                namespace fakeGiwsDataType {
+                struct fakeGiwsDataType {
+                };
+                }
+                #endif
+                """
         return strHeader
 
     def getJavaVMVariable(self):
@@ -108,42 +107,42 @@ class JNIFrameWork:
 
         else:
             error = """std::cerr << "Could not retrieve the current JVM." << std::endl;
-			exit(EXIT_FAILURE);
-			"""
+                        exit(EXIT_FAILURE);
+                        """
         return """
-		JNIEnv * %s::getCurrentEnv() {
-		JNIEnv * curEnv = NULL;
-		jint res=this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
-		if (res != JNI_OK) {
-		%s
-		}
-		return curEnv;
-		}""" % (
+                JNIEnv * %s::getCurrentEnv() {
+                JNIEnv * curEnv = NULL;
+                jint res=this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
+                if (res != JNI_OK) {
+                %s
+                }
+                return curEnv;
+                }""" % (
             objectName,
             error,
         )
 
     def getObjectDestuctor(self, objectName, stringClassSet=False):
         myStr = """
-		%s::~%s() {
-		JNIEnv * curEnv = NULL;
-		this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
-		curEnv->DeleteGlobalRef(this->instance);
-		curEnv->DeleteGlobalRef(this->instanceClass);
-		""" % (
+                %s::~%s() {
+                JNIEnv * curEnv = NULL;
+                this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
+                curEnv->DeleteGlobalRef(this->instance);
+                curEnv->DeleteGlobalRef(this->instanceClass);
+                """ % (
             objectName,
             objectName,
         )
-        if stringClassSet == True:
+        if stringClassSet:
             myStr += "curEnv->DeleteGlobalRef(this->stringArrayClass);"
         myStr += "}"
         return myStr
 
     def getSynchronizeMethod(self, objectName):
         myStr = """
-		void %s::synchronize() {
-		if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
-		""" % (
+                void %s::synchronize() {
+                if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
+                """ % (
             objectName
         )
         if configGiws().getThrowsException():
@@ -153,20 +152,20 @@ class JNIFrameWork:
             )
         else:
             myStr += """std::cerr << "Fail to enter monitor." << std::endl;
-			exit(EXIT_FAILURE);
-			"""
+                        exit(EXIT_FAILURE);
+                        """
         return (
             myStr
             + """
-		}
-		}"""
+                }
+                }"""
         )
 
     def getEndSynchronizeMethod(self, objectName):
         myStr = """
-		void %s::endSynchronize() {
-		if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
-		""" % (
+                void %s::endSynchronize() {
+                if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
+                """ % (
             objectName
         )
         if configGiws().getThrowsException():
@@ -176,24 +175,24 @@ class JNIFrameWork:
             )
         else:
             myStr += """
-			std::cerr << "Fail to exit monitor." << std::endl;
-			exit(EXIT_FAILURE);"""
+                        std::cerr << "Fail to exit monitor." << std::endl;
+                        exit(EXIT_FAILURE);"""
         return (
             myStr
             + """
-		}
-		}"""
+                }
+                }"""
         )
 
     # For static methods, we can not call getCurrentEnv() because it is not
     # static
     def getStaticProfile(self):
         static = """
-		JNIEnv * curEnv = NULL;
-		jvm_->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
-		jclass cls = initClass(curEnv);
-		if ( cls == NULL) {
-		"""
+                JNIEnv * curEnv = NULL;
+                jvm_->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
+                jclass cls = initClass(curEnv);
+                if ( cls == NULL) {
+                """
 
         # Management of the error
         if configGiws().getThrowsException():
@@ -202,14 +201,14 @@ class JNIFrameWork:
             )
         else:
             errorMgnt = """std::cerr << "Could not access to the class " << className() << std::endl;
-			exit(EXIT_FAILURE);"""
+                        exit(EXIT_FAILURE);"""
 
         return (
             static
             + errorMgnt
             + """
-		}
-		"""
+                }
+                """
         )
 
     def getDeleteStaticProfile(self):
@@ -217,29 +216,29 @@ class JNIFrameWork:
 
     def getObjectInstanceProfile(self):
         return """
-		JNIEnv * curEnv = getCurrentEnv();
-		"""
+                JNIEnv * curEnv = getCurrentEnv();
+                """
 
     def getExceptionCheckProfile(self, detachThread, methodReturn=""):
         if configGiws().getThrowsException():
             str = """if (curEnv->ExceptionCheck()) {
-			"""
+                        """
             if methodReturn != "":
                 str += """delete[] %s;
                                 """ % (
                     methodReturn
                 )
             str += """%sthrow %s::JniCallMethodException(curEnv);
-			}""" % (
+                        }""" % (
                 detachThread,
                 configGiws().getExceptionFileName(),
             )
             return str
         else:
             return """if (curEnv->ExceptionCheck()) {
-			curEnv->ExceptionDescribe() ;
-			}
-			"""
+                        curEnv->ExceptionDescribe() ;
+                        }
+                        """
 
     def getMethodIdProfile(self, method):
         params = ""
@@ -256,7 +255,8 @@ class JNIFrameWork:
 
         signatureReturn = method.getReturn().getTypeSignature()
         if (
-            method.getReturn().isArray() and not method.getReturn().isByteBufferBased()
+            method.getReturn().isArray(
+            ) and not method.getReturn().isByteBufferBased()
         ):  # Returns an array ...
             signatureReturn = (
                 "[" * method.getReturn().getDimensionArray() + signatureReturn
@@ -273,7 +273,7 @@ class JNIFrameWork:
         else:
             methodCall = (
                 """if (%s==NULL) { /* Use the cache */
-			"""
+                        """
                 % methodIdName
             )
 
@@ -286,19 +286,19 @@ class JNIFrameWork:
             )
         else:
             errorMgnt = """std::cerr << "Could not access to the method " << "%s" << std::endl;
-			curEnv->ExceptionDescribe();
-			%s
-			exit(EXIT_FAILURE);""" % (
+                        curEnv->ExceptionDescribe();
+                        %s
+                        exit(EXIT_FAILURE);""" % (
                 method.getName(),
                 method.getDetachThread(),
             )
 
         methodIdProfile = """
-		%s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
-		if (%s == NULL) {
-		%s
-		}
-		""" % (
+                %s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
+                if (%s == NULL) {
+                %s
+                }
+                """ % (
             methodCall,
             methodIdName,
             getMethod,
@@ -327,7 +327,7 @@ class JNIFrameWork:
                 parameter.getType().specificPreProcessing(
                     parameter, method.getDetachThread()
                 )
-                != None
+                is not None
             ):
                 params += "_"  # There is a pre-processing, then, we add the _
             if len(parametersTypes) != i:
@@ -339,7 +339,8 @@ class JNIFrameWork:
             returnsEnd = ""
         else:
             typeOfReturn = returnType.getJavaTypeSyntax()
-            returns = """%s res =  static_cast<%s>(""" % (typeOfReturn, typeOfReturn)
+            returns = """%s res =  static_cast<%s>(""" % (
+                typeOfReturn, typeOfReturn)
             returnsEnd = ")"
 
         if method.getModifier() == "static":
@@ -368,19 +369,19 @@ class JNIFrameWork:
 
     def getDLLExportSyntax(self):
         return """
-		#ifndef GIWSEXPORT
-		# if defined(_MSC_VER) || defined(__WIN32__) || defined(__CYGWIN__)
-		#   if defined(STATIC_LINKED)
-		#     define GIWSEXPORT
-		#   else
-		#     define GIWSEXPORT __declspec(dllexport)
-		#   endif
-		# else
-		#   if __GNUC__ >= 4
-		#     define GIWSEXPORT __attribute__ ((visibility ("default")))
-		#   else
-		#     define GIWSEXPORT
-		#   endif
-		# endif
-		#endif
-		"""
+                #ifndef GIWSEXPORT
+                # if defined(_MSC_VER) || defined(__WIN32__) || defined(__CYGWIN__)
+                #   if defined(STATIC_LINKED)
+                #     define GIWSEXPORT
+                #   else
+                #     define GIWSEXPORT __declspec(dllexport)
+                #   endif
+                # else
+                #   if __GNUC__ >= 4
+                #     define GIWSEXPORT __attribute__ ((visibility ("default")))
+                #   else
+                #     define GIWSEXPORT
+                #   endif
+                # endif
+                #endif
+                """
