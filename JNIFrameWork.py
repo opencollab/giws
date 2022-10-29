@@ -56,12 +56,21 @@ class JNIFrameWork:
 		#include <string.h>
 		#include <stdlib.h>
 		#include <jni.h>
-		""" % (namespaceName.upper(), namespaceName.upper())
+		""" % (
+            namespaceName.upper(),
+            namespaceName.upper(),
+        )
         # add the include for giws exception
-        if configGiws().getThrowsException() and not namespaceName == configGiws().getExceptionFileName():
+        if (
+            configGiws().getThrowsException()
+            and not namespaceName == configGiws().getExceptionFileName()
+        ):
             strHeader += """
 			#include "%s"
-			""" % (configGiws().getExceptionFileName() + configGiws().getCPPHeaderExtension())
+			""" % (
+                configGiws().getExceptionFileName()
+                + configGiws().getCPPHeaderExtension()
+            )
         # Byte support
         strHeader += """
         #if defined(_MSC_VER) /* Defined anyway with Visual */
@@ -94,7 +103,8 @@ class JNIFrameWork:
     def getMethodGetCurrentEnv(self, objectName):
         if configGiws().getThrowsException():
             error = """throw %s::JniException(getCurrentEnv());""" % (
-                configGiws().getExceptionFileName())
+                configGiws().getExceptionFileName()
+            )
 
         else:
             error = """std::cerr << "Could not retrieve the current JVM." << std::endl;
@@ -108,7 +118,10 @@ class JNIFrameWork:
 		%s
 		}
 		return curEnv;
-		}""" % (objectName, error)
+		}""" % (
+            objectName,
+            error,
+        )
 
     def getObjectDestuctor(self, objectName, stringClassSet=False):
         myStr = """
@@ -117,7 +130,10 @@ class JNIFrameWork:
 		this->jvm->AttachCurrentThread(reinterpret_cast<void **>(&curEnv), NULL);
 		curEnv->DeleteGlobalRef(this->instance);
 		curEnv->DeleteGlobalRef(this->instanceClass);
-		""" % (objectName, objectName)
+		""" % (
+            objectName,
+            objectName,
+        )
         if stringClassSet == True:
             myStr += "curEnv->DeleteGlobalRef(this->stringArrayClass);"
         myStr += "}"
@@ -127,33 +143,47 @@ class JNIFrameWork:
         myStr = """
 		void %s::synchronize() {
 		if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
-		""" % (objectName)
+		""" % (
+            objectName
+        )
         if configGiws().getThrowsException():
             myStr += """throw %s::JniMonitorException(getCurrentEnv(), "%s");""" % (
-                configGiws().getExceptionFileName(), objectName)
+                configGiws().getExceptionFileName(),
+                objectName,
+            )
         else:
             myStr += """std::cerr << "Fail to enter monitor." << std::endl;
 			exit(EXIT_FAILURE);
 			"""
-        return myStr + """
+        return (
+            myStr
+            + """
 		}
 		}"""
+        )
 
     def getEndSynchronizeMethod(self, objectName):
         myStr = """
 		void %s::endSynchronize() {
 		if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
-		""" % (objectName)
+		""" % (
+            objectName
+        )
         if configGiws().getThrowsException():
             myStr += """throw %s::JniMonitorException(getCurrentEnv(), "%s");""" % (
-                configGiws().getExceptionFileName(), objectName)
+                configGiws().getExceptionFileName(),
+                objectName,
+            )
         else:
             myStr += """
 			std::cerr << "Fail to exit monitor." << std::endl;
 			exit(EXIT_FAILURE);"""
-        return myStr + """
+        return (
+            myStr
+            + """
 		}
 		}"""
+        )
 
     # For static methods, we can not call getCurrentEnv() because it is not
     # static
@@ -168,14 +198,19 @@ class JNIFrameWork:
         # Management of the error
         if configGiws().getThrowsException():
             errorMgnt = """throw %s::JniCallMethodException(curEnv);""" % (
-                configGiws().getExceptionFileName())
+                configGiws().getExceptionFileName()
+            )
         else:
             errorMgnt = """std::cerr << "Could not access to the class " << className() << std::endl;
 			exit(EXIT_FAILURE);"""
 
-        return static + errorMgnt + """
+        return (
+            static
+            + errorMgnt
+            + """
 		}
 		"""
+        )
 
     def getDeleteStaticProfile(self):
         return ""
@@ -191,9 +226,14 @@ class JNIFrameWork:
 			"""
             if methodReturn != "":
                 str += """delete[] %s;
-                                """ % (methodReturn)
+                                """ % (
+                    methodReturn
+                )
             str += """%sthrow %s::JniCallMethodException(curEnv);
-			}""" % (detachThread, configGiws().getExceptionFileName())
+			}""" % (
+                detachThread,
+                configGiws().getExceptionFileName(),
+            )
             return str
         else:
             return """if (curEnv->ExceptionCheck()) {
@@ -205,16 +245,22 @@ class JNIFrameWork:
         params = ""
 
         for parameter in method.getParameters():
-            if parameter.getType().isArray() and not parameter.getType().isByteBufferBased():  # It is an array
+            if (
+                parameter.getType().isArray()
+                and not parameter.getType().isByteBufferBased()
+            ):  # It is an array
                 params += "[" * parameter.getType().getDimensionArray()
             params += parameter.getType().getTypeSignature()
 
         methodIdName = method.getUniqueNameOfTheMethod()
 
         signatureReturn = method.getReturn().getTypeSignature()
-        if method.getReturn().isArray() and not method.getReturn().isByteBufferBased():  # Returns an array ...
-            signatureReturn = "[" * \
-                method.getReturn().getDimensionArray() + signatureReturn
+        if (
+            method.getReturn().isArray() and not method.getReturn().isByteBufferBased()
+        ):  # Returns an array ...
+            signatureReturn = (
+                "[" * method.getReturn().getDimensionArray() + signatureReturn
+            )
 
         if method.getModifier() == "static":
             getMethod = "GetStaticMethodID"
@@ -225,25 +271,44 @@ class JNIFrameWork:
         if method.getModifier() == "static":
             methodCall = "static jmethodID"
         else:
-            methodCall = """if (%s==NULL) { /* Use the cache */
-			""" % methodIdName
+            methodCall = (
+                """if (%s==NULL) { /* Use the cache */
+			"""
+                % methodIdName
+            )
 
         # Management of the error
         if configGiws().getThrowsException():
             errorMgnt = """%sthrow %s::JniMethodNotFoundException(curEnv, "%s");""" % (
-                method.getDetachThread(), configGiws().getExceptionFileName(), method.getName())
+                method.getDetachThread(),
+                configGiws().getExceptionFileName(),
+                method.getName(),
+            )
         else:
             errorMgnt = """std::cerr << "Could not access to the method " << "%s" << std::endl;
 			curEnv->ExceptionDescribe();
 			%s
-			exit(EXIT_FAILURE);""" % (method.getName(), method.getDetachThread())
+			exit(EXIT_FAILURE);""" % (
+                method.getName(),
+                method.getDetachThread(),
+            )
 
         methodIdProfile = """
 		%s %s = curEnv->%s(%s, "%s", "(%s)%s" ) ;
 		if (%s == NULL) {
 		%s
 		}
-		""" % (methodCall, methodIdName, getMethod, firstParam, method.getName(), params, signatureReturn, methodIdName, errorMgnt)
+		""" % (
+            methodCall,
+            methodIdName,
+            getMethod,
+            firstParam,
+            method.getName(),
+            params,
+            signatureReturn,
+            methodIdName,
+            errorMgnt,
+        )
         if method.getModifier() != "static":
             methodIdProfile += "}"  # Cached methodId
         return methodIdProfile
@@ -258,7 +323,12 @@ class JNIFrameWork:
             if i == 1:
                 params += ","  # in order to manage call without param
             params += parameter.getName()
-            if parameter.getType().specificPreProcessing(parameter, method.getDetachThread()) != None:
+            if (
+                parameter.getType().specificPreProcessing(
+                    parameter, method.getDetachThread()
+                )
+                != None
+            ):
                 params += "_"  # There is a pre-processing, then, we add the _
             if len(parametersTypes) != i:
                 params += ", "
@@ -269,18 +339,29 @@ class JNIFrameWork:
             returnsEnd = ""
         else:
             typeOfReturn = returnType.getJavaTypeSyntax()
-            returns = """%s res =  static_cast<%s>(""" % (
-                typeOfReturn, typeOfReturn)
+            returns = """%s res =  static_cast<%s>(""" % (typeOfReturn, typeOfReturn)
             returnsEnd = ")"
 
         if method.getModifier() == "static":
             return """
                         %s curEnv->%s(cls, %s %s)%s;
-                        """ % (returns, returnType.getCallStaticMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
+                        """ % (
+                returns,
+                returnType.getCallStaticMethod(),
+                method.getUniqueNameOfTheMethod(),
+                params,
+                returnsEnd,
+            )
         else:
             return """
                         %s curEnv->%s( this->instance, %s %s)%s;
-                        """ % (returns, returnType.getCallMethod(), method.getUniqueNameOfTheMethod(), params, returnsEnd)
+                        """ % (
+                returns,
+                returnType.getCallMethod(),
+                method.getUniqueNameOfTheMethod(),
+                params,
+                returnsEnd,
+            )
 
     def getReturnProfile(self, returnType):
         return returnType.getReturnSyntax()

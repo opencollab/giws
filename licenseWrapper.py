@@ -36,7 +36,6 @@
 
 
 class licenseWrapper:
-
     def getLicense(self):
         return """/*
 

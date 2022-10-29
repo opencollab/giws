@@ -62,7 +62,13 @@ class CXXException:
 		%s
 
 		namespace %s {
-		""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(), JNIFrameWork().getHeader(defineHeader), JNIFrameWork().getDLLExportSyntax(), config.getExceptionFileName())
+		""" % (
+            self.getDescriptionHeader(config),
+            licenseWrapper().getLicense(),
+            JNIFrameWork().getHeader(defineHeader),
+            JNIFrameWork().getDLLExportSyntax(),
+            config.getExceptionFileName(),
+        )
 
     # Build the whole code of the C++ Exception header
     def generateCXXHeader(self, config):
@@ -273,9 +279,12 @@ class CXXException:
         str = """%s
 		%s
 		%s
-		""" % (self.getCXXHeader(config), strHeader, strCommonEnd)
-        fileName = config.getExceptionFileName(
-        ) + config.getCPPHeaderExtension()
+		""" % (
+            self.getCXXHeader(config),
+            strHeader,
+            strCommonEnd,
+        )
+        fileName = config.getExceptionFileName() + config.getCPPHeaderExtension()
         outputWriter().writeIntoFile(config.getOutput(), fileName, str)
         print(("%s generated ..." % fileName))
 
@@ -285,7 +294,13 @@ class CXXException:
 		%s
 		%s
 		namespace %s {
-		""" % (self.getDescriptionHeader(config), licenseWrapper().getLicense(), """#include "%s" """ % (config.getExceptionFileName() + config.getCPPHeaderExtension()), config.getExceptionFileName())
+		""" % (
+            self.getDescriptionHeader(config),
+            licenseWrapper().getLicense(),
+            """#include "%s" """
+            % (config.getExceptionFileName() + config.getCPPHeaderExtension()),
+            config.getExceptionFileName(),
+        )
 
         strCommonEnd = """
 		}
@@ -615,7 +630,11 @@ class CXXException:
         str = """%s
 		%s
 		%s
-		""" % (strCommon, strBody, strCommonEnd)
+		""" % (
+            strCommon,
+            strBody,
+            strCommonEnd,
+        )
 
         fileName = config.getExceptionFileName() + config.getCPPBodyExtension()
         outputWriter().writeIntoFile(config.getOutput(), fileName, str)

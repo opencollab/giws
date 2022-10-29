@@ -69,7 +69,7 @@ class parseXMLEngine:
 
     def __loadPackage(self):
         if self.__root.tag != "package":
-            print ('"Package" is expected as root tag')
+            print('"Package" is expected as root tag')
             sys.exit(-2)
 
         packageName = self.__root.attrib["name"]
@@ -90,8 +90,12 @@ class parseXMLEngine:
                 # Retrieve the father (inheritance)
                 extendsObject = self.Jpackage.getObject(extends)
                 if extendsObject == None:
-                    print(('Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".' %
-                          (extends, extends, objectName)))
+                    print(
+                        (
+                            'Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".'
+                            % (extends, extends, objectName)
+                        )
+                    )
                     sys.exit(-4)
 
             # creates the object
@@ -119,8 +123,7 @@ class parseXMLEngine:
 
         if "modifier" in method.attrib:
             modifier = method.attrib["modifier"]
-            Jmethod = methodGiws(
-                methodName, myReturnData, detachThread, modifier)
+            Jmethod = methodGiws(methodName, myReturnData, detachThread, modifier)
         else:
             Jmethod = methodGiws(methodName, myReturnData, detachThread)
 
@@ -129,8 +132,7 @@ class parseXMLEngine:
             param = self.__loadParameter(param.attrib)
             try:
                 if parametersName.index(param.getName()) >= 0:
-                    print(
-                        ('%s is already defined as parameters' % param.getName()))
+                    print(("%s is already defined as parameters" % param.getName()))
                     sys.exit(-3)
             except ValueError:  # Cannot find the parameter => not defined. Good!
                 parametersName.append(param.getName())
@@ -144,7 +146,7 @@ class parseXMLEngine:
         return parameterGiws(name, type)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("Parsing ...")
     templateObj = parseXMLEngine("template.xml")
     print((templateObj.getJpackage().generateCXXHeader()))
