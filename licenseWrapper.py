@@ -34,10 +34,11 @@
 #
 # For more information, see the file COPYING
 
+
 class licenseWrapper:
 
-	def getLicense(self):
-		return """/*
+    def getLicense(self):
+        return """/*
 
 This is generated code.
 

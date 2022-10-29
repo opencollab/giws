@@ -36,77 +36,78 @@
 
 """ Configuration of the Env """
 
+
 class configGiws:
-	__version="2.0.2"
-	__descriptionFile=""
-	__splitPerObject=True
-	__throwsException=False
-	__generateExceptionClass=False
-	__disableReturnSize=False
-	__output="." # Should be changed elsewhere
-	__headerCPPExtension=".hxx"
-	__bodyCPPExtension=".cpp"
-	__exceptionFileName="GiwsException"
+    __version = "2.0.2"
+    __descriptionFile = ""
+    __splitPerObject = True
+    __throwsException = False
+    __generateExceptionClass = False
+    __disableReturnSize = False
+    __output = "."  # Should be changed elsewhere
+    __headerCPPExtension = ".hxx"
+    __bodyCPPExtension = ".cpp"
+    __exceptionFileName = "GiwsException"
 
-	def setDescriptionFile(self, desc):
-		self.__descriptionFile=desc
+    def setDescriptionFile(self, desc):
+        self.__descriptionFile = desc
 
-	def getDescriptionFile(self):
-		return self.__descriptionFile
+    def getDescriptionFile(self):
+        return self.__descriptionFile
 
-	def setSplitPerObject(self, split):
-		self.__splitPerObject=split
+    def setSplitPerObject(self, split):
+        self.__splitPerObject = split
 
-	def setThrowsException(self, excep):
-		configGiws.__throwsException=excep
+    def setThrowsException(self, excep):
+        configGiws.__throwsException = excep
 
-	def setDisableReturnSize(self):
-		configGiws.__disableReturnSize=True
+    def setDisableReturnSize(self):
+        configGiws.__disableReturnSize = True
 
-	def setEnableReturnSize(self):
-		configGiws.__disableReturnSize=False
+    def setEnableReturnSize(self):
+        configGiws.__disableReturnSize = False
 
-	def getDisableReturnSize(self):
-		return configGiws.__disableReturnSize
+    def getDisableReturnSize(self):
+        return configGiws.__disableReturnSize
 
-	def enableGenerateExceptionClass(self):
-		configGiws.__generateExceptionClass=True
+    def enableGenerateExceptionClass(self):
+        configGiws.__generateExceptionClass = True
 
-	def generateExceptionClass(self):
-		return configGiws.__generateExceptionClass
+    def generateExceptionClass(self):
+        return configGiws.__generateExceptionClass
 
-	def setOutput(self, output):
-		self.__output=output
+    def setOutput(self, output):
+        self.__output = output
 
-	def getOutput(self):
-		return self.__output
+    def getOutput(self):
+        return self.__output
 
-	def setCPPHeaderExtension(self, ext):
-		self.__headerCPPExtension=ext
+    def setCPPHeaderExtension(self, ext):
+        self.__headerCPPExtension = ext
 
-	def getCPPHeaderExtension(self):
-		return self.__headerCPPExtension
+    def getCPPHeaderExtension(self):
+        return self.__headerCPPExtension
 
-	def setCPPBodyExtension(self, ext):
-		self.__bodyCPPExtension=ext
+    def setCPPBodyExtension(self, ext):
+        self.__bodyCPPExtension = ext
 
-	def getCPPBodyExtension(self):
-		return self.__bodyCPPExtension
+    def getCPPBodyExtension(self):
+        return self.__bodyCPPExtension
 
-	def getExceptionFileName(self):
-		return self.__exceptionFileName
+    def getExceptionFileName(self):
+        return self.__exceptionFileName
 
-	def getSplitPerObject(self):
-		return self.__splitPerObject
+    def getSplitPerObject(self):
+        return self.__splitPerObject
 
-	def getThrowsException(self):
-		return configGiws.__throwsException
+    def getThrowsException(self):
+        return configGiws.__throwsException
 
-	def getVersion(self):
-		return self.__version
+    def getVersion(self):
+        return self.__version
 
-	def getFullCommandLine(self):
-		return self.__fullCommandLine
+    def getFullCommandLine(self):
+        return self.__fullCommandLine
 
-	def setFullCommandLine(self, cmd):
-		self.__fullCommandLine = cmd
+    def setFullCommandLine(self, cmd):
+        self.__fullCommandLine = cmd
