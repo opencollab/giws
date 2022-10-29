@@ -23,6 +23,6 @@ Add the management of:
             <parameter name="data" type="DoubleBuffer[]"/>
         </method>
 
-* in scinotes.cpp, this should be catched
+* in scinotes.cpp, this should be caught
 jmethodID voidscinotesjstringjava_lang_StringID = curEnv->GetStaticMethodID(cls, "scinotes", "(Ljava/lang/String;)V" ) ;
 

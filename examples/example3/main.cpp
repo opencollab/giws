@@ -72,7 +72,7 @@ int main(){
 
 	cout << "========================" << endl;
 
-	cout << "Exception catched:" << endl;
+	cout << "Exception caught:" << endl;
 	try {
 		int myIntsWithExceptionCatched = plop->getIntFromArrayOfSizeThree(22);
 		
@@ -95,7 +95,7 @@ int main(){
 
 	cout << "========================" << endl;
 
-	cout << "Exception not catched:" << endl;
+	cout << "Exception not caught:" << endl;
 	int myIntsWithException = plop->getIntFromArrayOfSizeThree(223);
 	cout << "Value from the Java with good pos : " << myInts  <<endl;
 

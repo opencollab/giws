@@ -56,6 +56,6 @@ Displays the help
 
 === Dependencies ===
 
-Obviously, as GIWS has been written in Python, it needs the Python interpretor
+Obviously, as GIWS has been written in Python, it needs the Python interpreter
 to work. And that's it !
 

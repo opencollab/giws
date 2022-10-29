@@ -163,7 +163,7 @@ class CXXException:
 			std::string retrieveExceptionName(JNIEnv * curEnv);
 			/**
 			* To be called when all the information about the exceptions have been
-			* retrived.
+			* retrieved.
 			* Remove the exception from the environment.
 			*/
 			void closeException(JNIEnv * curEnv);
@@ -308,7 +308,7 @@ class CXXException:
 		m_oJavaStackTrace = this->retrieveStackTrace(curEnv);
 		m_oJavaExceptionName = this->retrieveExceptionName(curEnv);
 
-		// by default JniExceptions display teh stack trace
+		// by default JniExceptions display the stack trace
 		setErrorMessage(m_oJavaMessage + "\\n" + m_oJavaStackTrace);
 		curEnv->DeleteLocalRef(javaException);
 		closeException(curEnv);
@@ -505,7 +505,7 @@ class CXXException:
 
   /**
    * To be called when all the information about the exceptions have been
-   * retrived.
+   * retrieved.
    * Remove the exception from the environment.
    */
   void JniException::closeException(JNIEnv * curEnv)

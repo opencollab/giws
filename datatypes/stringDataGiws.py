@@ -75,7 +75,7 @@ class stringDataGiws(dataGiws):
 			return "char" + pointer
 
         def __errorMemoryString(self, detachThread):
-		# Management of the error when not enought memory to create the string
+		# Management of the error when not enough memory to create the string
 		if configGiws().getThrowsException():
 			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:
@@ -86,7 +86,7 @@ class stringDataGiws(dataGiws):
 	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
 		name=parameter.getName()
-		# Management of the error when not enought memory to create the string
+		# Management of the error when not enough memory to create the string
 		if configGiws().getThrowsException():
 			errorMgntMem="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:

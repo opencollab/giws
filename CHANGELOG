@@ -302,7 +302,7 @@ giws (0.9.4)
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Tue, 13 Nov 2007 11:22:45 +0100
 
 giws (0.9.3)
-	* Current time removed in the header (force the commit everytime)
+	* Current time removed in the header (force the commit every time)
 	* Spelling mistake in an error message
 
  -- Sylvestre Ledru <sylvestre.ledru@inria.fr>  Mon, 8 Oct 2007 11:35:17 +0200

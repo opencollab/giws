@@ -113,7 +113,7 @@ class giws:
 			elif option in ("-h", "--help"):
 				self.show_help(0)
 
-		# check for some mandatory paramters
+		# check for some mandatory parameters
 		if not self.config.getDescriptionFile() and not self.config.generateExceptionClass():
 			raise getopt.GetoptError, "You have to specify a description file"
 

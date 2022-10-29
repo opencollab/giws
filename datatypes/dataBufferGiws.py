@@ -60,7 +60,7 @@ class dataBufferGiws(dataGiws):
 	def specificPreProcessing(self, parameter, detachThread):
 		""" Overrides the preprocessing of the array """
 		name=parameter.getName()
-		# Management of the error when not enought memory to create the XXXXXBuffer
+		# Management of the error when not enough memory to create the XXXXXBuffer
 		if configGiws().getThrowsException():
 			errorMgntMem="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
 		else:

@@ -39,7 +39,7 @@ GIWS is working in a few step.
 
 
 = Design patterns =
-The design pattern Factory is used to instanciate the different kind of data
+The design pattern Factory is used to instantiate the different kind of data
 that we are managing.
 This object is called : dataFactoryGiws and can be called as :
 
