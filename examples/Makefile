@@ -26,7 +26,7 @@ build: $(patsubst %,%.build,$(EX))
 	@echo ""
 	@echo "==========================================================================="
 	@echo "Dont forget to set library path before running the example:"
-	@echo "# export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(JAVA_HOME)/jre/lib/i386:$(JAVA_HOME)/jre/lib/i386/client/"
+	@echo "# export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(JAVA_HOME)/lib/server/"
 	@echo "or"
 	@echo "# export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(JAVA_HOME)/jre/lib/amd64:$(JAVA_HOME)/jre/lib/amd64/server/"
 	@echo "==========================================================================="

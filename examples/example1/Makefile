@@ -67,7 +67,7 @@ $(BINARY): $(GIWS_OUT_FILES)
 	@if test $(MAKELEVEL) -eq 0; then \
 		echo "==========================================================================="; \
 		echo "Dont forget to set library path before running the program:"; \
-		echo "# export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(JAVA_HOME)/jre/lib/i386:$(JAVA_HOME)/jre/lib/i386/client/"; \
+		echo "# export LD_LIBRARY_PATH=$(LD_LIBRARY_PATH):$(JAVA_HOME)/lib/server/"; \
 		echo "==========================================================================="; \
 	fi
 
