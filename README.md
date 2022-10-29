@@ -1,7 +1,8 @@
-						GIWS 
-						****
+GIWS
+====
 
-=== Description ===
+Description
+-----------
 
 GIWS is basically the opposite of SWIG.
 
@@ -12,7 +13,8 @@ from C/C++.
 GIWS is widely used in Scilab (from version 5.0) to drive the rendering and 
 the GUI.
 
-=== Documentation ===
+Documentation
+-------------
 
 The best way to understand how to use GIWS is to read the examples
 
@@ -23,38 +25,41 @@ XML declaration files:
 examples/*/*.xml
 
 
-=== Usage ===
+Usage
+-----
+
 ./giws -h to see the help
 
 Options :
 
--o / --output-dir= <dir> :
-Where files should be generated
+* -o / --output-dir= <dir>
+  Where files should be generated
 
--f / --description-file= <file> :
-Specify the declaration file to use
+* -f / --description-file= <file>
+  Specify the declaration file to use
 
--p / --per-package :
-Creates a file per package instead of a file per object
+* -p / --per-package
+  Creates a file per package instead of a file per object
 
--e / --throws-exception-on-error:
-Throws a C++ exception instead of an exit(EXIT_FAILURE)
+* -e / --throws-exception-on-error
+  Throws a C++ exception instead of an exit(EXIT_FAILURE)
 
---header-extension-file : 
-Specify the extension of the header file generated [Default : .hxx]
+* --header-extension-file : 
+  Specify the extension of the header file generated [Default : .hxx]
 
---body-extension-file :
-Specify the extension of the body file generated [Default : .cpp]
+* --body-extension-file :
+  Specify the extension of the body file generated [Default : .cpp]
 
--v / --version :
-Displays the version and other information
+* -v / --version :
+  Displays the version and other information
 
--h / --help :
-Displays the help
+* -h / --help :
+  Displays the help
 
 	
 
-=== Dependencies ===
+Dependencies
+------------
 
 Obviously, as GIWS has been written in Python, it needs the Python interpreter
 to work. And that's it !
