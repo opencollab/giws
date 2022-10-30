@@ -255,8 +255,7 @@ class JNIFrameWork:
 
         signatureReturn = method.getReturn().getTypeSignature()
         if (
-            method.getReturn().isArray(
-            ) and not method.getReturn().isByteBufferBased()
+            method.getReturn().isArray() and not method.getReturn().isByteBufferBased()
         ):  # Returns an array ...
             signatureReturn = (
                 "[" * method.getReturn().getDimensionArray() + signatureReturn
@@ -339,8 +338,7 @@ class JNIFrameWork:
             returnsEnd = ""
         else:
             typeOfReturn = returnType.getJavaTypeSyntax()
-            returns = """%s res =  static_cast<%s>(""" % (
-                typeOfReturn, typeOfReturn)
+            returns = """%s res =  static_cast<%s>(""" % (typeOfReturn, typeOfReturn)
             returnsEnd = ")"
 
         if method.getModifier() == "static":

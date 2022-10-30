@@ -89,8 +89,7 @@ class CXXFile:
         str = ""
         for object in self.package.getObjects():
             if type == "header":
-                str = str + \
-                    object.generateCXXHeader(self.package.getNameForJNI())
+                str = str + object.generateCXXHeader(self.package.getNameForJNI())
             else:
                 str = str + object.generateCXXBody()
             if len(self.package.getObjects()) != i:
@@ -144,8 +143,7 @@ class CXXFile:
                 outputWriter().writeIntoFile(config.getOutput(), fileName, str)
                 print(("%s generated ..." % fileName))
         else:
-            fileName = self.__getFileNameForPackageDeclaration(
-                config, "header")
+            fileName = self.__getFileNameForPackageDeclaration(config, "header")
             str = """%s
                         %s
                         %s
@@ -178,15 +176,13 @@ class CXXFile:
             for object in self.package.getObjects():
                 strInclude = """#include "%s"
                                 """ % (
-                    self.__getFileNameForObjectDeclaration(
-                        config, "header", object)
+                    self.__getFileNameForObjectDeclaration(config, "header", object)
                 )
 
                 fileName = self.__getFileNameForObjectDeclaration(
                     config, "body", object
                 )
-                str = strInclude + strCommon + \
-                    object.generateCXXBody() + strCommonEnd
+                str = strInclude + strCommon + object.generateCXXBody() + strCommonEnd
                 outputWriter().writeIntoFile(config.getOutput(), fileName, str)
                 print(("%s generated ..." % fileName))
         else:

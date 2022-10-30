@@ -121,8 +121,7 @@ class parseXMLEngine:
 
         if "modifier" in method.attrib:
             modifier = method.attrib["modifier"]
-            Jmethod = methodGiws(
-                methodName, myReturnData, detachThread, modifier)
+            Jmethod = methodGiws(methodName, myReturnData, detachThread, modifier)
         else:
             Jmethod = methodGiws(methodName, myReturnData, detachThread)
 
@@ -131,8 +130,7 @@ class parseXMLEngine:
             param = self.__loadParameter(param.attrib)
             try:
                 if parametersName.index(param.getName()) >= 0:
-                    print(
-                        ("%s is already defined as parameters" % param.getName()))
+                    print(("%s is already defined as parameters" % param.getName()))
                     sys.exit(-3)
             except ValueError:  # Cannot find the parameter => not defined. Good!
                 parametersName.append(param.getName())

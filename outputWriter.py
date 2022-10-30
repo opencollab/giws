@@ -38,7 +38,6 @@
 
 
 class outputWriter:
-
     def stripTab(self, text):
         return text.replace("\t", "")
 
