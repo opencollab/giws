@@ -53,8 +53,8 @@ class giws:
 
 		try:
 			self.__parse_cmdline()
-		except getopt.GetoptError, e:
-			print "%s: %s"%(e.__class__.__name__, str(e))
+		except getopt.GetoptError as e:
+			print("%s: %s"%(e.__class__.__name__, str(e)))
 			self.show_help(1)    # exit with EXIT_FAILURE return code
 
 	"""
@@ -65,25 +65,25 @@ class giws:
 
 		# we know at least one options is required (-f file...)
 		if len(opts)==0:
-			raise getopt.GetoptError, "too few options"
+			raise getopt.GetoptError("too few options")
 		elif len(args):
-			raise getopt.GetoptError, "too many arguments"
+			raise getopt.GetoptError("too many arguments")
 
 		for option, value in opts:
 			if option in ("-f", "--description-file"):
 				if os.path.isfile(value):
 					self.config.setDescriptionFile(value)
 				else:
-					print "Deadly error: Cannot find file %s"%value
-					print ""
+					print("Deadly error: Cannot find file %s"%value)
+					print("")
 					self.show_help(0)
 
 			elif option in ("-o", "--output-dir"):
 				if os.path.isdir(value):
 					self.config.setOutput(value)
 				else:
-					print "Deadly error: Cannot find output dir %s"%value
-					print ""
+					print("Deadly error: Cannot find output dir %s"%value)
+					print("")
 					self.show_help(0)
 
 			elif option in ("-p", "--per-package"):
@@ -115,7 +115,7 @@ class giws:
 
 		# check for some mandatory parameters
 		if not self.config.getDescriptionFile() and not self.config.generateExceptionClass():
-			raise getopt.GetoptError, "You have to specify a description file"
+			raise getopt.GetoptError("You have to specify a description file")
 
 		if self.config.getDescriptionFile():
 			templateObj=parseXMLEngine(self.config.getDescriptionFile())
@@ -134,34 +134,34 @@ class giws:
 
 
 	def show_help(self, exit_status=0):
-		print "Giws usage: %s <-f file|--description-file=file> [options]"%self.argv[0]
-		print ""
-		print "Options can be:"
-		print "-f     --description-file=file    Description of the method of the Java Object"
-		print "-o     --output-dir=dir           The directory where to export files"
-		print "-p     --per-package              Generates CXX/HXX files per package"
-		print "-e     --throws-exception-on-error       Throws a C++ exception instead of an exit(EXIT_FAILURE)"
-		print "-g     --generate-exception-class        Generate the exception class (disable by default)"
-		print "-r     --disable-return-size-array       Disable the return of the size of the array/arrays through int*"
-		print "-s     --enable-return-size-array        Enable the return of the size of the array/arrays through int* (default)"
-		print "--header-extension-file=ext       Specify the extension of the header file generated [Default : .hxx]"
-		print "--body-extension-file=ext         Specify the extension of the body file generated [Default : .cpp]"
-		print "-v     --version                  Display the version information"
-		print "-h     --help                     Display the help"
+		print("Giws usage: %s <-f file|--description-file=file> [options]"%self.argv[0])
+		print("")
+		print("Options can be:")
+		print("-f     --description-file=file    Description of the method of the Java Object")
+		print("-o     --output-dir=dir           The directory where to export files")
+		print("-p     --per-package              Generates CXX/HXX files per package")
+		print("-e     --throws-exception-on-error       Throws a C++ exception instead of an exit(EXIT_FAILURE)")
+		print("-g     --generate-exception-class        Generate the exception class (disable by default)")
+		print("-r     --disable-return-size-array       Disable the return of the size of the array/arrays through int*")
+		print("-s     --enable-return-size-array        Enable the return of the size of the array/arrays through int* (default)")
+		print("--header-extension-file=ext       Specify the extension of the header file generated [Default : .hxx]")
+		print("--body-extension-file=ext         Specify the extension of the body file generated [Default : .cpp]")
+		print("-v     --version                  Display the version information")
+		print("-h     --help                     Display the help")
 
 		sys.exit(exit_status)
 
 	def show_version(self, exit_status=0):
-		print "GIWS %s"%self.config.getVersion()
-		print "Copyright (C) 2007-2012 INRIA / Digiteo / Scilab Enterprises"
-		print """This software is governed by the CeCILL license under French law and
+		print("GIWS %s"%self.config.getVersion())
+		print("Copyright (C) 2007-2012 INRIA / Digiteo / Scilab Enterprises")
+		print("""This software is governed by the CeCILL license under French law and
 abiding by the rules of distribution of free software. You can use,
 modify and/ or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
-http://www.cecill.info/ . """
-		print ""
-		print "Written by Sylvestre Ledru <sylvestre.ledru@scilab.org>"
-		print "with the help of various developers."
+http://www.cecill.info/ . """)
+		print("")
+		print("Written by Sylvestre Ledru <sylvestre.ledru@scilab.org>")
+		print("with the help of various developers.")
 		sys.exit(exit_status)
 
 if __name__ == '__main__':
