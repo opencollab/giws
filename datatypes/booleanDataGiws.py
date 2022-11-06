@@ -141,4 +141,4 @@ class booleanDataGiws(dataGiws):
 			return (res == JNI_TRUE);
 			"""
 if __name__ == '__main__':
-    print booleanDataGiws().getReturnTypeSyntax()
+    print(booleanDataGiws().getReturnTypeSyntax())

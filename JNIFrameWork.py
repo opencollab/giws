@@ -234,11 +234,10 @@ class JNIFrameWork:
                 configGiws().getExceptionFileName(),
             )
             return str
-        else:
-            return """if (curEnv->ExceptionCheck()) {
-                        curEnv->ExceptionDescribe() ;
-                        }
-                        """
+        return """if (curEnv->ExceptionCheck()) {
+                    curEnv->ExceptionDescribe() ;
+                    }
+                    """
 
     def getMethodIdProfile(self, method):
         params = ""
@@ -351,16 +350,15 @@ class JNIFrameWork:
                 params,
                 returnsEnd,
             )
-        else:
-            return """
-                        %s curEnv->%s( this->instance, %s %s)%s;
-                        """ % (
-                returns,
-                returnType.getCallMethod(),
-                method.getUniqueNameOfTheMethod(),
-                params,
-                returnsEnd,
-            )
+        return """
+                    %s curEnv->%s( this->instance, %s %s)%s;
+                    """ % (
+            returns,
+            returnType.getCallMethod(),
+            method.getUniqueNameOfTheMethod(),
+            params,
+            returnsEnd,
+       )
 
     def getReturnProfile(self, returnType):
         return returnType.getReturnSyntax()

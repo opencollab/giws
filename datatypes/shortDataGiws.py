@@ -54,4 +54,4 @@ class shortDataGiws(dataGiws):
         return "signed 16 bits"
 
 if __name__ == '__main__':
-    print shortDataGiws().getReturnTypeSyntax()
+    print(shortDataGiws().getReturnTypeSyntax())

@@ -39,7 +39,7 @@
 
 class outputWriter:
     def stripTab(self, text):
-        return text.replace("\t", "")
+        return text.expandtabs(0)
 
     def writeIntoFile(self, directory, fileName, content):
         f = open(directory + "/" + fileName, "w")

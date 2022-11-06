@@ -54,4 +54,4 @@ class floatDataGiws(dataGiws):
         return "unsigned 8 bits"
 
 if __name__ == '__main__':
-    print floatDataGiws().getReturnTypeSyntax()
+    print(floatDataGiws().getReturnTypeSyntax())

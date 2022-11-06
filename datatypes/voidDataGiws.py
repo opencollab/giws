@@ -60,4 +60,4 @@ class voidDataGiws(dataGiws):
         return ""
 
 if __name__ == '__main__':
-    print voidDataGiws().getReturnTypeSyntax()
+    print(voidDataGiws().getReturnTypeSyntax())

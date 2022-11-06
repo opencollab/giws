@@ -57,4 +57,4 @@ class intDataGiws(dataGiws):
         return "signed 32 bits"
 
 if __name__ == '__main__':
-    print intDataGiws().getReturnTypeSyntax()
+    print(intDataGiws().getReturnTypeSyntax())

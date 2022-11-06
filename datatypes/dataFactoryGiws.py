@@ -118,6 +118,6 @@ if __name__ == '__main__':
     myFactory = dataFactoryGiws()
     myData = myFactory.create("int")
     myData = myFactory.create("IntBuffer")
-    print myFactory.isByteBufferBased()
+    print(myFactory.isByteBufferBased())
     myData2 = myFactory.create("doesnt-exist")
-    print myData.getDescription()
+    print(myData.getDescription())

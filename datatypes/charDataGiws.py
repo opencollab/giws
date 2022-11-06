@@ -54,4 +54,4 @@ class charDataGiws(dataGiws):
         return "unsigned 16 bits"
 
 if __name__ == '__main__':
-    print charDataGiws().getReturnTypeSyntax()
+    print(charDataGiws().getReturnTypeSyntax())

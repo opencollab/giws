@@ -54,4 +54,4 @@ class byteDataGiws(dataGiws):
         return "signed 8 bits"
 
 if __name__ == '__main__':
-    print byteDataGiws().getReturnTypeSyntax()
+    print(byteDataGiws().getReturnTypeSyntax())
