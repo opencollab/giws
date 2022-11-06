@@ -38,66 +38,69 @@ from dataGiws import dataGiws
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
+
 class stringDataGiws(dataGiws):
 
-	nativeType="char *"
-	callMethod="CallObjectMethod"
-	callStaticMethod="CallStaticObjectMethod"
-	temporaryVariableName="myStringBuffer"
+    nativeType = "char *"
+    callMethod = "CallObjectMethod"
+    callStaticMethod = "CallStaticObjectMethod"
+    temporaryVariableName = "myStringBuffer"
 
-	def getTypeSignature(self):
-		return "Ljava/lang/String;"
+    def getTypeSignature(self):
+        return "Ljava/lang/String;"
 
-	def getJavaTypeSyntax(self):
-		if self.isArray():
-			return "jobjectArray"
-		else:
-			return "jstring"
+    def getJavaTypeSyntax(self):
+        if self.isArray():
+            return "jobjectArray"
+        else:
+            return "jstring"
 
-	def getRealJavaType(self):
-		return "java.lang.String"
+    def getRealJavaType(self):
+        return "java.lang.String"
 
-	def getDescription(self):
-		return "Java String"
+    def getDescription(self):
+        return "Java String"
 
-	def getNativeType(self, ForceNotArray=False, UseConst=False):
-		if self.isArray():
-			if UseConst:
-				pointer = " const*"
-			else:
-				pointer = "*"
-			return ("char" + pointer) + pointer * self.getDimensionArray()
-		else:
-			if UseConst:
-				pointer = " const*"
-			else:
-				pointer = "*"
-			return "char" + pointer
+    def getNativeType(self, ForceNotArray=False, UseConst=False):
+        if self.isArray():
+            if UseConst:
+                pointer = " const*"
+            else:
+                pointer = "*"
+            return ("char" + pointer) + pointer * self.getDimensionArray()
+        else:
+            if UseConst:
+                pointer = " const*"
+            else:
+                pointer = "*"
+            return "char" + pointer
 
-        def __errorMemoryString(self, detachThread):
-		# Management of the error when not enough memory to create the string
-		if configGiws().getThrowsException():
-			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
-		else:
-			errorMgntMemBis="""std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);"""%(detachThread)
-                return errorMgntMemBis
+    def __errorMemoryString(self, detachThread):
+        # Management of the error when not enough memory to create the string
+        if configGiws().getThrowsException():
+            errorMgntMemBis = """%sthrow %s::JniBadAllocException(curEnv);""" % (
+                detachThread, configGiws().getExceptionFileName())
+        else:
+            errorMgntMemBis = """std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);""" % (detachThread)
+        return errorMgntMemBis
 
-	def specificPreProcessing(self, parameter, detachThread):
-		""" Overrides the preprocessing of the array """
-		name=parameter.getName()
-		# Management of the error when not enough memory to create the string
-		if configGiws().getThrowsException():
-			errorMgntMem="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
-		else:
-			errorMgntMem="""std::cerr << "Could not allocate Java string array, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);"""%(detachThread)
+    def specificPreProcessing(self, parameter, detachThread):
+        """ Overrides the preprocessing of the array """
+        name = parameter.getName()
+        # Management of the error when not enough memory to create the string
+        if configGiws().getThrowsException():
+            errorMgntMem = """%sthrow %s::JniBadAllocException(curEnv);""" % (
+                detachThread, configGiws().getExceptionFileName())
+        else:
+            errorMgntMem = """std::cerr << "Could not allocate Java string array, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);""" % (detachThread)
 
-                errorMgntMemBis = self.__errorMemoryString(detachThread)
+        errorMgntMemBis = self.__errorMemoryString(detachThread)
 
-		if self.isArray():
-			if self.getDimensionArray() == 1:
-				return """
+        if self.isArray():
+            if self.getDimensionArray() == 1:
+                return """
 
 				// create java array of strings.
 				jobjectArray %s_ = curEnv->NewObjectArray( %sSize, stringArrayClass, NULL);
@@ -119,9 +122,9 @@ class stringDataGiws(dataGiws):
 
 				// avoid keeping reference on too many strings
 				curEnv->DeleteLocalRef(TempString);
-				}"""%(name,name,name,errorMgntMem,name,name,errorMgntMemBis,name)
-			else:
-				return """
+				}""" % (name, name, name, errorMgntMem, name, name, errorMgntMemBis, name)
+            else:
+                return """
 				// create java array of array of strings.
 				jobjectArray %s_ = curEnv->NewObjectArray( %sSize, curEnv->FindClass("[Ljava/lang/String;"), NULL);
 				if (%s_ == NULL)
@@ -149,48 +152,49 @@ class stringDataGiws(dataGiws):
 				curEnv->SetObjectArrayElement(%s_, i, %sLocal);
 				curEnv->DeleteLocalRef(%sLocal);
 
-				}"""%(name,name,name,errorMgntMem,name,name,name,name,name,errorMgntMemBis,name,name,name,name)
+				}""" % (name, name, name, errorMgntMem, name, name, name, name, name, errorMgntMemBis, name, name, name, name)
 
-		else:
-			# Need to store is for the post processing (delete)
-			self.parameterName=name
-                        tempName=name+"_"
-			return """
+        else:
+            # Need to store is for the post processing (delete)
+            self.parameterName = name
+            tempName = name + "_"
+            return """
 			jstring %s = curEnv->NewStringUTF( %s );
 			if (%s != NULL && %s == NULL)
 			{
 			%s
 			}
 
-			"""%(tempName,name,name,tempName,errorMgntMemBis)
+			""" % (tempName, name, name, tempName, errorMgntMemBis)
 
-	def specificPostProcessing(self, detachThread):
-		""" Called when we are returning a string or an array of string """
-		# We are doing an exception check here JUST in this case because
-		# in methodGiws::__createMethodBody we usually do it at the end
-		# of the method just after deleting the variable
-		# but when dealing with string, in this method, we are calling some
-		# methods which override the "exception engine" which drive the JNI
-		# engine crazy.
+    def specificPostProcessing(self, detachThread):
+        """ Called when we are returning a string or an array of string """
+        # We are doing an exception check here JUST in this case because
+        # in methodGiws::__createMethodBody we usually do it at the end
+        # of the method just after deleting the variable
+        # but when dealing with string, in this method, we are calling some
+        # methods which override the "exception engine" which drive the JNI
+        # engine crazy.
 
-		str=JNIFrameWork().getExceptionCheckProfile(detachThread)
+        str = JNIFrameWork().getExceptionCheckProfile(detachThread)
 
-                str=str+"if (res != NULL) { "
+        str = str + "if (res != NULL) { "
 
-		if self.isArray():
-			strCommon=""
-			strDeclaration=""
-			if configGiws().getDisableReturnSize()==True:
-				strCommon+="int lenRow;"
-			else:
-				# The size of the array is returned as output argument of the function
-				strDeclaration="*"
-			strCommon+="""
+        if self.isArray():
+            strCommon = ""
+            strDeclaration = ""
+            if configGiws().getDisableReturnSize() == True:
+                strCommon += "int lenRow;"
+            else:
+                # The size of the array is returned as output argument of the
+                # function
+                strDeclaration = "*"
+            strCommon += """
 			%s lenRow = curEnv->GetArrayLength(res);
-			"""%(strDeclaration)
-                        self.temporaryVariableName="arrayOfString"
-			if self.getDimensionArray() == 1:
-				str+=strCommon+"""
+			""" % (strDeclaration)
+            self.temporaryVariableName = "arrayOfString"
+            if self.getDimensionArray() == 1:
+                str += strCommon + """
 				char **arrayOfString;
 				arrayOfString = new char *[%slenRow];
 				for (jsize i = 0; i < %slenRow; i++){
@@ -202,12 +206,12 @@ class stringDataGiws(dataGiws):
 				curEnv->ReleaseStringUTFChars(resString, tempString);
 				curEnv->DeleteLocalRef(resString);
 				}
-				"""%(strDeclaration, strDeclaration)
-				return str
-			else:
-				if configGiws().getDisableReturnSize()==True:
-					str+="int lenCol;"
-				str+=strCommon+"""
+				""" % (strDeclaration, strDeclaration)
+                return str
+            else:
+                if configGiws().getDisableReturnSize() == True:
+                    str += "int lenCol;"
+                str += strCommon + """
 				char ***arrayOfString;
 				arrayOfString = new char **[%slenRow];
 				for (jsize i = 0; i < %slenRow; i++){ /* Line of the array */
@@ -224,38 +228,38 @@ class stringDataGiws(dataGiws):
 }
 				curEnv->DeleteLocalRef(resStringLine);
 				 }
-				"""%(strDeclaration, strDeclaration, strDeclaration, strDeclaration, strDeclaration)
+				""" % (strDeclaration, strDeclaration, strDeclaration, strDeclaration, strDeclaration)
 
-				return str
+                return str
 
-		else:
-			if hasattr(self,"parameterName"):
-				str+="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")
-			str=str+"""
+        else:
+            if hasattr(self, "parameterName"):
+                str += """curEnv->DeleteLocalRef(%s);""" % (
+                    self.parameterName + "_")
+            str = str + """
 
 			const char *tempString = curEnv->GetStringUTFChars(res, 0);
 			char * %s = new char[strlen(tempString) + 1];
 			strcpy(%s, tempString);
 			curEnv->ReleaseStringUTFChars(res, tempString);
 			curEnv->DeleteLocalRef(res);
-			"""%(self.temporaryVariableName, self.temporaryVariableName)
+			""" % (self.temporaryVariableName, self.temporaryVariableName)
 
-                        return str
+            return str
 
-
-	def getReturnSyntax(self):
-                str=""
-		if self.isArray():
-			str = str + """
+    def getReturnSyntax(self):
+        str = ""
+        if self.isArray():
+            str = str + """
 			curEnv->DeleteLocalRef(res);
 			return arrayOfString;
 			"""
-		else:
-			str = str + """
+        else:
+            str = str + """
 			return %s;
-			"""%(self.temporaryVariableName)
-                str = str + """ } else {
+			""" % (self.temporaryVariableName)
+        str = str + """ } else {
 				curEnv->DeleteLocalRef(res);
 				return NULL;
 				}"""
-                return str
+        return str

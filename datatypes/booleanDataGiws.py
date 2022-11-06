@@ -40,32 +40,34 @@ from configGiws import configGiws
 
 # This class is not like other primitive datatypes because we need
 # to compare variables with JNI_TRUE or JNI_FALSE
+
+
 class booleanDataGiws(dataGiws):
 
-	type="jboolean"
-	nativeType="bool"
-	callMethod="CallBooleanMethod"
-	callStaticMethod="CallStaticBooleanMethod"
+    type = "jboolean"
+    nativeType = "bool"
+    callMethod = "CallBooleanMethod"
+    callStaticMethod = "CallStaticBooleanMethod"
 
-	def getTypeSignature(self):
-		return "Z"
+    def getTypeSignature(self):
+        return "Z"
 
-	def getRealJavaType(self):
-		return "boolean"
+    def getRealJavaType(self):
+        return "boolean"
 
-	def getDescription(self):
-		return "unsigned 8 bits"
+    def getDescription(self):
+        return "unsigned 8 bits"
 
-	def specificPreProcessing(self, parameter, detachThread):
-		name=parameter.getName()
-		if self.isArray():
-			if self.getDimensionArray() == 1:
-				return """
+    def specificPreProcessing(self, parameter, detachThread):
+        name = parameter.getName()
+        if self.isArray():
+            if self.getDimensionArray() == 1:
+                return """
 				jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
 				curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*)%s ) ;
-				""" % (name+"_", name, name+"_", name, name)
-			else:
-				return """
+				""" % (name + "_", name, name + "_", name, name)
+            else:
+                return """
 				jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL);
 				for (int i=0; i<%sSize; i++){
 	                        jbooleanArray %sLocal = curEnv->NewBooleanArray( %sSizeCol ) ;
@@ -74,26 +76,26 @@ class booleanDataGiws(dataGiws):
                         	curEnv->DeleteLocalRef(%sLocal);
 	                        }
 				""" % (name, name, self.getTypeSignature(), name, name, name, name, name, name, name, name, name)
-		else:
-			return """
+        else:
+            return """
 			jboolean %s = (static_cast<bool>(%s) ? JNI_TRUE : JNI_FALSE);
-			"""%(name+"_",name)
+			""" % (name + "_", name)
 
-	def specificPostProcessing(self, detachThread):
-		""" needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
-		if self.isArray():
-			str=JNIFrameWork().getExceptionCheckProfile(detachThread)
-			strCommon=""
-			if configGiws().getDisableReturnSize()==True:
-				strCommon+="int *lenRow;"
-			strCommon+="""
+    def specificPostProcessing(self, detachThread):
+        """ needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
+        if self.isArray():
+            str = JNIFrameWork().getExceptionCheckProfile(detachThread)
+            strCommon = ""
+            if configGiws().getDisableReturnSize() == True:
+                strCommon += "int *lenRow;"
+            strCommon += """
 			*lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
 			"""
 
-			if self.getDimensionArray() == 1:
+            if self.getDimensionArray() == 1:
 
-				return str+strCommon+"""
+                return str + strCommon + """
 
 				/* faster than getXXXArrayElements */
 				jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
@@ -106,10 +108,10 @@ class booleanDataGiws(dataGiws):
 
 				curEnv->DeleteLocalRef(res);
 				"""
-			else:
-				if configGiws().getDisableReturnSize()==True:
-					str+="int *lenCol;"
-				return str+strCommon+"""
+            else:
+                if configGiws().getDisableReturnSize() == True:
+                    str += "int *lenCol;"
+                return str + strCommon + """
 				bool ** myArray = new bool*[*lenRow];
 				for(int i=0; i<*lenRow; i++) {
 				jbooleanArray oneDim = (jbooleanArray)curEnv->GetObjectArrayElement(res, i);
@@ -125,17 +127,18 @@ class booleanDataGiws(dataGiws):
 				curEnv->DeleteLocalRef(res);
 				"""
 
-		else:
-			return ""
-	def getReturnSyntax(self):
-		""" Avoids warnings about casting a jboolean to a bool """
-		if self.isArray():
-			return """
+        else:
+            return ""
+
+    def getReturnSyntax(self):
+        """ Avoids warnings about casting a jboolean to a bool """
+        if self.isArray():
+            return """
 			return myArray;
 			"""
-		else:
-			return """
+        else:
+            return """
 			return (res == JNI_TRUE);
 			"""
 if __name__ == '__main__':
-	print booleanDataGiws().getReturnTypeSyntax()
+    print booleanDataGiws().getReturnTypeSyntax()

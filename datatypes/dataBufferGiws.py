@@ -38,39 +38,43 @@ from dataGiws import dataGiws
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
+
 class dataBufferGiws(dataGiws):
-	callMethod="CallObjectMethod"
-	callStaticMethod="CallStaticObjectMethod"
+    callMethod = "CallObjectMethod"
+    callStaticMethod = "CallStaticObjectMethod"
 
-	def isByteBufferBased(self):
-		return True
+    def isByteBufferBased(self):
+        return True
 
-	def getJavaTypeSyntax(self):
-		return "jobject"
+    def getJavaTypeSyntax(self):
+        return "jobject"
 
-	def __errorMemoryByteBuffer(self, detachThread):
-		# Management of the error when not enough memory to create the XXXXXBuffer
-		if configGiws().getThrowsException():
-			errorMgntMemBis="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
-		else:
-			errorMgntMemBis="""std::cerr << "Could not convert C %s to Java UTF %s, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);"""%(self.getJavaBufferType(), self.getJavaBufferType(), detachThread)
-		return errorMgntMemBis
+    def __errorMemoryByteBuffer(self, detachThread):
+        # Management of the error when not enough memory to create the
+        # XXXXXBuffer
+        if configGiws().getThrowsException():
+            errorMgntMemBis = """%sthrow %s::JniBadAllocException(curEnv);""" % (
+                detachThread, configGiws().getExceptionFileName())
+        else:
+            errorMgntMemBis = """std::cerr << "Could not convert C %s to Java UTF %s, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);""" % (self.getJavaBufferType(), self.getJavaBufferType(), detachThread)
+        return errorMgntMemBis
 
-	def specificPreProcessing(self, parameter, detachThread):
-		""" Overrides the preprocessing of the array """
-		name=parameter.getName()
-		# Management of the error when not enough memory to create the XXXXXBuffer
-		if configGiws().getThrowsException():
-			errorMgntMem="""%sthrow %s::JniBadAllocException(curEnv);"""%(detachThread,configGiws().getExceptionFileName())
-		else:
-			errorMgntMem="""std::cerr << "Could not allocate Java %s array, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);"""%(self.getJavaBufferType(), detachThread)
+    def specificPreProcessing(self, parameter, detachThread):
+        """ Overrides the preprocessing of the array """
+        name = parameter.getName()
+        # Management of the error when not enough memory to create the
+        # XXXXXBuffer
+        if configGiws().getThrowsException():
+            errorMgntMem = """%sthrow %s::JniBadAllocException(curEnv);""" % (
+                detachThread, configGiws().getExceptionFileName())
+        else:
+            errorMgntMem = """std::cerr << "Could not allocate Java %s array, memory full." << std::endl;%s
+			exit(EXIT_FAILURE);""" % (self.getJavaBufferType(), detachThread)
 
-			errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
+            errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
 
-
-		str = """
+        str = """
 
             jobject buffer%s = curEnv->NewDirectByteBuffer((void*)%s, (jlong)%sSize * sizeof(%s));
 if (!buffer%s)
@@ -115,11 +119,11 @@ curEnv->ExceptionDescribe();
 }
 buffer%s = curEnv->CallObjectMethod(buffer%s, orderID, nativeOrder);
 
-"""%(name, name, name, self.nativeType, name, name, name, name)
-                if self.getJavaBufferType() == "ByteBuffer":
-                        str=str+""" jobject %s_ = buffer%s; """ % (name, name)
-                        return str
-		str=str+"""
+""" % (name, name, name, self.nativeType, name, name, name, name)
+        if self.getJavaBufferType() == "ByteBuffer":
+            str = str + """ jobject %s_ = buffer%s; """ % (name, name)
+            return str
+        str = str + """
 if (asdbID%s == NULL) {
  asdbID%s = curEnv->GetMethodID(bbCls, "as%s", "()%s");
 if (asdbID%s == NULL) {
@@ -134,31 +138,32 @@ if (%s_ == NULL)
 // check that allocation succeed
 throw GiwsException::JniBadAllocException(curEnv);
 }
-"""%(self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name)
-		return str
-	
-	def specificPostProcessing(self, detachThread):
-		""" Called when we are returning a XXXXXBuffer or an array of XXXBuffer TODO """
-		# We are doing an exception check here JUST in this case because
-		# in methodGiws::__createMethodBody we usually do it at the end
-		# of the method just after deleting the variable
-		# but when dealing with DoubleBuffer, in this method, we are calling some
-		# methods which override the "exception engine" which drive the JNI
-		# engine crazy. TODO check
+""" % (self.getJavaBufferType(), self.getJavaBufferType(), self.getJavaBufferType(), self.getTypeSignature(), self.getJavaBufferType(), name, name, self.getJavaBufferType(), name)
+        return str
 
-		str=JNIFrameWork().getExceptionCheckProfile(detachThread)
+    def specificPostProcessing(self, detachThread):
+        """ Called when we are returning a XXXXXBuffer or an array of XXXBuffer TODO """
+        # We are doing an exception check here JUST in this case because
+        # in methodGiws::__createMethodBody we usually do it at the end
+        # of the method just after deleting the variable
+        # but when dealing with DoubleBuffer, in this method, we are calling some
+        # methods which override the "exception engine" which drive the JNI
+        # engine crazy. TODO check
 
-		if self.isArray():
-			strCommon=""
-			strDeclaration=""
-			if configGiws().getDisableReturnSize()==True:
-				strCommon+="int lenRow;"
-			else:
-				# The size of the array is returned as output argument of the function 
-				strDeclaration="*"
-			self.temporaryVariableName="byteBufferRes"
-			if self.getDimensionArray() == 1:
-				str+=strCommon+"""
+        str = JNIFrameWork().getExceptionCheckProfile(detachThread)
+
+        if self.isArray():
+            strCommon = ""
+            strDeclaration = ""
+            if configGiws().getDisableReturnSize() == True:
+                strCommon += "int lenRow;"
+            else:
+                # The size of the array is returned as output argument of the
+                # function
+                strDeclaration = "*"
+            self.temporaryVariableName = "byteBufferRes"
+            if self.getDimensionArray() == 1:
+                str += strCommon + """
         *lenRow = curEnv->GetDirectBufferCapacity(res);
         %s %s = static_cast<%s>(curEnv->GetDirectBufferAddress(res));
 
@@ -167,12 +172,12 @@ throw GiwsException::JniBadAllocException(curEnv);
         if (curEnv->ExceptionCheck()) {
             curEnv->ExceptionDescribe() ;
         }
-				"""%(self.getNativeType(), self.temporaryVariableName, self.getNativeType())
-				return str
-			else:
-				if configGiws().getDisableReturnSize()==True:
-					str+="int lenCol;"
-				str+=strCommon+"""
+				""" % (self.getNativeType(), self.temporaryVariableName, self.getNativeType())
+                return str
+            else:
+                if configGiws().getDisableReturnSize() == True:
+                    str += "int lenCol;"
+                str += strCommon + """
                 TODO voir si on delete ca
 				char ***arrayOfByteBuffer;
 				arrayOfByteBuffer = new char **[%slenRow];
@@ -190,29 +195,29 @@ throw GiwsException::JniBadAllocException(curEnv);
 }
 				curEnv->DeleteLocalRef(resByteBufferLine);
 				 }
-				"""%(strDeclaration, strDeclaration, strDeclaration, strDeclaration, strDeclaration)
-				return str
+				""" % (strDeclaration, strDeclaration, strDeclaration, strDeclaration, strDeclaration)
+                return str
 
-		else:
-			if hasattr(self,"parameterName"):
-				str+="""curEnv->DeleteLocalRef(%s);"""%(self.parameterName+"_")
-			return str+"""
+        else:
+            if hasattr(self, "parameterName"):
+                str += """curEnv->DeleteLocalRef(%s);""" % (
+                    self.parameterName + "_")
+            return str + """
 
 			const char *tempByteBuffer = curEnv->GetByteBufferUTFChars(res, 0);
 			char * %s = new char[strlen(tempByteBuffer) + 1];
 			strcpy(%s, tempByteBuffer);
 			curEnv->ReleaseByteBufferUTFChars(res, tempByteBuffer);
 			curEnv->DeleteLocalRef(res);
-			"""%(self.temporaryVariableName, self.temporaryVariableName)
+			""" % (self.temporaryVariableName, self.temporaryVariableName)
 
-	def getReturnSyntax(self):
-		if self.isArray():
-			return """
+    def getReturnSyntax(self):
+        if self.isArray():
+            return """
 			curEnv->DeleteLocalRef(res);
 			return %s;
-			"""%(self.temporaryVariableName)
-		else:
-			return """
+			""" % (self.temporaryVariableName)
+        else:
+            return """
 			return %s;
-			"""%(self.temporaryVariableName)
-	
+			""" % (self.temporaryVariableName)
