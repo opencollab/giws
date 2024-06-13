@@ -51,7 +51,6 @@ from datatypes.CharBufferDataGiws import CharBufferDataGiws
 from datatypes.FloatBufferDataGiws import FloatBufferDataGiws
 from datatypes.IntBufferDataGiws import IntBufferDataGiws
 from datatypes.ShortBufferDataGiws import ShortBufferDataGiws
-import datatypes
 
 """ Factory which create the different data types """
 

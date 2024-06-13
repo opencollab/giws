@@ -34,7 +34,6 @@
 #
 # For more information, see the file COPYING
 
-import sys
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
