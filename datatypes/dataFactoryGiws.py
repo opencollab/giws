@@ -61,23 +61,22 @@ class dataFactoryGiws:
 
         self.dict = {
             "int":     intDataGiws,
-                "char":    charDataGiws,
-                "long":    longDataGiws,
-                "double":  doubleDataGiws,
-                "boolean": booleanDataGiws,
-                "byte":    byteDataGiws,
-                "float":   floatDataGiws,
-                "short":   shortDataGiws,
-                "String":  stringDataGiws,
-                "void":    voidDataGiws,
-                "DoubleBuffer": DoubleBufferDataGiws,
-                "ByteBuffer": ByteBufferDataGiws,
-                "CharBuffer": CharBufferDataGiws,
-                "DoubleBuffer": DoubleBufferDataGiws,
-                "FloatBuffer": FloatBufferDataGiws,
-                "IntBuffer": IntBufferDataGiws,
-                "LongBuffer": LongBufferDataGiws,
-                "ShortBuffer": ShortBufferDataGiws
+            "char":    charDataGiws,
+            "long":    longDataGiws,
+            "double":  doubleDataGiws,
+            "boolean": booleanDataGiws,
+            "byte":    byteDataGiws,
+            "float":   floatDataGiws,
+            "short":   shortDataGiws,
+            "String":  stringDataGiws,
+            "void":    voidDataGiws,
+            "DoubleBuffer": DoubleBufferDataGiws,
+            "ByteBuffer": ByteBufferDataGiws,
+            "CharBuffer": CharBufferDataGiws,
+            "FloatBuffer": FloatBufferDataGiws,
+            "IntBuffer": IntBufferDataGiws,
+            "LongBuffer": LongBufferDataGiws,
+            "ShortBuffer": ShortBufferDataGiws
         }
 
     def create(self, dataTypeToCreate):

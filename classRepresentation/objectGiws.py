@@ -47,10 +47,6 @@ class objectGiws:
     # Which class it extends
     __extends = None
 
-    def __init__(self, name):
-        self.__name = name
-        self.__methods = []
-
     def __init__(self, name, extends):
         self.__name = name
         self.__methods = []
@@ -78,7 +74,7 @@ class objectGiws:
 
             for param in method.getParameters():
                 # Avoids to load the class String each time we need it
-                if isinstance(param.getType(), stringDataGiws) and param.getType().isArray() == True and stringClassSet != True and method.getModifier() != "static":
+                if isinstance(param.getType(), stringDataGiws) and param.getType().isArray() and not stringClassSet and method.getModifier() != "static":
                     str += """
 					jclass localStringArrayClass = curEnv->FindClass("java/lang/String");
 					stringArrayClass = static_cast<jclass>(curEnv->NewGlobalRef(localStringArrayClass));
@@ -86,7 +82,7 @@ class objectGiws:
 					"""
                     stringClassSet = True
 
-        if self.getExtendedClass() != None:
+        if self.getExtendedClass() is not None:
             # Get the father object to work on it.
             str += self.getExtendedClass().__getDeclarationOfCachingMethodID()
 
@@ -145,7 +141,7 @@ class objectGiws:
         strMethodID = self.__getDeclarationOfCachingMethodID()
         constructorProfile = """%s::%s""" % (
             self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
-        if self.getExtendedClass() != None:
+        if self.getExtendedClass() is not None:
             constructorProfile += """ : %s(fakeGiwsDataType::fakeGiwsDataType())""" % (
                 self.getExtendedClass().getName())
 
@@ -225,7 +221,7 @@ class objectGiws:
 			exit(EXIT_FAILURE);"""
         constructorProfile = """%s::%s""" % (
             self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
-        if self.getExtendedClass() != None:
+        if self.getExtendedClass() is not None:
             constructorProfile += """ : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (
                 self.getExtendedClass().getName())
         return """
@@ -280,7 +276,7 @@ class objectGiws:
 
     def __getFakeConstructorForExtendedClasses(self):
         str = ""
-        if self.getExtendedClass() == None:
+        if self.getExtendedClass() is None:
             # It is a potential master class, add the fake constructor
             str += """
 			/**
@@ -302,7 +298,7 @@ class objectGiws:
 			""" % method.getUniqueNameOfTheMethod()
             for param in method.getParameters():
                 # Avoids to load the class String each time we need it
-                if isinstance(param.getType(), stringDataGiws) and param.getType().isArray() == True and stringClassSet != True:
+                if isinstance(param.getType(), stringDataGiws) and param.getType().isArray() and not stringClassSet:
                     str += """jclass stringArrayClass;
 					"""
                     stringClassSet = True
@@ -311,7 +307,7 @@ class objectGiws:
 
     def getProtectedFields(self):
         str = ""
-        if self.getExtendedClass() == None:
+        if self.getExtendedClass() is None:
             str += """
 			jobject instance;
 			jclass instanceClass; // cache class
@@ -336,7 +332,7 @@ class objectGiws:
     def generateCXXHeader(self, packageName):
         JNIObjectName = packageName + "/" + self.getName()
 
-        if self.getExtendedClass() == None:
+        if self.getExtendedClass() is None:
             classProfile = """class GIWSEXPORT %s {""" % (self.getName())
         else:
             classProfile = """class GIWSEXPORT %s : public %s {
@@ -460,7 +456,7 @@ class objectGiws:
 
         for method in self.__methods:
             for param in method.getParameters():
-                if param.getType().isByteBufferBased() == True:
+                if param.getType().isByteBufferBased():
                     return True
 
         return False

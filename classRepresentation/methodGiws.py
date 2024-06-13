@@ -92,7 +92,7 @@ class methodGiws:
                 # In the case where there is no input argument
                 # but return an array of int (or an other type)
                 # needed to lenRow
-                if self.getReturn().isArray() and configGiws().getDisableReturnSize() != True:
+                if self.getReturn().isArray() and not configGiws().getDisableReturnSize():
                     str += ", "
 
         else:
@@ -121,7 +121,7 @@ class methodGiws:
                 str += """		jclass stringArrayClass = curEnv->FindClass("java/lang/String");"""
                 arrayOfStringDeclared = True
 
-            if paramType.specificPreProcessing(parameter, self.getDetachThread()) != None:
+            if paramType.specificPreProcessing(parameter, self.getDetachThread()) is not None:
                 str += paramType.specificPreProcessing(
                     parameter, self.getDetachThread())
 
@@ -188,7 +188,7 @@ class methodGiws:
             static = ""
 
         ret = ""
-        if self.getReturn().isArray() and configGiws().getDisableReturnSize() != True:
+        if self.getReturn().isArray() and not configGiws().getDisableReturnSize():
             if len(self.__parameters) != 0:
                 ret += ", "
             if self.getReturn().getDimensionArray() == 1:
@@ -206,7 +206,7 @@ class methodGiws:
             self.getReturn().getNativeType(), className, self.getName())
 
         ret = ""
-        if self.getReturn().isArray() and configGiws().getDisableReturnSize() != True:
+        if self.getReturn().isArray() and not configGiws().getDisableReturnSize():
             if len(self.__parameters) != 0:
                 ret += ", "
             if self.getReturn().getDimensionArray() == 1:

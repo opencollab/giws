@@ -40,7 +40,7 @@ from JNIFrameWork import JNIFrameWork
 
 def abstractMethod(obj=None):
     """ Use this instead of 'pass' for the body of abstract methods. """
-    raise Exception("Unimplemented abstract method: %s" % _functionId(obj, 1))
+    raise Exception("Unimplemented abstract method")
 
 #
 # This class intend to create a generic object for datatype
@@ -237,7 +237,7 @@ class dataGiws(object):
             str += JNIFrameWork().getExceptionCheckProfile(detachThread)
             strCommon = ""
             strDeclaration = ""
-            if configGiws().getDisableReturnSize() == True:
+            if configGiws().getDisableReturnSize():
                 strCommon += "int lenRow;"
             else:
                 # The size of the array is returned as output argument of the
@@ -263,7 +263,7 @@ class dataGiws(object):
                 return str
 
             else:
-                if configGiws().getDisableReturnSize() == True:
+                if configGiws().getDisableReturnSize():
                     str += "int lenCol;"
                 str += strCommon + """
 				%s ** myArray = new %s*[%s lenRow];
