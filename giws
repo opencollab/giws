@@ -49,7 +49,7 @@ class giws:
 	templateObj = None
 	def __init__(self, argv=sys.argv):
 		self.argv = argv
-                self.config.setFullCommandLine(argv[1:])
+		self.config.setFullCommandLine(argv[1:])
 
 		try:
 			self.__parse_cmdline()
