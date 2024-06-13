@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from methodGiws import methodGiws
+from classRepresentation.methodGiws import methodGiws
 from JNIFrameWork import JNIFrameWork
 from datatypes.stringDataGiws import stringDataGiws
 from configGiws import configGiws
@@ -59,6 +59,8 @@ class objectGiws:
     def addMethod(self, method):
         if isinstance(method, methodGiws):
             self.__methods.append(method)
+        else:
+            raise Exception("The method must be a methodGiws object")
 
     def getName(self):
         return self.__name
