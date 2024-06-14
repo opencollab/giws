@@ -53,5 +53,6 @@ class charDataGiws(dataGiws):
     def getDescription(self):
         return "unsigned 16 bits"
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(charDataGiws().getReturnTypeSyntax())

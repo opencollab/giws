@@ -53,5 +53,6 @@ class shortDataGiws(dataGiws):
     def getDescription(self):
         return "signed 16 bits"
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(shortDataGiws().getReturnTypeSyntax())

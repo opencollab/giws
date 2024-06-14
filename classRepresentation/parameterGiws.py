@@ -39,7 +39,7 @@ from datatypes.dataBufferGiws import dataBufferGiws
 from datatypes.dataFactoryGiws import dataFactoryGiws
 
 
-class parameterGiws():
+class parameterGiws:
     __name = ""
     __type = ""
 
@@ -58,13 +58,11 @@ class parameterGiws():
         return """%s %s, """ % (self.getType().getNativeType(), self.getName())
 
     def generateCXXHeader(self):
-        """ Generate the profil of the parameter """
-        str = """%s %s""" % (
-            self.getType().getNativeTypeWithConst(), self.getName())
+        """Generate the profil of the parameter"""
+        str = """%s %s""" % (self.getType().getNativeTypeWithConst(), self.getName())
         if self.getType().isArray():
             if self.getType().getDimensionArray() == 1:
                 str += ", int %sSize" % self.getName()
             else:
-                str += ", int %sSize, int %sSizeCol" % (
-                    self.getName(), self.getName())
+                str += ", int %sSize, int %sSizeCol" % (self.getName(), self.getName())
         return str

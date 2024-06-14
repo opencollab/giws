@@ -61,28 +61,28 @@ class dataFactoryGiws:
     def __init__(self):
 
         self.dict = {
-            "int":     intDataGiws,
-                "char":    charDataGiws,
-                "long":    longDataGiws,
-                "double":  doubleDataGiws,
-                "boolean": booleanDataGiws,
-                "byte":    byteDataGiws,
-                "float":   floatDataGiws,
-                "short":   shortDataGiws,
-                "String":  stringDataGiws,
-                "void":    voidDataGiws,
-                "DoubleBuffer": DoubleBufferDataGiws,
-                "ByteBuffer": ByteBufferDataGiws,
-                "CharBuffer": CharBufferDataGiws,
-                "DoubleBuffer": DoubleBufferDataGiws,
-                "FloatBuffer": FloatBufferDataGiws,
-                "IntBuffer": IntBufferDataGiws,
-                "LongBuffer": LongBufferDataGiws,
-                "ShortBuffer": ShortBufferDataGiws
+            "int": intDataGiws,
+            "char": charDataGiws,
+            "long": longDataGiws,
+            "double": doubleDataGiws,
+            "boolean": booleanDataGiws,
+            "byte": byteDataGiws,
+            "float": floatDataGiws,
+            "short": shortDataGiws,
+            "String": stringDataGiws,
+            "void": voidDataGiws,
+            "DoubleBuffer": DoubleBufferDataGiws,
+            "ByteBuffer": ByteBufferDataGiws,
+            "CharBuffer": CharBufferDataGiws,
+            "DoubleBuffer": DoubleBufferDataGiws,
+            "FloatBuffer": FloatBufferDataGiws,
+            "IntBuffer": IntBufferDataGiws,
+            "LongBuffer": LongBufferDataGiws,
+            "ShortBuffer": ShortBufferDataGiws,
         }
 
     def create(self, dataTypeToCreate):
-        """ Create an GIWS datatype
+        """Create an GIWS datatype
         it can be int, char, long, double, boolean, byte, float, short,
         String and void
         if there is a trailing [], this object will consider it as an
@@ -96,11 +96,13 @@ class dataFactoryGiws:
             arrayDimension = dataTypeToCreate.count("[]")
             # Trim to load the right object
             dataTypeToCreate = dataTypeToCreate[
-                0:len(dataTypeToCreate) - (arrayDimension * 2)]
+                0 : len(dataTypeToCreate) - (arrayDimension * 2)
+            ]
 
         if dataTypeToCreate not in self.dict:
             raise Exception(
-                "Don't know how to manage the data type %s", dataTypeToCreate)
+                "Don't know how to manage the data type %s", dataTypeToCreate
+            )
 
         myType = self.dict[dataTypeToCreate]()
 
@@ -113,7 +115,8 @@ class dataFactoryGiws:
         myType.setDimensionArray(arrayDimension)
         return myType
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     myFactory = dataFactoryGiws()
     myData = myFactory.create("int")
     myData = myFactory.create("IntBuffer")

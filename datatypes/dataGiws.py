@@ -40,8 +40,9 @@ from JNIFrameWork import JNIFrameWork
 
 
 def abstractMethod(obj=None):
-    """ Use this instead of 'pass' for the body of abstract methods. """
+    """Use this instead of 'pass' for the body of abstract methods."""
     raise Exception("Unimplemented abstract method: %s" % _functionId(obj, 1))
+
 
 #
 # This class intend to create a generic object for datatype
@@ -60,7 +61,7 @@ class dataGiws(object):
         return False
 
     def getJavaTypeSyntax(self, ForceNotArray=False):
-        """ Returns the Java type syntax of a data with the Array type
+        """Returns the Java type syntax of a data with the Array type
         when applies
         """
         if self.isArray() and not ForceNotArray:
@@ -72,7 +73,7 @@ class dataGiws(object):
             return self.type
 
     def getJavaTypeSyntaxForceNotArray(self):
-        """ Return the java type any time"""
+        """Return the java type any time"""
         return self.getJavaTypeSyntax(ForceNotArray=True)
 
     def getJavaShortType(self, forceNotArray=False):
@@ -87,8 +88,7 @@ class dataGiws(object):
         return self.getJavaShortType(forceNotArray=True)
 
     def getNativeType(self, ForceNotArray=False, UseConst=False):
-        """ Returns the native type (C/C++)
-        """
+        """Returns the native type (C/C++)"""
         if self.isArray() and not ForceNotArray:
             if UseConst:
                 pointer = " const*"
@@ -105,57 +105,48 @@ class dataGiws(object):
         return self.getNativeType(UseConst=True)
 
     def getTypeSignature(self):
-        """ Returns the java type signature
-        """
+        """Returns the java type signature"""
         if self.isArray():
             return "[" + self.__signature
         else:
             return self.__signature
 
     def getCallMethod(self):
-        """ Returns the JNI method call
-        """
+        """Returns the JNI method call"""
         if self.isArray():
             return "CallObjectMethod"
         else:
             return self.callMethod
 
     def getCallStaticMethod(self):
-        """ Returns the JNI static method call
-        """
+        """Returns the JNI static method call"""
         if self.isArray():
             return "CallStaticObjectMethod"
         else:
             return self.callStaticMethod
 
     def getRealJavaType(self):
-        """ Returns the real datatype
-        """
+        """Returns the real datatype"""
         abstractMethod(self)
 
     def getDescription(self):
-        """ Returns the description
-        """
+        """Returns the description"""
         abstractMethod(self)
 
     def setIsArray(self, isItAnArray):
-        """ Defines if we have to deal with an array or not
-        """
+        """Defines if we have to deal with an array or not"""
         self.__isArray = isItAnArray
 
     def isArray(self):
-        """ return if we have to deal with an array or not
-        """
+        """return if we have to deal with an array or not"""
         return self.__isArray
 
     def setDimensionArray(self, dimensionArray):
-        """ Defines the size of the array
-        """
+        """Defines the size of the array"""
         self.__dimensionArray = dimensionArray
 
     def getDimensionArray(self):
-        """ return the size of the array
-        """
+        """return the size of the array"""
         return self.__dimensionArray
 
     def __getProfileCreationOfTheArray(self, varName, detachThread):
@@ -174,7 +165,11 @@ class dataGiws(object):
 			// check that allocation succeed
 			throw %s::JniBadAllocException(curEnv);
 			}
-			""" % (varName, detachThread, configGiws().getExceptionFileName())
+			""" % (
+                varName,
+                detachThread,
+                configGiws().getExceptionFileName(),
+            )
             errorMgntLocal = """
 			if (%sLocal == NULL)
 			{%s
@@ -182,7 +177,12 @@ class dataGiws(object):
 			curEnv->DeleteLocalRef(%s_);
 			throw %s::JniBadAllocException(curEnv);
 			}
-			""" % (varName, detachThread, varName, configGiws().getExceptionFileName())
+			""" % (
+                varName,
+                detachThread,
+                varName,
+                configGiws().getExceptionFileName(),
+            )
         else:
             errorMgnt = ""
             errorMgntLocal = ""
@@ -194,7 +194,18 @@ class dataGiws(object):
 			%s
 			curEnv->Set%sArrayRegion( %s_, 0, %sSize, (%s*)(%s) ) ;
 
-			""" % (javaType, varName, shortType, varName, errorMgnt, shortType, varName, varName, javaType, varName)
+			""" % (
+                javaType,
+                varName,
+                shortType,
+                varName,
+                errorMgnt,
+                shortType,
+                varName,
+                varName,
+                javaType,
+                varName,
+            )
         else:
             return """
 			 jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL);
@@ -207,25 +218,45 @@ class dataGiws(object):
 			curEnv->SetObjectArrayElement(%s_, i, %sLocal);
 			curEnv->DeleteLocalRef(%sLocal);
 			}
-			""" % (varName, varName, self.getTypeSignature(), errorMgnt, varName, javaType, varName, shortType, varName, errorMgntLocal, shortType, varName, varName, javaType, varName, varName, varName, varName)
+			""" % (
+                varName,
+                varName,
+                self.getTypeSignature(),
+                errorMgnt,
+                varName,
+                javaType,
+                varName,
+                shortType,
+                varName,
+                errorMgntLocal,
+                shortType,
+                varName,
+                varName,
+                javaType,
+                varName,
+                varName,
+                varName,
+                varName,
+            )
 
     def specificPreProcessing(self, parameter, detachThread):
-        """ Preprocessing before calling the java method
-        """
+        """Preprocessing before calling the java method"""
         if self.isArray():
-            return self.__getProfileCreationOfTheArray(parameter.getName(), detachThread)
+            return self.__getProfileCreationOfTheArray(
+                parameter.getName(), detachThread
+            )
         else:
             return None
 
     def specificPostDeleteMemory(self, parameter):
-        """ Preprocessing before calling the java method
-        """
+        """Preprocessing before calling the java method"""
         return """curEnv->DeleteLocalRef(%s_);
-		""" % (parameter.getName())
+		""" % (
+            parameter.getName()
+        )
 
     def specificPostProcessing(self, detachThread):
-        """ Preprocessing after calling the java method
-        """
+        """Preprocessing after calling the java method"""
 
         javaType = self.getJavaTypeSyntax()
         javaTypeNotArray = self.getJavaTypeSyntaxForceNotArray()
@@ -247,9 +278,13 @@ class dataGiws(object):
             strCommon += """
 			%s lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
-			""" % (strDeclaration)
+			""" % (
+                strDeclaration
+            )
             if self.getDimensionArray() == 1:
-                str += strCommon + """
+                str += (
+                    strCommon
+                    + """
 				/* GetPrimitiveArrayCritical is faster than getXXXArrayElements */
 				%s *resultsArray = static_cast<%s *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
 				%s myArray= new %s[%s lenRow];
@@ -260,13 +295,24 @@ class dataGiws(object):
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 
                         	curEnv->DeleteLocalRef(res);
-				""" % (javaTypeNotArray, javaTypeNotArray, self.getNativeType(), nativeTypeForceNotArray, strDeclaration, strDeclaration)
+				"""
+                    % (
+                        javaTypeNotArray,
+                        javaTypeNotArray,
+                        self.getNativeType(),
+                        nativeTypeForceNotArray,
+                        strDeclaration,
+                        strDeclaration,
+                    )
+                )
                 return str
 
             else:
                 if configGiws().getDisableReturnSize() == True:
                     str += "int lenCol;"
-                str += strCommon + """
+                str += (
+                    strCommon
+                    + """
 				%s ** myArray = new %s*[%s lenRow];
 				for(int i=0; i<%s lenRow; i++) {
 				%sArray oneDim = (%sArray)curEnv->GetObjectArrayElement(res, i);
@@ -280,7 +326,22 @@ class dataGiws(object):
 				}
 
 				curEnv->DeleteLocalRef(res);
-				""" % (self.nativeType, self.nativeType, strDeclaration,  strDeclaration, javaTypeNotArray, javaTypeNotArray, strDeclaration, self.nativeType, self.nativeType, nativeTypeForceNotArray, strDeclaration, strDeclaration)
+				"""
+                    % (
+                        self.nativeType,
+                        self.nativeType,
+                        strDeclaration,
+                        strDeclaration,
+                        javaTypeNotArray,
+                        javaTypeNotArray,
+                        strDeclaration,
+                        self.nativeType,
+                        self.nativeType,
+                        nativeTypeForceNotArray,
+                        strDeclaration,
+                        strDeclaration,
+                    )
+                )
                 return str
         else:
             # Not post processing when dealing with primitive types

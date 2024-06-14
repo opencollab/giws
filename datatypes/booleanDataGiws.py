@@ -65,7 +65,13 @@ class booleanDataGiws(dataGiws):
                 return """
 				jbooleanArray %s = curEnv->NewBooleanArray( %sSize ) ;
 				curEnv->SetBooleanArrayRegion( %s, 0, %sSize, (jboolean*)%s ) ;
-				""" % (name + "_", name, name + "_", name, name)
+				""" % (
+                    name + "_",
+                    name,
+                    name + "_",
+                    name,
+                    name,
+                )
             else:
                 return """
 				jobjectArray %s_ = curEnv->NewObjectArray(%sSize, curEnv->FindClass("[%s"),NULL);
@@ -75,14 +81,30 @@ class booleanDataGiws(dataGiws):
                 	        curEnv->SetObjectArrayElement(%s_, i, %sLocal);
                         	curEnv->DeleteLocalRef(%sLocal);
 	                        }
-				""" % (name, name, self.getTypeSignature(), name, name, name, name, name, name, name, name, name)
+				""" % (
+                    name,
+                    name,
+                    self.getTypeSignature(),
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                    name,
+                )
         else:
             return """
 			jboolean %s = (static_cast<bool>(%s) ? JNI_TRUE : JNI_FALSE);
-			""" % (name + "_", name)
+			""" % (
+                name + "_",
+                name,
+            )
 
     def specificPostProcessing(self, detachThread):
-        """ needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);) """
+        """needed to avoid casting issue with Visual (myArray[i]=(resultsArray[i] == JNI_TRUE);)"""
         if self.isArray():
             str = JNIFrameWork().getExceptionCheckProfile(detachThread)
             strCommon = ""
@@ -95,7 +117,10 @@ class booleanDataGiws(dataGiws):
 
             if self.getDimensionArray() == 1:
 
-                return str + strCommon + """
+                return (
+                    str
+                    + strCommon
+                    + """
 
 				/* faster than getXXXArrayElements */
 				jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
@@ -108,10 +133,14 @@ class booleanDataGiws(dataGiws):
 
 				curEnv->DeleteLocalRef(res);
 				"""
+                )
             else:
                 if configGiws().getDisableReturnSize() == True:
                     str += "int *lenCol;"
-                return str + strCommon + """
+                return (
+                    str
+                    + strCommon
+                    + """
 				bool ** myArray = new bool*[*lenRow];
 				for(int i=0; i<*lenRow; i++) {
 				jbooleanArray oneDim = (jbooleanArray)curEnv->GetObjectArrayElement(res, i);
@@ -126,12 +155,13 @@ class booleanDataGiws(dataGiws):
 
 				curEnv->DeleteLocalRef(res);
 				"""
+                )
 
         else:
             return ""
 
     def getReturnSyntax(self):
-        """ Avoids warnings about casting a jboolean to a bool """
+        """Avoids warnings about casting a jboolean to a bool"""
         if self.isArray():
             return """
 			return myArray;
@@ -140,5 +170,7 @@ class booleanDataGiws(dataGiws):
             return """
 			return (res == JNI_TRUE);
 			"""
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     print(booleanDataGiws().getReturnTypeSyntax())
