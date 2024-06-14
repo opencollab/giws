@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/env python3
 #
 # Matthieu WALTER - <gamo@tecp.info>
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
