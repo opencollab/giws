@@ -94,7 +94,7 @@ class methodGiws:
                 # needed to lenRow
                 if (
                     self.getReturn().isArray()
-                    and configGiws().getDisableReturnSize() != True
+                    and configGiws().getDisableReturnSize() is not True
                 ):
                     str += ", "
 
@@ -129,8 +129,7 @@ class methodGiws:
                 arrayOfStringDeclared = True
 
             if (
-                paramType.specificPreProcessing(parameter, self.getDetachThread())
-                != None
+                paramType.specificPreProcessing(parameter, self.getDetachThread()) is not None
             ):
                 str += paramType.specificPreProcessing(
                     parameter, self.getDetachThread()
@@ -216,7 +215,7 @@ class methodGiws:
             static = ""
 
         ret = ""
-        if self.getReturn().isArray() and configGiws().getDisableReturnSize() != True:
+        if self.getReturn().isArray() and configGiws().getDisableReturnSize() is not True:
             if len(self.__parameters) != 0:
                 ret += ", "
             if self.getReturn().getDimensionArray() == 1:
@@ -243,7 +242,7 @@ class methodGiws:
         )
 
         ret = ""
-        if self.getReturn().isArray() and configGiws().getDisableReturnSize() != True:
+        if self.getReturn().isArray() and configGiws().getDisableReturnSize() is not True:
             if len(self.__parameters) != 0:
                 ret += ", "
             if self.getReturn().getDimensionArray() == 1:

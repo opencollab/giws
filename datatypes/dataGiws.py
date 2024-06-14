@@ -34,7 +34,6 @@
 #
 # For more information, see the file COPYING
 
-import sys
 from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
@@ -258,9 +257,9 @@ class dataGiws(object):
     def specificPostProcessing(self, detachThread):
         """Preprocessing after calling the java method"""
 
-        javaType = self.getJavaTypeSyntax()
+        self.getJavaTypeSyntax()
         javaTypeNotArray = self.getJavaTypeSyntaxForceNotArray()
-        shortType = self.getJavaShortType(forceNotArray=True)
+        self.getJavaShortType(forceNotArray=True)
         nativeTypeForceNotArray = self.getNativeTypeForceNotArray()
 
         if self.isArray():
@@ -269,7 +268,7 @@ class dataGiws(object):
             str += JNIFrameWork().getExceptionCheckProfile(detachThread)
             strCommon = ""
             strDeclaration = ""
-            if configGiws().getDisableReturnSize() == True:
+            if configGiws().getDisableReturnSize() is True:
                 strCommon += "int lenRow;"
             else:
                 # The size of the array is returned as output argument of the
@@ -308,7 +307,7 @@ class dataGiws(object):
                 return str
 
             else:
-                if configGiws().getDisableReturnSize() == True:
+                if configGiws().getDisableReturnSize() is True:
                     str += "int lenCol;"
                 str += (
                     strCommon

@@ -72,18 +72,18 @@ class dataBufferGiws(dataGiws):
         # Management of the error when not enough memory to create the
         # XXXXXBuffer
         if configGiws().getThrowsException():
-            errorMgntMem = """%sthrow %s::JniBadAllocException(curEnv);""" % (
+            """%sthrow %s::JniBadAllocException(curEnv);""" % (
                 detachThread,
                 configGiws().getExceptionFileName(),
             )
         else:
-            errorMgntMem = """std::cerr << "Could not allocate Java %s array, memory full." << std::endl;%s
+            """std::cerr << "Could not allocate Java %s array, memory full." << std::endl;%s
 			exit(EXIT_FAILURE);""" % (
                 self.getJavaBufferType(),
                 detachThread,
             )
 
-            errorMgntMemBis = self.__errorMemoryByteBuffer(detachThread)
+            self.__errorMemoryByteBuffer(detachThread)
 
         str = """
 
@@ -189,7 +189,7 @@ throw GiwsException::JniBadAllocException(curEnv);
         if self.isArray():
             strCommon = ""
             strDeclaration = ""
-            if configGiws().getDisableReturnSize() == True:
+            if configGiws().getDisableReturnSize() is True:
                 strCommon += "int lenRow;"
             else:
                 # The size of the array is returned as output argument of the
@@ -217,7 +217,7 @@ throw GiwsException::JniBadAllocException(curEnv);
                 )
                 return str
             else:
-                if configGiws().getDisableReturnSize() == True:
+                if configGiws().getDisableReturnSize() is True:
                     str += "int lenCol;"
                 str += (
                     strCommon

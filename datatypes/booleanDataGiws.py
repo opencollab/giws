@@ -108,7 +108,7 @@ class booleanDataGiws(dataGiws):
         if self.isArray():
             str = JNIFrameWork().getExceptionCheckProfile(detachThread)
             strCommon = ""
-            if configGiws().getDisableReturnSize() == True:
+            if configGiws().getDisableReturnSize() is True:
                 strCommon += "int *lenRow;"
             strCommon += """
 			*lenRow = curEnv->GetArrayLength(res);
@@ -135,7 +135,7 @@ class booleanDataGiws(dataGiws):
 				"""
                 )
             else:
-                if configGiws().getDisableReturnSize() == True:
+                if configGiws().getDisableReturnSize() is True:
                     str += "int *lenCol;"
                 return (
                     str

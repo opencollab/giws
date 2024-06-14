@@ -34,8 +34,6 @@
 #
 # For more information, see the file COPYING
 
-from datatypes.dataGiws import dataGiws
-from datatypes.dataBufferGiws import dataBufferGiws
 from datatypes.dataFactoryGiws import dataFactoryGiws
 
 
