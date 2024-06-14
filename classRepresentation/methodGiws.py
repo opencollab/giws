@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from parameterGiws import parameterGiws
+from classRepresentation.parameterGiws import parameterGiws
 from JNIFrameWork import JNIFrameWork
 from datatypes.dataGiws import dataGiws
 from datatypes.stringDataGiws import stringDataGiws
@@ -54,7 +54,7 @@ class methodGiws:
         if isinstance(returns, dataGiws):
             self.__returns = returns
         else:
-            raise Exception("The type must be a dataGiws object")
+            raise Exception("The return type must be a dataGiws object")
         self.__parameters = []
         if detachThread:
             self.__detachThread = "\njvm_->DetachCurrentThread();\n"
@@ -63,6 +63,8 @@ class methodGiws:
     def addParameter(self, parameter):
         if isinstance(parameter, parameterGiws):
             self.__parameters.append(parameter)
+        else:
+            raise Exception("The parameter type must be a parameterGiws object")
 
     def getName(self):
         return self.__name

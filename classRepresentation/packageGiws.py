@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-from objectGiws import objectGiws
+from classRepresentation.objectGiws import objectGiws
 
 
 class packageGiws:
@@ -60,6 +60,9 @@ class packageGiws:
     def addObject(self, object):
         if isinstance(object, objectGiws):
             self.__objects.append(object)
+        else:
+            raise Exception("cannot add a non GIWS object")
+
 
     def getObject(self, name):
         for object in self.__objects:
