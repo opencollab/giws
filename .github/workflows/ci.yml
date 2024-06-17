@@ -1,0 +1,30 @@
+name: Build the examples
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install default JDK
+        run: sudo apt-get update && sudo apt-get install -y default-jdk
+
+      - name: Set JAVA_HOME environment variable
+        run: echo "JAVA_HOME=$(readlink -f /usr/bin/java | sed 's:/bin/java::')" >> $GITHUB_ENV
+
+      - name: Verify JAVA_HOME
+        run: echo $JAVA_HOME
+
+      - name: Build examples
+        run: |
+          make examples
