@@ -47,10 +47,6 @@ class objectGiws:
     # Which class it extends
     __extends = None
 
-    def __init__(self, name):
-        self.__name = name
-        self.__methods = []
-
     def __init__(self, name, extends):
         self.__name = name
         self.__methods = []
