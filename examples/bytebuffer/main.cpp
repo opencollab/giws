@@ -31,8 +31,8 @@ int main(){
   	JavaVM* jvm = create_vm();
 	ByteBufferSync *plop = new ByteBufferSync(jvm);
     double arr[2]={2.2, 42};
-    byte arr2[2]={1, 2};
-    long long arrL[2]={2.2, 42};
+    signed char arr2[2] = {1, 2};
+    long long arrL[2]={2, 42};
     plop->bar(jvm, arr, 2, arrL, 2, arr2, 2);
 
     int size = 0;
