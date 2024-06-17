@@ -9,7 +9,7 @@ JavaVM* create_vm() {
 	JNIEnv* env;
 	JavaVMInitArgs args;
 	JavaVMOption options[2];
-	
+
 	/* There is a new JNI_VERSION_1_4, but it doesn't add anything for the purposes of our example. */
 	args.version = JNI_VERSION_1_4;
 

@@ -13,5 +13,5 @@ public:
 int main(){
 
 	Son *son = new Son();
-	return 0;	
+	return 0;
 }
