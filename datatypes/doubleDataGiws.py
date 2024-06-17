@@ -38,7 +38,6 @@ from datatypes.dataGiws import dataGiws
 
 
 class doubleDataGiws(dataGiws):
-
     """
     Manages Java datatype double
     """

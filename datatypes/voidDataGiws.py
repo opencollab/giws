@@ -59,5 +59,6 @@ class voidDataGiws(dataGiws):
     def getReturnSyntax(self):
         return ""
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     print(voidDataGiws().getReturnTypeSyntax())

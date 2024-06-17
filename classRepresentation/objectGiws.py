@@ -69,12 +69,20 @@ class objectGiws:
         str = ""
         stringClassSet = False
         for method in self.__methods:
-            str += """%s=NULL;
-			""" % method.getUniqueNameOfTheMethod()
+            str += (
+                """%s=NULL;
+			"""
+                % method.getUniqueNameOfTheMethod()
+            )
 
             for param in method.getParameters():
                 # Avoids to load the class String each time we need it
-                if isinstance(param.getType(), stringDataGiws) and param.getType().isArray() and not stringClassSet and method.getModifier() != "static":
+                if (
+                    isinstance(param.getType(), stringDataGiws)
+                    and param.getType().isArray() is True
+                    and stringClassSet is not True
+                    and method.getModifier() != "static"
+                ):
                     str += """
 					jclass localStringArrayClass = curEnv->FindClass("java/lang/String");
 					stringArrayClass = static_cast<jclass>(curEnv->NewGlobalRef(localStringArrayClass));
@@ -93,8 +101,10 @@ class objectGiws:
 
         # Management of the error when the class cannot be found
         if configGiws().getThrowsException():
-            errorMgntClass = """  throw %s::JniClassNotFoundException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntClass = (
+                """  throw %s::JniClassNotFoundException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntClass = """std::cerr << "Could not get the Class " << this->className() <<  std::endl;
 			curEnv->ExceptionDescribe();
@@ -102,8 +112,10 @@ class objectGiws:
 
         # Management of the error when the global ref could not be created
         if configGiws().getThrowsException():
-            errorMgntCreation = """throw %s::JniObjectCreationException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntCreation = (
+                """throw %s::JniObjectCreationException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntCreation = """std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
 			curEnv->ExceptionDescribe();
@@ -112,8 +124,10 @@ class objectGiws:
         # Management of the error when it is not possible to retrieve the
         # constructor
         if configGiws().getThrowsException():
-            errorMgntConstructor = """throw %s::JniObjectCreationException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntConstructor = (
+                """throw %s::JniObjectCreationException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntConstructor = """std::cerr << "Could not retrieve the constructor of the class " << this->className() << " with the profile : " << construct << param << std::endl;
 		curEnv->ExceptionDescribe();
@@ -121,8 +135,10 @@ class objectGiws:
 
         # Management of the error when it is not possible instantiate the obj
         if configGiws().getThrowsException():
-            errorMgntInstantiate = """throw %s::JniObjectCreationException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntInstantiate = (
+                """throw %s::JniObjectCreationException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntInstantiate = """std::cerr << "Could not instantiate the object " << this->className() << " with the constructor : " << construct << param << std::endl;
 			curEnv->ExceptionDescribe();
@@ -130,8 +146,10 @@ class objectGiws:
 
         # Management of the error when it is not possible create a global ref
         if configGiws().getThrowsException():
-            errorMgntRef = """throw %s::JniObjectCreationException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntRef = (
+                """throw %s::JniObjectCreationException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntRef = """std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
 			curEnv->ExceptionDescribe();
@@ -140,10 +158,13 @@ class objectGiws:
         # Init the list of the cache of methodID
         strMethodID = self.__getDeclarationOfCachingMethodID()
         constructorProfile = """%s::%s""" % (
-            self.getName(), self.__getConstructorProfileWhichInstanciateTheNewObject())
+            self.getName(),
+            self.__getConstructorProfileWhichInstanciateTheNewObject(),
+        )
         if self.getExtendedClass() is not None:
             constructorProfile += """ : %s(fakeGiwsDataType::fakeGiwsDataType())""" % (
-                self.getExtendedClass().getName())
+                self.getExtendedClass().getName()
+            )
 
         return """%s {
 		jmethodID constructObject = NULL ;
@@ -192,7 +213,15 @@ class objectGiws:
 		%s
 
 		}
-		""" % (constructorProfile, errorMgntClass, errorMgntCreation, errorMgntConstructor, errorMgntInstantiate, errorMgntRef, strMethodID)
+		""" % (
+            constructorProfile,
+            errorMgntClass,
+            errorMgntCreation,
+            errorMgntConstructor,
+            errorMgntInstantiate,
+            errorMgntRef,
+            strMethodID,
+        )
 
     def __getConstructorWhichUsesAnAlreadyExistingJObject(self):
         # Init the list of the cache of methodID
@@ -201,8 +230,10 @@ class objectGiws:
         # Management of the error when the instance class could not be created
         # a global ref
         if configGiws().getThrowsException():
-            errorMgntRef = """throw %s::JniObjectCreationException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntRef = (
+                """throw %s::JniObjectCreationException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntRef = """
 			std::cerr << "Could not create a Global Ref of " << this->className() <<  std::endl;
@@ -212,18 +243,23 @@ class objectGiws:
         # Management of the error when the instance class could not be created
         # a global ref
         if configGiws().getThrowsException():
-            errorMgntNewRef = """throw %s::JniObjectCreationException(curEnv, this->className());""" % (
-                configGiws().getExceptionFileName())
+            errorMgntNewRef = (
+                """throw %s::JniObjectCreationException(curEnv, this->className());"""
+                % (configGiws().getExceptionFileName())
+            )
         else:
             errorMgntNewRef = """
 			std::cerr << "Could not create a new global ref of " << this->className() << std::endl;
 			curEnv->ExceptionDescribe();
 			exit(EXIT_FAILURE);"""
         constructorProfile = """%s::%s""" % (
-            self.getName(), self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject())
+            self.getName(),
+            self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject(),
+        )
         if self.getExtendedClass() is not None:
             constructorProfile += """ : %s(fakeGiwsDataType::fakeGiwsDataType()) """ % (
-                self.getExtendedClass().getName())
+                self.getExtendedClass().getName()
+            )
         return """
 		%s {
         jvm=jvm_;
@@ -246,7 +282,12 @@ class objectGiws:
         %s
 
 }
-		""" % (constructorProfile, errorMgntRef, errorMgntNewRef, strMethodID)
+		""" % (
+            constructorProfile,
+            errorMgntRef,
+            errorMgntNewRef,
+            strMethodID,
+        )
 
     # Returns the class the current one is extending
     # Returns None if not existing
@@ -259,17 +300,26 @@ class objectGiws:
         return str
 
     def __getConstructorProfileWhichInstanciateTheNewObject(self):
-        str = """%s(%s * %s_)""" % (self.getName(), JNIFrameWork()
-                                    .getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
-#	  if self.__extends!=None:
-#		  str+=""": %s(fakeGiwsDataType::fakeGiwsDataType())"""%(self.__extends)
+        str = """%s(%s * %s_)""" % (
+            self.getName(),
+            JNIFrameWork().getJavaVMVariableType(),
+            JNIFrameWork().getJavaVMVariable(),
+        )
+        # 	  if self.__extends!=None:
+        # 		  str+=""": %s(fakeGiwsDataType::fakeGiwsDataType())"""%(self.__extends)
         return str
 
     def __getConstructorProfileWhichUsesAnAlreadyExistingJObject(self):
-        return """%s(%s * %s_, jobject JObj)""" % (self.getName(), JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable())
+        return """%s(%s * %s_, jobject JObj)""" % (
+            self.getName(),
+            JNIFrameWork().getJavaVMVariableType(),
+            JNIFrameWork().getJavaVMVariable(),
+        )
 
     def getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(self):
-        return """%s;""" % self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject()
+        return (
+            """%s;""" % self.__getConstructorProfileWhichUsesAnAlreadyExistingJObject()
+        )
 
     def getConstructorWhichInstanciateTheNewObjectHeaderCXX(self):
         return """%s;""" % self.__getConstructorProfileWhichInstanciateTheNewObject()
@@ -286,7 +336,9 @@ class objectGiws:
 			#ifdef FAKEGIWSDATATYPE
 			%s(fakeGiwsDataType::fakeGiwsDataType /* unused */) {}
 			#endif
-			""" % (self.getName())
+			""" % (
+                self.getName()
+            )
 
         return str
 
@@ -294,11 +346,18 @@ class objectGiws:
         str = ""
         stringClassSet = False
         for method in self.__methods:
-            str += """jmethodID %s; // cache method id
-			""" % method.getUniqueNameOfTheMethod()
+            str += (
+                """jmethodID %s; // cache method id
+			"""
+                % method.getUniqueNameOfTheMethod()
+            )
             for param in method.getParameters():
                 # Avoids to load the class String each time we need it
-                if isinstance(param.getType(), stringDataGiws) and param.getType().isArray() and not stringClassSet:
+                if (
+                    isinstance(param.getType(), stringDataGiws)
+                    and param.getType().isArray() is True
+                    and stringClassSet is not True
+                ):
                     str += """jclass stringArrayClass;
 					"""
                     stringClassSet = True
@@ -336,7 +395,10 @@ class objectGiws:
             classProfile = """class GIWSEXPORT %s {""" % (self.getName())
         else:
             classProfile = """class GIWSEXPORT %s : public %s {
-			""" % (self.getName(), self.getExtendedClass().getName())
+			""" % (
+                self.getName(),
+                self.getExtendedClass().getName(),
+            )
         return """%s
 
 			private:
@@ -406,7 +468,21 @@ class objectGiws:
                         %s
 			};
 
-			""" % (classProfile, JNIFrameWork().getJavaVMVariableType(), JNIFrameWork().getJavaVMVariable(), self.getMethodsProfileForMethodIdCache(), self.getProtectedFields(), self.getCacheBuffer(), self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(), self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(), self.__getFakeConstructorForExtendedClasses(), self.getName(), self.getMethodsCXX(), self.getClassNameProfile(JNIObjectName), self.getInitClassProfile())
+			""" % (
+            classProfile,
+            JNIFrameWork().getJavaVMVariableType(),
+            JNIFrameWork().getJavaVMVariable(),
+            self.getMethodsProfileForMethodIdCache(),
+            self.getProtectedFields(),
+            self.getCacheBuffer(),
+            self.getConstructorWhichInstanciateTheNewObjectHeaderCXX(),
+            self.getConstructorWhichUsesAnAlreadyExistingJObjectHeaderCXX(),
+            self.__getFakeConstructorForExtendedClasses(),
+            self.getName(),
+            self.getMethodsCXX(),
+            self.getClassNameProfile(JNIObjectName),
+            self.getInitClassProfile(),
+        )
 
     def generateCXXBody(self):
         return """
@@ -423,7 +499,17 @@ class objectGiws:
 		%s
 		// Method(s)
 		%s
-			""" % (self.getStaticVariableDeclaration(), JNIFrameWork().getMethodGetCurrentEnv(self.getName()), JNIFrameWork().getObjectDestuctor(self.getName(), stringClassSet=self.__stringClassSet), self.getConstructorBodyCXX(), JNIFrameWork().getSynchronizeMethod(self.getName()), JNIFrameWork().getEndSynchronizeMethod(self.getName()), self.getMethodsCXX("body"))
+			""" % (
+            self.getStaticVariableDeclaration(),
+            JNIFrameWork().getMethodGetCurrentEnv(self.getName()),
+            JNIFrameWork().getObjectDestuctor(
+                self.getName(), stringClassSet=self.__stringClassSet
+            ),
+            self.getConstructorBodyCXX(),
+            JNIFrameWork().getSynchronizeMethod(self.getName()),
+            JNIFrameWork().getEndSynchronizeMethod(self.getName()),
+            self.getMethodsCXX("body"),
+        )
 
     def getClassNameProfile(self, JNIObjectName):
         return """
@@ -431,7 +517,9 @@ class objectGiws:
                 {
                 return "%s";
                 }
-                """ % (JNIObjectName)
+                """ % (
+            JNIObjectName
+        )
 
     def getInitClassProfile(self):
         return """
@@ -456,7 +544,7 @@ class objectGiws:
 
         for method in self.__methods:
             for param in method.getParameters():
-                if param.getType().isByteBufferBased():
+                if param.getType().isByteBufferBased() is True:
                     return True
 
         return False
@@ -478,7 +566,20 @@ class objectGiws:
                 jmethodID %s::asdbIDFloatBuffer = NULL;
                 jmethodID %s::asdbIDIntBuffer = NULL;
                 jmethodID %s::asdbIDLongBuffer = NULL;
-                jmethodID %s::asdbIDShortBuffer = NULL;""" %  ( self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName(), self.getName() )
+                jmethodID %s::asdbIDShortBuffer = NULL;""" % (
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+                self.getName(),
+            )
         return str
 
     def getCacheBuffer(self):

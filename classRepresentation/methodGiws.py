@@ -82,7 +82,7 @@ class methodGiws:
         return self.__detachThread
 
     def getParametersCXX(self):
-        """ Returns the parameters with their types """
+        """Returns the parameters with their types"""
         i = 1
         if self.getModifier() == "static":
             str = "JavaVM * jvm_"
@@ -92,7 +92,10 @@ class methodGiws:
                 # In the case where there is no input argument
                 # but return an array of int (or an other type)
                 # needed to lenRow
-                if self.getReturn().isArray() and not configGiws().getDisableReturnSize():
+                if (
+                    self.getReturn().isArray()
+                    and configGiws().getDisableReturnSize() is not True
+                ):
                     str += ", "
 
         else:
@@ -117,23 +120,33 @@ class methodGiws:
         for parameter in self.__parameters:
             paramType = parameter.getType()
             # Only declared once this object
-            if type(paramType) is stringDataGiws and paramType.isArray() and not arrayOfStringDeclared:
+            if (
+                type(paramType) is stringDataGiws
+                and paramType.isArray()
+                and not arrayOfStringDeclared
+            ):
                 str += """		jclass stringArrayClass = curEnv->FindClass("java/lang/String");"""
                 arrayOfStringDeclared = True
 
-            if paramType.specificPreProcessing(parameter, self.getDetachThread()) is not None:
+            if (
+                paramType.specificPreProcessing(parameter, self.getDetachThread())
+                is not None
+            ):
                 str += paramType.specificPreProcessing(
-                    parameter, self.getDetachThread())
+                    parameter, self.getDetachThread()
+                )
 
         # Retrieve the call profile to the java object
         str += JNIFrameWork().getCallObjectMethodProfile(self)
 
         # add specific post processing stuff
-        if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType:
+        if (
+            hasattr(self.getReturn(), "specificPostProcessing")
+            and type(self.getReturn().specificPostProcessing) is MethodType
+        ):
             # For this datatype, there is some stuff to do AFTER the method
             # call
-            str += self.getReturn().specificPostProcessing(
-                self.getDetachThread())
+            str += self.getReturn().specificPostProcessing(self.getDetachThread())
 
         # Delete the stringArrayClass object if used before
         if arrayOfStringDeclared:
@@ -151,13 +164,20 @@ class methodGiws:
         if self.getModifier() == "static":
             str += JNIFrameWork().getDeleteStaticProfile()
 
-            if hasattr(self.getReturn(), "specificPostProcessing") and type(self.getReturn().specificPostProcessing) is MethodType and (self.getReturn().isArray() or isinstance(self.getReturn(), stringDataGiws)):
+            if (
+                hasattr(self.getReturn(), "specificPostProcessing")
+                and type(self.getReturn().specificPostProcessing) is MethodType
+                and (
+                    self.getReturn().isArray()
+                    or isinstance(self.getReturn(), stringDataGiws)
+                )
+            ):
                 # Check the exception with a delete to avoid memory leak
                 str += JNIFrameWork().getExceptionCheckProfile(
-                    self.getDetachThread(), self.getReturn().temporaryVariableName)
+                    self.getDetachThread(), self.getReturn().temporaryVariableName
+                )
             else:
-                str += JNIFrameWork().getExceptionCheckProfile(
-                    self.getDetachThread())
+                str += JNIFrameWork().getExceptionCheckProfile(self.getDetachThread())
 
         str += self.getDetachThread()
         str += JNIFrameWork().getReturnProfile(self.getReturn())
@@ -166,21 +186,29 @@ class methodGiws:
 
     def getUniqueNameOfTheMethod(self):
         paramStr = ""
-        for parameter in self.getParameters():  # Creates a unique string of all the profiles
-            paramStr += parameter.getType().getJavaTypeSyntax() + \
-                "_" * parameter.getType(
-            ).getDimensionArray()
+        for (
+            parameter
+        ) in self.getParameters():  # Creates a unique string of all the profiles
+            paramStr += (
+                parameter.getType().getJavaTypeSyntax()
+                + "_" * parameter.getType().getDimensionArray()
+            )
             paramStr += parameter.getType().getRealJavaType().replace(".", "_")
-            if parameter.getType().isArray():  # Avoid to have jobjectArray in the profile. Does not show the actual type. Fixes bug #143
-                paramStr += parameter.getType().getRealJavaType().replace(
-                    ".", "_")
-        str = """%s%s%sID""" % (self.getReturn().getJavaTypeSyntax() + "_" *
-                                self.getReturn().getDimensionArray(), self.getName(), paramStr)
+            if (
+                parameter.getType().isArray()
+            ):  # Avoid to have jobjectArray in the profile. Does not show the actual type. Fixes bug #143
+                paramStr += parameter.getType().getRealJavaType().replace(".", "_")
+        str = """%s%s%sID""" % (
+            self.getReturn().getJavaTypeSyntax()
+            + "_" * self.getReturn().getDimensionArray(),
+            self.getName(),
+            paramStr,
+        )
 
         return str
 
     def generateCXXHeader(self):
-        """ Generates the profile of the method ... for the header """
+        """Generates the profile of the method ... for the header"""
 
         if self.getModifier() == "static":
             static = "static "
@@ -188,7 +216,10 @@ class methodGiws:
             static = ""
 
         ret = ""
-        if self.getReturn().isArray() and not configGiws().getDisableReturnSize():
+        if (
+            self.getReturn().isArray()
+            and configGiws().getDisableReturnSize() is not True
+        ):
             if len(self.__parameters) != 0:
                 ret += ", "
             if self.getReturn().getDimensionArray() == 1:
@@ -197,16 +228,28 @@ class methodGiws:
                 ret += "int *lenRow, int *lenCol"
 
         str = """%s%s %s(%s%s);
-		""" % (static, self.getReturn().getNativeType(), self.getName(), self.getParametersCXX(), ret)
+		""" % (
+            static,
+            self.getReturn().getNativeType(),
+            self.getName(),
+            self.getParametersCXX(),
+            ret,
+        )
         return str
 
     def generateCXXBody(self, className):
-        """ Generates the content of the method ... for the body """
+        """Generates the content of the method ... for the body"""
         baseProfile = """%s %s::%s""" % (
-            self.getReturn().getNativeType(), className, self.getName())
+            self.getReturn().getNativeType(),
+            className,
+            self.getName(),
+        )
 
         ret = ""
-        if self.getReturn().isArray() and not configGiws().getDisableReturnSize():
+        if (
+            self.getReturn().isArray()
+            and configGiws().getDisableReturnSize() is not True
+        ):
             if len(self.__parameters) != 0:
                 ret += ", "
             if self.getReturn().getDimensionArray() == 1:
@@ -215,10 +258,16 @@ class methodGiws:
                 ret += "int *lenRow, int *lenCol"
 
         str = """
-		%s (%s%s)""" % (baseProfile, self.getParametersCXX(), ret)
+		%s (%s%s)""" % (
+            baseProfile,
+            self.getParametersCXX(),
+            ret,
+        )
 
         str += """{
 		%s
-		}""" % (self.__createMethodBody())
+		}""" % (
+            self.__createMethodBody()
+        )
 
         return str

@@ -38,7 +38,6 @@ from datatypes.dataGiws import dataGiws
 
 
 class longDataGiws(dataGiws):
-
     """
     Manages Java datatype long
     """
@@ -57,5 +56,6 @@ class longDataGiws(dataGiws):
     def getDescription(self):
         return "signed 64 bits"
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     longDataGiws().getReturnTypeSyntax()

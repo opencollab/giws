@@ -38,7 +38,6 @@ from configGiws import configGiws
 
 
 class JNIFrameWork:
-
     """
     This class provides the JNI code
     """
@@ -358,7 +357,7 @@ class JNIFrameWork:
             method.getUniqueNameOfTheMethod(),
             params,
             returnsEnd,
-       )
+        )
 
     def getReturnProfile(self, returnType):
         return returnType.getReturnSyntax()
