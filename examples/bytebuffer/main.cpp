@@ -9,7 +9,7 @@ JavaVM* create_vm() {
 	JNIEnv* env;
 	JavaVMInitArgs args;
 	JavaVMOption options[2];
-	
+
 	/* There is a new JNI_VERSION_1_4, but it doesn't add anything for the purposes of our example. */
 	args.version = JNI_VERSION_1_4;
 
@@ -31,8 +31,8 @@ int main(){
   	JavaVM* jvm = create_vm();
 	ByteBufferSync *plop = new ByteBufferSync(jvm);
     double arr[2]={2.2, 42};
-    byte arr2[2]={1, 2};
-    long long arrL[2]={2.2, 42};
+    signed char arr2[2] = {1, 2};
+    long long arrL[2]={2, 42};
     plop->bar(jvm, arr, 2, arrL, 2, arr2, 2);
 
     int size = 0;
