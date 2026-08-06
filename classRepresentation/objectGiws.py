@@ -69,11 +69,8 @@ class objectGiws:
         str = ""
         stringClassSet = False
         for method in self.__methods:
-            str += (
-                """%s=NULL;
-			"""
-                % method.getUniqueNameOfTheMethod()
-            )
+            str += """%s=NULL;
+			""" % method.getUniqueNameOfTheMethod()
 
             for param in method.getParameters():
                 # Avoids to load the class String each time we need it
@@ -336,9 +333,7 @@ class objectGiws:
 			#ifdef FAKEGIWSDATATYPE
 			%s(fakeGiwsDataType::fakeGiwsDataType /* unused */) {}
 			#endif
-			""" % (
-                self.getName()
-            )
+			""" % (self.getName())
 
         return str
 
@@ -346,11 +341,8 @@ class objectGiws:
         str = ""
         stringClassSet = False
         for method in self.__methods:
-            str += (
-                """jmethodID %s; // cache method id
-			"""
-                % method.getUniqueNameOfTheMethod()
-            )
+            str += """jmethodID %s; // cache method id
+			""" % method.getUniqueNameOfTheMethod()
             for param in method.getParameters():
                 # Avoids to load the class String each time we need it
                 if (
@@ -517,9 +509,7 @@ class objectGiws:
                 {
                 return "%s";
                 }
-                """ % (
-            JNIObjectName
-        )
+                """ % (JNIObjectName)
 
     def getInitClassProfile(self):
         return """

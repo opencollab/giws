@@ -38,7 +38,6 @@ from datatypes.dataGiws import dataGiws
 
 
 class charDataGiws(dataGiws):
-
     type = "jchar"
     nativeType = "unsigned short"
     callMethod = "CallCharMethod"

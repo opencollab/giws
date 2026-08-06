@@ -141,9 +141,7 @@ class JNIFrameWork:
         myStr = """
                 void %s::synchronize() {
                 if (getCurrentEnv()->MonitorEnter(instance) != JNI_OK) {
-                """ % (
-            objectName
-        )
+                """ % (objectName)
         if configGiws().getThrowsException():
             myStr += """throw %s::JniMonitorException(getCurrentEnv(), "%s");""" % (
                 configGiws().getExceptionFileName(),
@@ -164,9 +162,7 @@ class JNIFrameWork:
         myStr = """
                 void %s::endSynchronize() {
                 if ( getCurrentEnv()->MonitorExit(instance) != JNI_OK) {
-                """ % (
-            objectName
-        )
+                """ % (objectName)
         if configGiws().getThrowsException():
             myStr += """throw %s::JniMonitorException(getCurrentEnv(), "%s");""" % (
                 configGiws().getExceptionFileName(),
@@ -224,9 +220,7 @@ class JNIFrameWork:
                         """
             if methodReturn != "":
                 str += """delete[] %s;
-                                """ % (
-                    methodReturn
-                )
+                                """ % (methodReturn)
             str += """%sthrow %s::JniCallMethodException(curEnv);
                         }""" % (
                 detachThread,

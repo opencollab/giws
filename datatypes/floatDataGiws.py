@@ -38,7 +38,6 @@ from datatypes.dataGiws import dataGiws
 
 
 class floatDataGiws(dataGiws):
-
     type = "jfloat"
     nativeType = "float"
     callMethod = "CallFloatMethod"

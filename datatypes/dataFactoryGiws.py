@@ -56,7 +56,6 @@ from datatypes.ShortBufferDataGiws import ShortBufferDataGiws
 
 
 class dataFactoryGiws:
-
     def __init__(self):
 
         self.dict = {

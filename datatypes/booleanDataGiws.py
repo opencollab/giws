@@ -43,7 +43,6 @@ from configGiws import configGiws
 
 
 class booleanDataGiws(dataGiws):
-
     type = "jboolean"
     nativeType = "bool"
     callMethod = "CallBooleanMethod"
@@ -116,7 +115,6 @@ class booleanDataGiws(dataGiws):
 			"""
 
             if self.getDimensionArray() == 1:
-
                 return (
                     str
                     + strCommon

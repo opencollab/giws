@@ -42,7 +42,6 @@ from licenseWrapper import licenseWrapper
 
 
 class CXXFile:
-
     package = None
 
     def __init__(self, package):

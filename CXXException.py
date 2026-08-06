@@ -39,14 +39,14 @@
 #
 # For more information, see the file COPYING
 
-""" Engine to create the C++/JNI exception files """
+"""Engine to create the C++/JNI exception files"""
+
 from licenseWrapper import licenseWrapper
 from JNIFrameWork import JNIFrameWork
 from outputWriter import outputWriter
 
 
 class CXXException:
-
     package = None
 
     def getDescriptionHeader(self, config):

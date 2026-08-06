@@ -194,9 +194,7 @@ class methodGiws:
                 + "_" * parameter.getType().getDimensionArray()
             )
             paramStr += parameter.getType().getRealJavaType().replace(".", "_")
-            if (
-                parameter.getType().isArray()
-            ):  # Avoid to have jobjectArray in the profile. Does not show the actual type. Fixes bug #143
+            if parameter.getType().isArray():  # Avoid to have jobjectArray in the profile. Does not show the actual type. Fixes bug #143
                 paramStr += parameter.getType().getRealJavaType().replace(".", "_")
         str = """%s%s%sID""" % (
             self.getReturn().getJavaTypeSyntax()
@@ -266,8 +264,6 @@ class methodGiws:
 
         str += """{
 		%s
-		}""" % (
-            self.__createMethodBody()
-        )
+		}""" % (self.__createMethodBody())
 
         return str

@@ -271,12 +271,8 @@ throw GiwsException::JniBadAllocException(curEnv);
             return """
 			curEnv->DeleteLocalRef(res);
 			return %s;
-			""" % (
-                self.temporaryVariableName
-            )
+			""" % (self.temporaryVariableName)
         else:
             return """
 			return %s;
-			""" % (
-                self.temporaryVariableName
-            )
+			""" % (self.temporaryVariableName)

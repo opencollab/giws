@@ -40,7 +40,6 @@ from JNIFrameWork import JNIFrameWork
 
 
 class stringDataGiws(dataGiws):
-
     nativeType = "char *"
     callMethod = "CallObjectMethod"
     callStaticMethod = "CallStaticObjectMethod"
@@ -84,9 +83,7 @@ class stringDataGiws(dataGiws):
             )
         else:
             errorMgntMemBis = """std::cerr << "Could not convert C string to Java UTF string, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);""" % (
-                detachThread
-            )
+			exit(EXIT_FAILURE);""" % (detachThread)
         return errorMgntMemBis
 
     def specificPreProcessing(self, parameter, detachThread):
@@ -100,9 +97,7 @@ class stringDataGiws(dataGiws):
             )
         else:
             errorMgntMem = """std::cerr << "Could not allocate Java string array, memory full." << std::endl;%s
-			exit(EXIT_FAILURE);""" % (
-                detachThread
-            )
+			exit(EXIT_FAILURE);""" % (detachThread)
 
         errorMgntMemBis = self.__errorMemoryString(detachThread)
 
@@ -232,9 +227,7 @@ class stringDataGiws(dataGiws):
                 strDeclaration = "*"
             strCommon += """
 			%s lenRow = curEnv->GetArrayLength(res);
-			""" % (
-                strDeclaration
-            )
+			""" % (strDeclaration)
             self.temporaryVariableName = "arrayOfString"
             if self.getDimensionArray() == 1:
                 str += (

@@ -250,9 +250,7 @@ class dataGiws(object):
     def specificPostDeleteMemory(self, parameter):
         """Preprocessing before calling the java method"""
         return """curEnv->DeleteLocalRef(%s_);
-		""" % (
-            parameter.getName()
-        )
+		""" % (parameter.getName())
 
     def specificPostProcessing(self, detachThread):
         """Preprocessing after calling the java method"""
@@ -277,9 +275,7 @@ class dataGiws(object):
             strCommon += """
 			%s lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
-			""" % (
-                strDeclaration
-            )
+			""" % (strDeclaration)
             if self.getDimensionArray() == 1:
                 str += (
                     strCommon

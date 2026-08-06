@@ -38,7 +38,6 @@ from datatypes.dataGiws import dataGiws
 
 
 class voidDataGiws(dataGiws):
-
     nativeType = "void"
     callMethod = "CallVoidMethod"
     callStaticMethod = "CallStaticVoidMethod"

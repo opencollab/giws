@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-""" The engine which will write files """
+"""The engine which will write files"""
 
 
 class outputWriter:

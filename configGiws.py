@@ -34,7 +34,7 @@
 #
 # For more information, see the file COPYING
 
-""" Configuration of the Env """
+"""Configuration of the Env"""
 
 
 class configGiws:
