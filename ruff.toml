@@ -1,0 +1,11 @@
+# Formatting is black-compatible (default line-length = 88).
+
+[lint]
+# Match the previous flake8 setup: pycodestyle + pyflakes.
+select = ["E", "W", "F"]
+# The generated C++/JNI code templates embedded in string literals use tabs.
+ignore = ["E101"]
+
+[lint.pycodestyle]
+# Carried over from .flake8 (max-line-length = 200).
+max-line-length = 200
