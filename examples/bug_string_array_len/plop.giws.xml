@@ -1,0 +1,5 @@
+<package name="bug_string_array_len">
+    <object name="Plop">
+        <method name="getStrings" returnType="String[]" modifier="static"/>
+    </object>
+</package>
