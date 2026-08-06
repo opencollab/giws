@@ -1,5 +1,12 @@
 *.pyc
 *~
+__pycache__/
+.ruff_cache/
+
+# python packaging artifacts
+/build/
+/dist/
+*.egg-info/
 
 # remove examples generated files
 /examples/*/*.cpp
@@ -10,4 +17,3 @@
 # ignore eclipse pydev files
 /.project
 /.pydevproject
-
