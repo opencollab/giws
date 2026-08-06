@@ -38,7 +38,7 @@
 
 
 class configGiws:
-    __version = "2.0.2"
+    __version = "3.0.0"
     __descriptionFile = ""
     __splitPerObject = True
     __throwsException = False
