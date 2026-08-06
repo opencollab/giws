@@ -164,20 +164,20 @@ class methodGiws:
         if self.getModifier() == "static":
             str += JNIFrameWork().getDeleteStaticProfile()
 
-            if (
-                hasattr(self.getReturn(), "specificPostProcessing")
-                and type(self.getReturn().specificPostProcessing) is MethodType
-                and (
-                    self.getReturn().isArray()
-                    or isinstance(self.getReturn(), stringDataGiws)
-                )
-            ):
-                # Check the exception with a delete to avoid memory leak
-                str += JNIFrameWork().getExceptionCheckProfile(
-                    self.getDetachThread(), self.getReturn().temporaryVariableName
-                )
-            else:
-                str += JNIFrameWork().getExceptionCheckProfile(self.getDetachThread())
+        if (
+            hasattr(self.getReturn(), "specificPostProcessing")
+            and type(self.getReturn().specificPostProcessing) is MethodType
+            and (
+                self.getReturn().isArray()
+                or isinstance(self.getReturn(), stringDataGiws)
+            )
+        ):
+            # Check the exception with a delete to avoid memory leak
+            str += JNIFrameWork().getExceptionCheckProfile(
+                self.getDetachThread(), self.getReturn().temporaryVariableName
+            )
+        else:
+            str += JNIFrameWork().getExceptionCheckProfile(self.getDetachThread())
 
         str += self.getDetachThread()
         str += JNIFrameWork().getReturnProfile(self.getReturn())
