@@ -40,7 +40,7 @@ from JNIFrameWork import JNIFrameWork
 
 def abstractMethod(obj=None):
     """Use this instead of 'pass' for the body of abstract methods."""
-    raise Exception("Unimplemented abstract method: %s" % obj)
+    raise Exception(f"Unimplemented abstract method: {obj}")
 
 
 #

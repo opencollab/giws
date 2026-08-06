@@ -50,19 +50,19 @@ class parseXMLEngine:
     __root = None
     Jpackage = None
 
-    def __init__(self, descFile):
+    def __init__(self, descFile: str) -> None:
         if not os.path.isfile(descFile):
-            print(('Could not find declaration file "%s"' % descFile))
+            print(f'Could not find declaration file "{descFile}"')
             sys.exit(-2)
         try:
             doc = ET.parse(descFile)
         except ET.ParseError:
-            print(('Error while parsing XML file "%s"' % descFile))
+            print(f'Error while parsing XML file "{descFile}"')
             sys.exit(-3)
         self.__root = doc.getroot()
         self.__loadPackage()
 
-    def getJpackage(self):
+    def getJpackage(self) -> packageGiws:
         return self.Jpackage
 
     def __loadPackage(self):
@@ -89,10 +89,8 @@ class parseXMLEngine:
                 extendsObject = self.Jpackage.getObject(extends)
                 if extendsObject is None:
                     print(
-                        (
-                            'Class "%s" must be defined before being use as father class.\nPlease check that "%s" is defined before "%s".'
-                            % (extends, extends, objectName)
-                        )
+                        f'Class "{extends}" must be defined before being use as father class.\n'
+                        f'Please check that "{extends}" is defined before "{objectName}".'
                     )
                     sys.exit(-4)
 
@@ -115,9 +113,7 @@ class parseXMLEngine:
 
         detachThread = False
         if "detachThread" in method.attrib:
-            str = method.attrib["detachThread"].lower()
-            if str == "true":
-                detachThread = True
+            detachThread = method.attrib["detachThread"].lower() == "true"
 
         if "modifier" in method.attrib:
             modifier = method.attrib["modifier"]
@@ -128,24 +124,20 @@ class parseXMLEngine:
         parametersName = []  # To check if the parameter is not already defined
         for param in method:  # We browse the parameters of the method
             param = self.__loadParameter(param.attrib)
-            try:
-                if parametersName.index(param.getName()) >= 0:
-                    print(("%s is already defined as parameters" % param.getName()))
-                    sys.exit(-3)
-            except ValueError:  # Cannot find the parameter => not defined. Good!
-                parametersName.append(param.getName())
+            if param.getName() in parametersName:
+                print(f"{param.getName()} is already defined as parameters")
+                sys.exit(-3)
+            parametersName.append(param.getName())
 
             Jmethod.addParameter(param)
         return Jmethod
 
     def __loadParameter(self, param):
-        type = param["type"]
-        name = param["name"]
-        return parameterGiws(name, type)
+        return parameterGiws(param["name"], param["type"])
 
 
 if __name__ == "__main__":
     print("Parsing ...")
     templateObj = parseXMLEngine("template.xml")
-    print((templateObj.getJpackage().generateCXXHeader()))
-    print((templateObj.getJpackage()))
+    print(templateObj.getJpackage().generateCXXHeader())
+    print(templateObj.getJpackage())

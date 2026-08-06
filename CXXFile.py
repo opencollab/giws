@@ -140,7 +140,7 @@ class CXXFile:
                     + strCommonEnd
                 )
                 outputWriter().writeIntoFile(config.getOutput(), fileName, str)
-                print(("%s generated ..." % fileName))
+                print(f"{fileName} generated ...")
         else:
             fileName = self.__getFileNameForPackageDeclaration(config, "header")
             str = """%s
@@ -153,7 +153,7 @@ class CXXFile:
             )
 
             outputWriter().writeIntoFile(config.getOutput(), fileName, str)
-            print(("%s generated ..." % fileName))
+            print(f"{fileName} generated ...")
 
     def generateCXXBody(self, config):
         strCommon = """%s
@@ -183,7 +183,7 @@ class CXXFile:
                 )
                 str = strInclude + strCommon + object.generateCXXBody() + strCommonEnd
                 outputWriter().writeIntoFile(config.getOutput(), fileName, str)
-                print(("%s generated ..." % fileName))
+                print(f"{fileName} generated ...")
         else:
             strInclude = """#include "%s"
                         """ % (
@@ -201,4 +201,4 @@ class CXXFile:
                 strCommonEnd,
             )
             outputWriter().writeIntoFile(config.getOutput(), fileName, str)
-            print(("%s generated ..." % fileName))
+            print(f"{fileName} generated ...")

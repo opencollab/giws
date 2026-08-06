@@ -1,4 +1,3 @@
-#!/usr/bin/python -u
 # Copyright or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 # Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
@@ -7,7 +6,7 @@
 # for Java objects/methods.
 #
 # This software is governed by the CeCILL  license under French law and
-# abiding by the rules of distribution of free software. You can  use,
+# abiding by the rules of distribution of free software.  You can  use,
 # modify and/ or redistribute the software under the terms of the CeCILL
 # license as circulated by CEA, CNRS and INRIA at the following URL
 # "http://www.cecill.info".
@@ -36,12 +35,13 @@
 
 """The engine which will write files"""
 
+import os.path
+
 
 class outputWriter:
-    def stripTab(self, text):
+    def stripTab(self, text: str) -> str:
         return text.expandtabs(0)
 
-    def writeIntoFile(self, directory, fileName, content):
-        f = open(directory + "/" + fileName, "w")
-        f.write(self.stripTab(content))
-        f.close()
+    def writeIntoFile(self, directory: str, fileName: str, content: str) -> None:
+        with open(os.path.join(directory, fileName), "w") as f:
+            f.write(self.stripTab(content))

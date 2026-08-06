@@ -98,7 +98,7 @@ class dataFactoryGiws:
 
         if dataTypeToCreate not in self.dict:
             raise Exception(
-                "Don't know how to manage the data type %s", dataTypeToCreate
+                f"Don't know how to manage the data type {dataTypeToCreate}"
             )
 
         myType = self.dict[dataTypeToCreate]()
