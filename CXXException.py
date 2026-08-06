@@ -410,6 +410,12 @@ class CXXException:
                         // call getLocalizedMessage
                         jstring description = (jstring) curEnv->CallObjectMethod(javaException, getLocalizedMessageId);
 
+        if (curEnv->ExceptionCheck())
+        {
+          curEnv->ExceptionClear();
+          return "";
+        }
+
         if (description == NULL)
         {
           return "";
@@ -442,6 +448,12 @@ class CXXException:
         // call getStackTrace
         jobjectArray stackTrace = (jobjectArray) curEnv->CallObjectMethod(javaException, getStackTraceId);
 
+        if (curEnv->ExceptionCheck())
+        {
+          curEnv->ExceptionClear();
+          return "";
+        }
+
         if (stackTrace == NULL)
         {
           return "";
@@ -462,6 +474,15 @@ class CXXException:
 
           // call to string on the object
           jstring stackElementString = (jstring) curEnv->CallObjectMethod(curStackTraceElement, toStringId);
+
+          if (curEnv->ExceptionCheck())
+          {
+                curEnv->ExceptionClear();
+                curEnv->DeleteLocalRef(stackTraceElementClass);
+                curEnv->DeleteLocalRef(stackTrace);
+                curEnv->DeleteLocalRef(curStackTraceElement);
+                return res;
+          }
 
           if (stackElementString == NULL)
           {
@@ -504,6 +525,14 @@ class CXXException:
 
         // call the getName function
         jstring javaName = (jstring) curEnv->CallObjectMethod(exceptionClass, getNameId);
+
+        if (curEnv->ExceptionCheck())
+        {
+          curEnv->ExceptionClear();
+          curEnv->DeleteLocalRef(exceptionClass);
+          curEnv->DeleteLocalRef(classClass);
+          return "";
+        }
 
         if (javaName == NULL)
         {
