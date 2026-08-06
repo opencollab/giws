@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "giws"
+description = "Generate C++ class wrappers to call Java methods/objects"
+readme = "README.md"
+license = { text = "CeCILL" }
+authors = [
+    { name = "Sylvestre Ledru", email = "sylvestre@debian.org" },
+]
+requires-python = ">=3.9"
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/opencollab/giws/"
+
+[tool.setuptools]
+py-modules = [
+    "configGiws",
+    "CXXException",
+    "CXXFile",
+    "JNIFrameWork",
+    "licenseWrapper",
+    "outputWriter",
+    "parseXMLEngine",
+]
+packages = ["classRepresentation", "datatypes"]
+script-files = ["giws"]
+
+[tool.setuptools.dynamic]
+version = { attr = "configGiws.__version__" }

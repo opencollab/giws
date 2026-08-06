@@ -36,9 +36,11 @@
 
 """Configuration of the Env"""
 
+__version__ = "3.0.1"
+
 
 class configGiws:
-    __version = "3.0.1"
+    __version = __version__
     __descriptionFile = ""
     __splitPerObject = True
     __throwsException = False
