@@ -1,0 +1,16 @@
+Regression test for the missing exception check on non-static methods.
+
+Before giws 3.1.0 the generated code only checked for a pending Java
+exception after calls to static methods. With
+--throws-exception-on-error, an exception thrown by a non-static Java
+method was never converted into a GiwsException::JniCallMethodException.
+
+main returns 0 only if the exception is caught in C++.
+
+Defines where is the JDK
+# export JAVA_HOME=/path/to/java/
+
+Build and run
+# make
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$JAVA_HOME/lib/server/
+# ./main
