@@ -216,6 +216,9 @@ class stringDataGiws(dataGiws):
 
         str = JNIFrameWork().getExceptionCheckProfile(detachThread)
 
+        if self.isArray() is True and configGiws().getDisableReturnSize() is False:
+            str += "* lenRow = 0;"
+
         str = str + "if (res != NULL) { "
 
         if self.isArray():
