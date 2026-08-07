@@ -1,5 +1,5 @@
 /*
-Copyright or © or Copr. INRIA/Scilab - Sylvestre LEDRU
+Copyright or ï¿½ or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
 
@@ -61,7 +61,7 @@ using namespace example2;
 using namespace std;
 
 int main(){
-	int sizeArray=3;
+	const int sizeArray=3;
   	JavaVM* jvm = create_vm();
 	MyObjectWithArray *plop = new MyObjectWithArray(jvm);
 	int myArrayOfLong[sizeArray];

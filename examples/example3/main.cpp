@@ -1,5 +1,5 @@
 /*
-Copyright or © or Copr. INRIA/Scilab - Sylvestre LEDRU
+Copyright or ï¿½ or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
 
@@ -63,7 +63,6 @@ using namespace example3;
 using namespace std;
 
 int main(){
-	int sizeArray=3;
   	JavaVM* jvm = create_vm();
 	MyObjectWhichReturnsExceptions *plop = new MyObjectWhichReturnsExceptions(jvm);
 
@@ -74,9 +73,9 @@ int main(){
 
 	cout << "Exception caught:" << endl;
 	try {
-		int myIntsWithExceptionCatched = plop->getIntFromArrayOfSizeThree(22);
+		plop->getIntFromArrayOfSizeThree(22);
 
-	}catch(GiwsException::JniException e) {
+	}catch(const GiwsException::JniException & e) {
 		cout << "getJavaDescription: " << e.getJavaDescription() << endl;
 		cout << "getJavaStackTrace: " << e.getJavaStackTrace() << endl;
 		cout << "getJavaExceptionName: " << e.getJavaExceptionName() << endl;
@@ -86,8 +85,8 @@ int main(){
 
 	cout << "Exception will be trigger. This will display the message of the exception" << endl;
 	try {
-		int value = plop->thisMethodWillFailWithMessage();
-	}catch(GiwsException::JniException e) {
+		plop->thisMethodWillFailWithMessage();
+	}catch(const GiwsException::JniException & e) {
 		cout << "getJavaDescription: " << e.getJavaDescription() << endl;
 		cout << "getJavaStackTrace: " << e.getJavaStackTrace() << endl;
 		cout << "getJavaExceptionName: " << e.getJavaExceptionName() << endl;
@@ -96,7 +95,7 @@ int main(){
 	cout << "========================" << endl;
 
 	cout << "Exception not caught:" << endl;
-	int myIntsWithException = plop->getIntFromArrayOfSizeThree(223);
+	plop->getIntFromArrayOfSizeThree(223);
 	cout << "Value from the Java with good pos : " << myInts  <<endl;
 
 	return 0;

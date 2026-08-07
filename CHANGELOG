@@ -23,6 +23,8 @@ giws (3.1.0)
      * Generated classes: make the destructor virtual (the class has
        virtual methods; deleting through it was flagged by
        -Wdelete-non-virtual-dtor)
+     * Examples: fix the -Wall warnings in the hand-written sources
+       (unused variables, VLA, catching a polymorphic type by value)
      * Add a test suite (tests/) run by CI; no JDK needed
      * New example bug_nonstatic_exception demonstrating the exception
        fix on non-static methods
