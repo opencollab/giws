@@ -11,6 +11,12 @@ giws (3.1.0)
        --body-extension-file as intended
      * Fix the error message raised for an unknown datatype
      * CI: update actions, add a Python 3.9-3.14 install/smoke-test matrix
+     * Generated GiwsException: check for pending exceptions after each
+       CallObjectMethod (fixes -Xcheck:jni warnings while building the
+       C++ exception)
+     * Add a test suite (tests/) run by CI; no JDK needed
+     * New example bug_nonstatic_exception demonstrating the exception
+       fix on non-static methods
      * Modernize the Python code (f-strings, type hints, with-statement)
      * Add a pre-commit configuration running ruff
 

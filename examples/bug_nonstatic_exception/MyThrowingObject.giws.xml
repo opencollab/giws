@@ -1,0 +1,12 @@
+<!--
+Regression test: the exception check after the Java call used to be
+generated only for static methods. An exception thrown by a non-static
+method was silently carried into the next JNI call instead of being
+turned into a C++ exception with the throws-exception-on-error option.
+-->
+
+<package name="bug_nonstatic_exception">
+  <object name="MyThrowingObject">
+	<method name="alwaysThrows" returnType="void" />
+  </object>
+</package>

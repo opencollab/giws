@@ -38,11 +38,6 @@ from configGiws import configGiws
 from JNIFrameWork import JNIFrameWork
 
 
-def abstractMethod(obj=None):
-    """Use this instead of 'pass' for the body of abstract methods."""
-    raise Exception(f"Unimplemented abstract method: {obj}")
-
-
 #
 # This class intend to create a generic object for datatype
 # see http://en.wikipedia.org/wiki/Java_Native_Interface#Mapping_types
@@ -126,11 +121,11 @@ class dataGiws(object):
 
     def getRealJavaType(self):
         """Returns the real datatype"""
-        abstractMethod(self)
+        raise NotImplementedError(type(self).__name__)
 
     def getDescription(self):
         """Returns the description"""
-        abstractMethod(self)
+        raise NotImplementedError(type(self).__name__)
 
     def setIsArray(self, isItAnArray):
         """Defines if we have to deal with an array or not"""

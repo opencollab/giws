@@ -31,3 +31,6 @@ script-files = ["giws"]
 
 [tool.setuptools.dynamic]
 version = { attr = "configGiws.__version__" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

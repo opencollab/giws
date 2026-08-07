@@ -1,14 +1,28 @@
-name: Build the examples
+name: CI
 
 on:
   push:
     branches:
       - master
   pull_request:
-    branches:
-      - master
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ruff check
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: check
+
+      - name: ruff format
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: format --check
+
   build:
     runs-on: ubuntu-latest
 
@@ -34,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.12", "3.13", "3.14"]
 
     steps:
       - name: Checkout repository
@@ -46,12 +60,15 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install giws
-        run: python -m pip install .
+        run: python -m pip install . pytest
+
+      - name: Run the test suite
+        run: python -m pytest
 
       - name: Smoke-test the installed script
         run: |
           giws --version
           cd examples/basic_example
-          giws -f MyComplexClass.giws.xml
+          giws -p -f MyComplexClass.giws.xml
           test -f basic_example.cpp
           test -f basic_example.hxx
