@@ -403,7 +403,8 @@ class CXXException:
 
                         // retrieve information from the exception.
                         // get method id
-                        jmethodID getLocalizedMessageId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
+                        jclass javaExceptionClass = curEnv->GetObjectClass(javaException);
+                        jmethodID getLocalizedMessageId = curEnv->GetMethodID(javaExceptionClass,
                                                                                            "getLocalizedMessage",
                                                                                            "()Ljava/lang/String;");
 
@@ -413,11 +414,13 @@ class CXXException:
         if (curEnv->ExceptionCheck())
         {
           curEnv->ExceptionClear();
+          curEnv->DeleteLocalRef(javaExceptionClass);
           return "";
         }
 
         if (description == NULL)
         {
+          curEnv->DeleteLocalRef(javaExceptionClass);
           return "";
         }
 
@@ -425,6 +428,7 @@ class CXXException:
 
         // release java resources
         curEnv->DeleteLocalRef(description);
+        curEnv->DeleteLocalRef(javaExceptionClass);
 
         return res;
   }
@@ -441,9 +445,11 @@ class CXXException:
         // retrieve information from the exception.
         // get method id
         // getStackTrace returns an array of StackTraceElement
-        jmethodID getStackTraceId = curEnv->GetMethodID(curEnv->GetObjectClass(javaException),
+        jclass javaExceptionClass = curEnv->GetObjectClass(javaException);
+        jmethodID getStackTraceId = curEnv->GetMethodID(javaExceptionClass,
                                                                                                         "getStackTrace",
                                                                                                         "()[Ljava/lang/StackTraceElement;");
+        curEnv->DeleteLocalRef(javaExceptionClass);
 
         // call getStackTrace
         jobjectArray stackTrace = (jobjectArray) curEnv->CallObjectMethod(javaException, getStackTraceId);
@@ -536,6 +542,8 @@ class CXXException:
 
         if (javaName == NULL)
         {
+          curEnv->DeleteLocalRef(exceptionClass);
+          curEnv->DeleteLocalRef(classClass);
           return "";
         }
 
