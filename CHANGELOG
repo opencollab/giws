@@ -25,6 +25,8 @@ giws (3.1.0)
        -Wdelete-non-virtual-dtor)
      * Examples: fix the -Wall warnings in the hand-written sources
        (unused variables, VLA, catching a polymorphic type by value)
+     * CI: check that the generated code and the examples build with
+       -Wall -Werror
      * Add a test suite (tests/) run by CI; no JDK needed
      * New example bug_nonstatic_exception demonstrating the exception
        fix on non-static methods

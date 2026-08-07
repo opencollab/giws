@@ -43,6 +43,15 @@ jobs:
         run: |
           make examples
 
+      - name: Check that the generated code and the examples build with -Wall -Werror
+        run: |
+          for f in examples/*/*.cpp; do
+            echo "Checking $f"
+            g++ -Wall -Werror -fsyntax-only \
+              -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" \
+              -I"$(dirname "$f")" "$f"
+          done
+
   package:
     runs-on: ubuntu-latest
     strategy:
