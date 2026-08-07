@@ -428,7 +428,7 @@ class objectGiws:
 
 			%s
 			// Destructor
-			~%s();
+			virtual ~%s();
 
 			// Generic method
 			// Synchronization methods

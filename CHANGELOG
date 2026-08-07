@@ -20,6 +20,9 @@ giws (3.1.0)
      * Generated code: boolean arrays with --disable-return-size-array
        wrote the array length through an uninitialized pointer
        (undefined behavior); use a local variable like the other types
+     * Generated classes: make the destructor virtual (the class has
+       virtual methods; deleting through it was flagged by
+       -Wdelete-non-virtual-dtor)
      * Add a test suite (tests/) run by CI; no JDK needed
      * New example bug_nonstatic_exception demonstrating the exception
        fix on non-static methods
