@@ -107,12 +107,17 @@ class booleanDataGiws(dataGiws):
         if self.isArray():
             str = JNIFrameWork().getExceptionCheckProfile(detachThread)
             strCommon = ""
+            strDeclaration = ""
             if configGiws().getDisableReturnSize() is True:
-                strCommon += "int *lenRow;"
+                strCommon += "int lenRow;"
+            else:
+                # The size of the array is returned as output argument of the
+                # function
+                strDeclaration = "*"
             strCommon += """
-			*lenRow = curEnv->GetArrayLength(res);
+			%s lenRow = curEnv->GetArrayLength(res);
 			jboolean isCopy = JNI_FALSE;
-			"""
+			""" % (strDeclaration)
 
             if self.getDimensionArray() == 1:
                 return (
@@ -122,30 +127,31 @@ class booleanDataGiws(dataGiws):
 
 				/* faster than getXXXArrayElements */
 				jboolean *resultsArray = static_cast<jboolean *>(curEnv->GetPrimitiveArrayCritical(res, &isCopy));
-				bool * myArray= new bool[*lenRow];
+				bool * myArray= new bool[%s lenRow];
 
-				for (jsize i = 0; i < *lenRow; i++){
+				for (jsize i = 0; i < %s lenRow; i++){
 				myArray[i]=(resultsArray[i] == JNI_TRUE);
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
 
 				curEnv->DeleteLocalRef(res);
 				"""
+                    % (strDeclaration, strDeclaration)
                 )
             else:
                 if configGiws().getDisableReturnSize() is True:
-                    str += "int *lenCol;"
+                    str += "int lenCol;"
                 return (
                     str
                     + strCommon
                     + """
-				bool ** myArray = new bool*[*lenRow];
-				for(int i=0; i<*lenRow; i++) {
+				bool ** myArray = new bool*[%s lenRow];
+				for(int i=0; i<%s lenRow; i++) {
 				jbooleanArray oneDim = (jbooleanArray)curEnv->GetObjectArrayElement(res, i);
-				*lenCol=curEnv->GetArrayLength(oneDim);
+				%s lenCol=curEnv->GetArrayLength(oneDim);
 				bool *resultsArray = static_cast<bool *>(curEnv->GetPrimitiveArrayCritical(oneDim, &isCopy));
-				myArray[i] = new bool[*lenCol];
-				for(int j=0; j<*lenCol; j++) {
+				myArray[i] = new bool[%s lenCol];
+				for(int j=0; j<%s lenCol; j++) {
 				myArray[i][j]=(resultsArray[j] == JNI_TRUE);
 				}
 				curEnv->ReleasePrimitiveArrayCritical(res, resultsArray, JNI_ABORT);
@@ -153,6 +159,13 @@ class booleanDataGiws(dataGiws):
 
 				curEnv->DeleteLocalRef(res);
 				"""
+                    % (
+                        strDeclaration,
+                        strDeclaration,
+                        strDeclaration,
+                        strDeclaration,
+                        strDeclaration,
+                    )
                 )
 
         else:

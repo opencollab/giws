@@ -17,6 +17,9 @@ giws (3.1.0)
      * Generated GiwsException: release the JNI local references on the
        early-return paths too (they leaked when embedding the JVM, as
        local references are only freed when the thread detaches)
+     * Generated code: boolean arrays with --disable-return-size-array
+       wrote the array length through an uninitialized pointer
+       (undefined behavior); use a local variable like the other types
      * Add a test suite (tests/) run by CI; no JDK needed
      * New example bug_nonstatic_exception demonstrating the exception
        fix on non-static methods
