@@ -1,4 +1,4 @@
-giws (3.1.0)
+giws (4.0.0)
 
      * Generated code: the exception check after the Java call was only
        emitted for static methods. Non-static methods now detect a pending
@@ -14,13 +14,26 @@ giws (3.1.0)
      * Generated GiwsException: check for pending exceptions after each
        CallObjectMethod (fixes -Xcheck:jni warnings while building the
        C++ exception)
+     * Generated GiwsException: release the JNI local references on the
+       early-return paths too (they leaked when embedding the JVM, as
+       local references are only freed when the thread detaches)
+     * Generated code: boolean arrays with --disable-return-size-array
+       wrote the array length through an uninitialized pointer
+       (undefined behavior); use a local variable like the other types
+     * Generated classes: make the destructor virtual (the class has
+       virtual methods; deleting through it was flagged by
+       -Wdelete-non-virtual-dtor)
+     * Examples: fix the -Wall warnings in the hand-written sources
+       (unused variables, VLA, catching a polymorphic type by value)
+     * CI: check that the generated code and the examples build with
+       -Wall -Werror
      * Add a test suite (tests/) run by CI; no JDK needed
      * New example bug_nonstatic_exception demonstrating the exception
        fix on non-static methods
      * Modernize the Python code (f-strings, type hints, with-statement)
      * Add a pre-commit configuration running ruff
 
- -- Sylvestre Ledru <sylvestre@debian.org>  Thu, 06 Aug 2026 22:23:44 +0200
+ -- Sylvestre Ledru <sylvestre@debian.org>  Fri, 07 Aug 2026 10:43:07 +0200
 
 giws (2.0.3)
 

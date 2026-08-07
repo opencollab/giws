@@ -2,7 +2,7 @@
 #include "Bar.hxx"
 #include <jni.h>
 /*
-Copyright or © or Copr. INRIA/Scilab - Sylvestre LEDRU
+Copyright or ï¿½ or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
 
@@ -64,5 +64,6 @@ int main(){
   	JavaVM* jvm = create_vm();
 	Bar *plop = new Bar(jvm);
 	cout << "Does nothing" << endl;
+	delete plop;
 	return 0;
 }

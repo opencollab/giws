@@ -13,5 +13,6 @@ public:
 int main(){
 
 	Son *son = new Son();
+	delete son;
 	return 0;
 }

@@ -2,7 +2,7 @@
 #include "Plop.hxx"
 #include <jni.h>
 /*
-Copyright or © or Copr. INRIA/Scilab - Sylvestre LEDRU
+Copyright or ï¿½ or Copr. INRIA/Scilab - Sylvestre LEDRU
 #
 Sylvestre LEDRU - <sylvestre.ledru@inria.fr> <sylvestre@ledru.info>
 
@@ -64,5 +64,6 @@ int main(){
   	JavaVM* jvm = create_vm();
 	Plop *plop = new Plop(jvm);
 	cout << "Does nothing. It is just to test the bug." << endl;
+	delete plop;
 	return 0;
 }
