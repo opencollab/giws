@@ -48,7 +48,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.12", "3.13", "3.14"]
 
     steps:
       - name: Checkout repository
@@ -69,6 +69,6 @@ jobs:
         run: |
           giws --version
           cd examples/basic_example
-          giws -f MyComplexClass.giws.xml
+          giws -p -f MyComplexClass.giws.xml
           test -f basic_example.cpp
           test -f basic_example.hxx
